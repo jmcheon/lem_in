@@ -6,13 +6,14 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:02:52 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/05 02:13:58 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/06 02:30:35 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem-in.h"
 
-int	main()
+
+int	main(int argc, char *argv[])
 {
 	char	*hello;
 
