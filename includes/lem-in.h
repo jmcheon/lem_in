@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:07:32 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/07 07:25:38 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/07 20:25:47 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,3 +15,9 @@
 
 // for perror
 #include <stdio.h>
+
+#define PARSE_XY 1
+#define PARSE_XY_START 2
+#define PARSE_XY_END 3
+
+#define PARSE_EDGE 4
