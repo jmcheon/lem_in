@@ -6,17 +6,23 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:02:52 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/06 02:30:35 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/07 07:40:30 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem-in.h"
 
-
-int	main(int argc, char *argv[])
+int main(void)
 {
-	char	*hello;
+	char buf[1024];
 
-	hello = "lem_in\n";
-	write(1, hello, ft_strlen(hello));
+	if (!ft_isdigit(get_next_line(STDIN_FILENO)[0]))
+	{
+		ft_putstr_fd("Usage: ./lem-in < [filename]\n", STDOUT_FILENO);
+		exit(0);
+	}
+
+	ft_putstr_fd("lem-in\n", STDOUT_FILENO);
+
+	return 0;
 }

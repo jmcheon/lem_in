@@ -6,8 +6,12 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:07:32 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/05 02:16:33 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/07 07:25:38 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/libft.h"
+#include "./get_next_line/get_next_line_bonus.h"
+
+// for perror
+#include <stdio.h>
