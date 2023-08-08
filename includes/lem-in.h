@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:07:32 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/08 18:25:36 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/08 19:40:31 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,3 +77,10 @@ t_parse	*parsing();
 int		check_split_count(char *line, char delim);
 // for debugging
 void	parse_result_print(t_parse *parse);
+
+
+/*
+**	graph_list.c
+*/
+
+void	parse_to_graph(t_parse *parse);
