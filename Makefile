@@ -6,7 +6,7 @@
 #    By: sucho <sucho@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/05 02:01:35 by sucho             #+#    #+#              #
-#    Updated: 2023/08/07 20:46:14 by sucho            ###   ########.fr        #
+#    Updated: 2023/08/08 14:27:41 by sucho            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ INCLIB					=	-L${LIBFT_PATH} -lft
 SRCS					=	./includes/get_next_line/get_next_line_bonus.c \
 							./includes/get_next_line/get_next_line_utils_bonus.c \
 							./srcs/main.c \
-							./srcs/parse.c
+							./srcs/parse.c \
+							./srcs/parse_check.c
 
 OBJS					=	${SRCS:.c=.o}
 
