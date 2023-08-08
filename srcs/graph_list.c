@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:39:43 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/08 22:13:34 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/08 22:30:18 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,21 +169,35 @@ void node_map_to_array(t_list *nodes_head, char **node_map)
 	swap_start_end(node_map, start, end, i);
 }
 
+int	node_find_index(char **node_array, char *node_name)
+{
+	int i;
+
+	i = 0;
+	(void) node_name;
+	while (node_array[i] != NULL)
+	{
+		if (ft_strncmp(node_array[i], node_name, ft_strlen(node_name)) == 0)
+		// {
+			// printf("node_array:[%s]\n", node_array[i]);
+			break ;
+		// }
+		i++;
+	}
+	return i;
+}
+
 
 void parse_to_graph(t_parse *parse)
 {
-	// t_graph_type *g;
-	// t_edge *tmp;
-	t_list *tmp;
-	// tmp = parse->nodes_head;
+	t_graph_type *g;
+	t_edge *tmp;
 
     int list_size = ft_lstsize(parse->nodes_head);
     char **node_map = malloc(sizeof(char *) * list_size);
-	// // char node_map[ft_lstsize(parse->nodes_head) - 1];
 
 	node_map[list_size] = NULL;
-	tmp = parse->nodes_head;
-	node_map_to_array(tmp, node_map);
+	node_map_to_array(parse->nodes_head, node_map);
 
 	int i = 0;
 	while (i < (list_size - 1))
@@ -192,17 +206,22 @@ void parse_to_graph(t_parse *parse)
 		i++;
 	}
 
-	// g = (t_graph_type*)malloc(sizeof(t_graph_type));
-	// init(g);
-	// for(int i=0 ; i< ft_lstsize(parse->nodes_head) - 1; i++)
-	//     insert_vertex(g,i);
+	g = (t_graph_type*)malloc(sizeof(t_graph_type));
+	init(g);
+	for(int i=0 ; i< ft_lstsize(parse->nodes_head) - 1; i++)
+	    insert_vertex(g,i);
 
-	// for(int i = 0; i < ft_lstsize(parse->edge_info_head) - 1; i++)
-	// {
-	// 	if(parse->edge_info_head->content == NULL)
-	// 		break;
-	// 	tmp = parse->edge_info_head->content;
-	// 	insert_edge(g, tmp->key, tmp->val);
+	t_list *list_tmp;
+	list_tmp = parse->edge_info_head;
+	for(int i = 0; i < ft_lstsize(parse->edge_info_head) - 1; i++)
+	{
+		if(list_tmp->content == NULL)
+			break;
+		tmp = list_tmp->content;
+		insert_edge(g, node_find_index(node_map, tmp->key), node_find_index(node_map, tmp->val));
+		list_tmp = list_tmp->next;
+
+	}
 
 	// 	parse->edge_info_head = parse->edge_info_head->next;
 	// }
@@ -216,7 +235,7 @@ void parse_to_graph(t_parse *parse)
 	// insert_edge(g,2,1);
 	// insert_edge(g,2,3);
 	// insert_edge(g,3,2);
-	// print_adj_list(g);
+	print_adj_list(g);
 
 	// free(g);
 }
