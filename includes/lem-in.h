@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:07:32 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/08 14:28:43 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/08 18:25:36 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #define PARSE_XY_END 3
 
 #define PARSE_EDGE 4
-#define PARSE_COMMENTS 5
+#define PARSE_COMMENT 5
 
 typedef struct s_node_xy
 {
@@ -44,22 +44,36 @@ typedef struct	s_parse
 	t_list *edge_info_head;
 }	t_parse;
 
-/*
-**	parse.c
-*/
-
-bool	parse_edge_check(char *line);
-bool	parse_node_xy_check(char *line);
-int		parse_check_line(char *line, int line_count, int parse_status,  t_list **node);
-int		parse_check_edge_line(char *line, t_list **node);
-void	parse_readlines(t_list *lines);
-int		check_split_count(char *line, char delim);
-int		parse_read_node(char *line, int parse_status, t_list **node);
 
 /*
 **	parse_check.c
 */
-
 int		compare_nodename(void *content1, void *content2);
 int		compare_edge(void *content1, void *content2);
 int		check_duplicate_nodes(t_list *nodes_head, int (*f)(void*, void*));
+bool	parse_node_xy_check(char *line);
+
+/*
+**	parse_reading.c
+*/
+int		edgeline_to_struct(char *line, t_list **node);
+void	parse_check_edgeline(t_list **line_head, t_parse **parse);
+int		nodeline_to_struct(char *line, int parse_status, t_list **node);
+int		check_nodeline_status(char *line, int line_count, int parse_status,  t_list **node);
+void	parse_check_nodeline(t_list **line_head, t_parse **parse);
+
+/*
+**	parse.c
+*/
+bool	duplicate_node_check(t_parse *parse);
+void	parse_readlines(t_list *lines);
+t_parse	*init_parse_struct(void);
+t_parse	*parsing();
+
+
+/*
+**	parse_util.c
+*/
+int		check_split_count(char *line, char delim);
+// for debugging
+void	parse_result_print(t_parse *parse);
