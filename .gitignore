@@ -25,6 +25,7 @@
 # Shared objects (inc. Windows DLLs)
 *.dll
 *.so
+*.sw*
 *.so.*
 *.dylib
 
