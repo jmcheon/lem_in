@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:02:52 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/08 13:03:15 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/08 14:22:34 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,28 @@ int compare_nodename(void *content1, void *content2)
 		return (0);
 }
 
-int check_duplicate_nodes(t_list *nodes_head)
+int compare_edge(void *content1, void *content2)
 {
+	int diff_key;
+	int diff_val;
+
+	t_edge *edge_1;
+	t_edge *edge_2;
+
+	edge_1 = (t_edge *)content1;
+	edge_2 = (t_edge *)content2;
+	diff_key = ft_strncmp(edge_1->key, edge_2->key, ft_strlen(edge_1->key));
+	diff_val = ft_strncmp(edge_1->val, edge_2->val, ft_strlen(edge_1->val));
+	if (diff_key == 0 && diff_val == 0)
+		return (1);
+	else
+		return (0);
+
+}
+
+int check_duplicate_nodes(t_list *nodes_head, int (*f)(void*, void*))
+{
+	(void)f;
 	t_list *tmp;
 
 	tmp = nodes_head;
@@ -81,7 +101,7 @@ int check_duplicate_nodes(t_list *nodes_head)
 			// there'll be always 'number of nodes + 1' linked list nodes.
 			if (other->content == NULL)
 				break;
-			if (compare_nodename(tmp->content, other->content))
+			if (f(tmp->content, other->content))
 				return (0);
 			other = other->next;
 		}
@@ -163,22 +183,30 @@ int main(void)
 	// ft_lstdelone(tmp, free);
 	printf("========================\n");
 
-	if (!check_duplicate_nodes(parse->nodes_head))
+	if (!check_duplicate_nodes(parse->nodes_head, compare_nodename))
 	{
 		ft_putstr_fd("duplicates node found", STDOUT_FILENO);
 		ft_putchar_fd('\n', STDOUT_FILENO);
 		exit(1);
 	}
 
-	t_edge *edge_tmp;
-	tmp = parse->edge_info_head;
-	while (tmp != NULL)
+	// t_edge *edge_tmp;
+	// tmp = parse->edge_info_head;
+	// while (tmp != NULL)
+	// {
+	// 	// needs error handling
+	// 	if (tmp->content == NULL)
+	// 		break;
+	// 	edge_tmp = tmp->content;
+	// 	printf("key:[%s] val:[%s]\n", edge_tmp->key, edge_tmp->val);
+	// 	tmp = tmp->next;
+	// }
+
+	if (!check_duplicate_nodes(parse->edge_info_head, compare_edge))
 	{
-		if (tmp->content == NULL)
-			break;
-		edge_tmp = tmp->content;
-		printf("key:[%s] val:[%s]\n", edge_tmp->key, edge_tmp->val);
-		tmp = tmp->next;
+		ft_putstr_fd("duplicates edge found", STDOUT_FILENO);
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		exit(1);
 	}
 
 
