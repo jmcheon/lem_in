@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:02:52 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/08 05:08:02 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/08 13:03:15 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,8 @@ int main(void)
 	while (lines != NULL)
 	{
 		parse_status = parse_check_line(lines->content, line_count, parse_status, &tmp);
+		if (parse_status == PARSE_EDGE)
+			break;
 		printf("[%s]\n", (char *)lines->content);
 		if (!parse_status)
 		{
@@ -141,6 +143,23 @@ int main(void)
 		lines = lines->next;
 		line_count++;
 	}
+	tmp = parse->edge_info_head;
+	while (lines != NULL)
+	{
+		parse_status = parse_check_edge_line(lines->content, &tmp);
+		if (!parse_status)
+		{
+			ft_putstr_fd("Error in line ", STDOUT_FILENO);
+			ft_putnbr_fd(line_count, STDOUT_FILENO);
+			ft_putchar_fd('\n', STDOUT_FILENO);
+			exit(1);
+		}
+		tmp->next = ft_lstnew(NULL);
+		tmp = tmp->next;
+		lines = lines->next;
+		line_count++;
+	}
+
 	// ft_lstdelone(tmp, free);
 	printf("========================\n");
 
@@ -150,6 +169,18 @@ int main(void)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 		exit(1);
 	}
+
+	t_edge *edge_tmp;
+	tmp = parse->edge_info_head;
+	while (tmp != NULL)
+	{
+		if (tmp->content == NULL)
+			break;
+		edge_tmp = tmp->content;
+		printf("key:[%s] val:[%s]\n", edge_tmp->key, edge_tmp->val);
+		tmp = tmp->next;
+	}
+
 
 	ft_putstr_fd("lem-in\n", STDOUT_FILENO);
 

@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 20:44:25 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/08 04:56:13 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/08 13:09:51 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	parse_check_line(char *line, int line_count, int parse_status, t_list **node
 		if (parse_status == PARSE_XY || parse_status == PARSE_XY_START || parse_status == PARSE_XY_END)
 		{
 			if(check_split_count(line, '-') == 2)
-				parse_status = PARSE_EDGE;
+				return PARSE_EDGE;
 			// needs to handle when already start and end were read
 			else if (ft_strncmp(line, "##start", 7) == 0)
 				return PARSE_XY_START;
@@ -107,6 +107,25 @@ int	parse_check_line(char *line, int line_count, int parse_status, t_list **node
 
 	}
 	return parse_status;
+}
+
+int	parse_check_edge_line(char *line, t_list **node)
+{
+	t_edge	*tmp;
+	char **split_tmp;
+
+	if (check_split_count(line, '-') != 2)
+		return false;
+
+	split_tmp = ft_split(line, '-');
+	// check when to given node names are same
+	if (split_tmp[0] == split_tmp[1])
+		return false;
+	tmp = (t_edge *)malloc(sizeof(t_edge));
+	tmp->key = split_tmp[0];
+	tmp->val = split_tmp[1];
+	(*node)->content = tmp;
+	return true;
 }
 
 void	parse_readlines(t_list *lines)
