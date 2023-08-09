@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 16:23:39 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/09 19:59:48 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/09 20:39:48 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,29 +67,29 @@ t_parse	*init_parse_struct(void)
 t_parse	*parsing()
 {
 	t_list	*lines;
+	t_list	*tmp;
 	t_parse *ret;
 
 	ret = init_parse_struct();
 	lines = ft_lstnew(NULL);
 	parse_readlines(lines);
+	tmp = lines;
 	parse_check_antnum(&lines, &ret);
 	parse_check_nodeline(&lines, &ret);
 	parse_check_edgeline(&lines, &ret);
 
 	// ft_lstclear(&lines, free);
-	t_list *tmp;
-	tmp = lines;
-	int i  = 0;
-	while (tmp != NULL)
-	{
-		if (tmp->content == NULL)
-			break;
-		free(tmp->content);
-		tmp = tmp->next;
-		i++;
-	}
-	free_list(lines);
-	free(lines);
+
+	// int i  = 0;
+	// while (tmp != NULL)
+	// {
+	// 	if (tmp->content == NULL)
+	// 		break;
+	// 	tmp = tmp->next;
+	// 	i++;
+	// }
+	free_list(tmp);
+	// free(li);
 	if(!duplicates_check(ret))
 		exit(1);
 	return ret;

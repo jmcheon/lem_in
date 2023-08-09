@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:52:20 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/09 19:59:28 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/09 20:39:55 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	free_list(t_list *head)
 	{
 		tmp = head;
 		head = head->next;
+		free(tmp->content);
 		free(tmp);
 	}
 }
