@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:39:43 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/09 13:51:02 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/09 14:02:30 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,13 +195,24 @@ void parse_to_graph(t_parse *parse)
 	t_graph_type *g;
 	t_edge *tmp;
 
-    int list_size = ft_lstsize(parse->nodes_head);
-    char **node_map = malloc(sizeof(char *) * list_size);
+    int list_size = ft_lstsize(parse->nodes_head) - 1;
+    char **node_map;
+
+	node_map = (char **)malloc(sizeof(char *) * (list_size + 1));
+
+	int i = 0;
+	while (i < list_size)
+	{
+		node_map[i] = (char *)malloc(sizeof(char *) + 1);
+		i++;
+	}
+	node_map[i] = NULL;
+
 
 	node_map[list_size] = NULL;
 	node_map_to_array(parse->nodes_head, node_map);
 
-	int i = 0;
+	i = 0;
 	while (i < (list_size - 1))
 	{
 		printf("index: %d, str:[%s]\n", i, node_map[i]);
