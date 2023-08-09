@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:52:20 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/08 19:44:44 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/09 14:14:51 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	check_split_count(char *line, char delim)
 	tmp = ft_split(line, delim);
 	while (tmp[i] != NULL)
 		i++;
+	free_2d(tmp);
 	return i;
 }
 
@@ -50,4 +51,14 @@ void parse_result_print(t_parse *parse)
 		printf("key:[%s], val:[%s]\n", node_tmp->key, node_tmp->val);
 		tmp = tmp->next;
 	}
+}
+
+void		free_2d(char **ptr)
+{
+	int		i;
+
+	i = 0;
+	while (*(ptr + i))
+		free(*(ptr + i++));
+	free(ptr);
 }

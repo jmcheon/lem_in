@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 20:44:25 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/08 18:22:32 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/09 14:14:07 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ int	edgeline_to_struct(char *line, t_list **node)
 	if (split_tmp[0] == split_tmp[1])
 		return false;
 	tmp = (t_edge *)malloc(sizeof(t_edge));
-	tmp->key = split_tmp[0];
-	tmp->val = split_tmp[1];
+	tmp->key = ft_strdup(split_tmp[0]);
+	tmp->val = ft_strdup(split_tmp[1]);
 	(*node)->content = tmp;
+	free_2d(split_tmp);
 	return PARSE_EDGE;
 }
 
