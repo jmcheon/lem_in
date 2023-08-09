@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 20:44:25 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/09 15:19:52 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/09 15:41:15 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,7 @@ int	nodeline_to_struct(char *line, int parse_status, t_list **node)
 int	check_nodeline_status(char *line, int parse_status, t_list **node)
 {
 	if(check_split_count(line, '-') == 2)
-	{
-		printf("line:%s\n",line);
 		return PARSE_EDGE;
-	}
 	// needs to handle when already start and end were read
 	if (ft_strncmp(line, "##start", 7) == 0)
 		return PARSE_XY_START;
@@ -126,7 +123,7 @@ void	parse_check_nodeline(t_list **line_head, t_parse **parse)
 		else if (!parse_status)
 		{
 			printf("%s",(char *)(*line_head)->content);
-			ft_putstr_fd("Error in line aaaa", STDOUT_FILENO);
+			ft_putstr_fd("Error in line ?????????????", STDOUT_FILENO);
 			// ft_putnbr_fd(line_count, STDOUT_FILENO);
 			ft_putchar_fd('\n', STDOUT_FILENO);
 			exit(1);
@@ -150,6 +147,5 @@ void	parse_check_antnum(t_list **line_head, t_parse **parse)
 		exit(1);
 	}
 	(*parse)->ant_num = ft_atoi((*line_head)->content);
-	printf("hhi\n");
 	(*line_head) = (*line_head)->next;
 }
