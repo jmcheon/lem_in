@@ -1,70 +1,6 @@
 #include "../includes/algo.h"
 #include "../includes/lem-in.h"
 
-int disjoint_bfs(t_route* route, int* parent, int capacity[][MAX_VERTICES], t_paths* paths)
-{
-	int	n = route->graph->n;
-	int	visited[n];
-	t_queue	queue;
-
-	ft_memset(visited, 0, sizeof(visited));
-	visited[route->start] = 1;
-	init_queue(&queue);
-	enqueue(&queue, route->start);
-
-
-	while (!is_empty(&queue))
-	{
-		//printf("queue is not empty.. checking..\n");
-		int u = dequeue(&queue);
-
-		for (t_graph_node* node = route->graph->adj_list[u]; node != NULL; node = node->link)
-		{
-			//printf("visited:");
-			//print_array(visited, n);
-			int v = node->vertex;
-			//printf("current vertex: %d\n", v);
-			//printf("node's vertex: %d\n", v);
-			if (!visited[v] && capacity[u][v] > 0)
-			{
-				int skip = 0;
-				for (int i = 0; i < paths->num_paths; ++i)
-				{
-					int path[MAX_VERTICES];
-					int path_len = 0;
-					
-					for (int j = 0; j < MAX_VERTICES; ++j)
-					{
-						if (paths->paths[i][j] != 0)
-							path[path_len++] = paths->paths[i][j];
-					}
-					for (int j = 0; j < path_len; ++j)
-					{
-						if (paths->paths[i][j] == v && path[j] != route->start && path[j] != route->end)
-						{
-							skip = 1;
-							break;
-						}
-					}
-					//if (paths->paths[i][v] == 1 && v != route->start && v != route->end)
-				}
-				if (!skip)
-				{
-					parent[v] = u;
-					//printf("parent: ");
-					//print_array(parent, n);
-					visited[v] = 1;
-					if (v == route->end)
-						return (1);
-					enqueue(&queue, v);
-				}
-			}
-		}
-	}
-	return (-1);
-}
-
-
 int bfs(t_route* route, int* parent, int capacity[][MAX_VERTICES])
 {
 	int	n = route->graph->n;
@@ -79,7 +15,6 @@ int bfs(t_route* route, int* parent, int capacity[][MAX_VERTICES])
 
 	while (!is_empty(&queue))
 	{
-		//printf("queue is not empty.. checking..\n");
 		int u = dequeue(&queue);
 
 		for (t_graph_node* node = route->graph->adj_list[u]; node != NULL; node = node->link)
@@ -131,7 +66,6 @@ void	print_paths(t_route* route, t_paths* paths)
 		int path[MAX_VERTICES];
 		int path_len = 0;
 		
-		//for (int j = 0; j < MAX_VERTICES; ++j)
 		for (int j = 0; j < route->num_vertices; ++j)
 		{
 			if (paths->paths[i][j] != 0)
@@ -145,10 +79,9 @@ void	print_paths(t_route* route, t_paths* paths)
 		for (int j = 0; j < path_len; ++j)
 		{
 			if (path[j] != route->start && path[j] != route->end)
-				printf("<- [%d]:%s", path[j], route->node_map[path[j]]);
+				printf(" <- [%d]:%s", path[j], route->node_map[path[j]]);
 		}
-		
-		printf("<- [%d]:%s\n", route->start, route->node_map[route->start]);
+		printf(" <- [%d]:%s\n", route->start, route->node_map[route->start]);
 	}
 }
 
@@ -160,7 +93,6 @@ void	fill_capacity(t_graph_type* graph, int capacity[][MAX_VERTICES])
 		while (node != NULL)
 		{
 			int v = node->vertex;
-			(void)capacity;
 			capacity[u][v] = 1;
 			capacity[v][u] = 1;
 			node = node->link;
@@ -170,6 +102,7 @@ void	fill_capacity(t_graph_type* graph, int capacity[][MAX_VERTICES])
 
 void	print_capacity(int capacity[][MAX_VERTICES], int n)
 {
+	printf("\nprint capacity:\n\n");
 	for (int u = 0; u < n; ++u)
 	{
 		for (int v = 0; v < n; ++v)
@@ -181,9 +114,7 @@ void	print_capacity(int capacity[][MAX_VERTICES], int n)
 void	print_array(int *parent, int n)
 {
 	for (int u = 0; u < n; ++u)
-	{
 		printf("%d ", parent[u]);
-	}
 	printf("\n\n");
 }
 
@@ -195,31 +126,22 @@ void	init_paths(t_paths* paths)
 
 void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int capacity[][MAX_VERTICES])
 {
-	int	max_flow = 0;
+	int	path_id = 0;
 
 	while (bfs(route, parent, capacity) != -1)
 	{
-		int	path_flow = INT_MAX;
-
-		for (int v = route->end; v != route->start; v = parent[v])
-		{
-			int u = parent[v];
-			path_flow = (capacity[u][v] < path_flow) ? capacity[u][v] : path_flow;
-		}
-
-
 		int i = 0;
 		for (int v = route->end; v != route->start; v = parent[v])
 		{
 			int u = parent[v];
-			printf("u, v = %d, %d\n", u, v);
+			//printf("u, v = %d, %d\n", u, v);
 			paths->paths[paths->num_paths][i++] = u;
-			capacity[u][v] -= path_flow;
-			capacity[v][u] += path_flow;
+			capacity[u][v] -= 1;
+			capacity[v][u] += 1;
 		}
 		paths->num_paths++;
-		max_flow += path_flow;
-		print_path(route, parent, max_flow);
+		path_id++;
+		print_path(route, parent, path_id);
 	}
 }
 
@@ -239,6 +161,9 @@ int	main(void)
 	parse_result_print(parse);
 	route.graph = parse_to_graph(parse);
 
+	/*
+	**	create node map 
+	*/
 	route.list_size = ft_lstsize(parse->nodes_head) - 1;
 	route.node_map = (char **)malloc(sizeof(char *) * (route.list_size + 1));
 
@@ -259,9 +184,11 @@ int	main(void)
 	printf("start: (%d)\n", route.start);
 	printf("end: (%d)\n", route.end);
 	fill_capacity(route.graph, capacity);
-	print_capacity(capacity, route.num_vertices);
+	//print_capacity(capacity, route.num_vertices);
 
-	//while (disjoint_bfs(&route, parent, capacity, &paths) != -1)
+	/*
+	**	edmonds-karp
+	*/
 	edmonds_karp(&route, &paths, parent, capacity);
 	i = 0;
 	while (i < (route.list_size - 1))
@@ -269,14 +196,12 @@ int	main(void)
 		printf("index: %d, str:[%s]\n", i, route.node_map[i]);
 		i++;
 	}
-	print_capacity(capacity, route.num_vertices);
-	printf("disjoin paths:\n");
-	print_paths(&route, &paths);
-
-
+	//print_capacity(capacity, route.num_vertices);
+	//printf("disjoin paths:\n");
+	//print_paths(&route, &paths);
 
 	/*
-	**	create new temp capacity
+	**	create new temp capacity based on the updated capacity
 	*/
 	fill_capacity(route.graph, temp);
 	for (int u = 0; u < route.num_vertices; ++u)
@@ -285,18 +210,17 @@ int	main(void)
 		{
 			if (capacity[u][v] == 1)
 				temp[u][v] = 0;
-			//if (capacity[u][v] != 1 && capacity[u][v] != 0)
-			//	temp[u][v] = capacity[u][v];
 		}
 	}
-	print_capacity(temp, route.num_vertices);
+	//print_capacity(temp, route.num_vertices);
 
 	/*
 	** run edmonds-karp with new temp capacity	
 	*/
 	init_paths(&paths);
 	edmonds_karp(&route, &paths, parent, temp);
-	printf("disjoin paths:\n");
+
+	printf("\n\ndisjoin paths:\n");
 	print_paths(&route, &paths);
 	return (0);
 }

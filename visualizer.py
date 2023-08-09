@@ -67,9 +67,9 @@ if __name__ == "__main__":
 
         input_string = read_input_file(args.input)
         nodes, edges, pos, start_node, end_node = parse_input(input_string)
-        print(start_node, end_node)
+        #print(start_node, end_node)
         node_color = ['green' if node == start_node else 'red' if node == end_node else 'skyblue' for node in nodes]
-        print(node_color)
+        #print(node_color)
         #print("nodes:", nodes)
         #print("edges:", edges)
         #print("positions:", pos)
