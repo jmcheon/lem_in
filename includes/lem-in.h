@@ -6,7 +6,7 @@
 /*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:07:32 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/09 02:41:15 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/09 04:00:09 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,6 @@ void	parse_result_print(t_parse *parse);
 */
 
 t_graph_type*	parse_to_graph(t_parse *parse);
+void node_map_to_array(t_list *nodes_head, char **node_map);
 void print_adj_list(t_graph_type *g);
 #endif

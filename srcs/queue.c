@@ -8,12 +8,12 @@ void	init_queue(t_queue* queue)
 
 bool	is_empty(t_queue* queue)
 {
-	return queue->front == NULL;
+	return (queue->front == NULL);
 }
 
-void	enqueue(t_queue* queue, void* content)
+void	enqueue(t_queue* queue, int	content)
 {
-	t_list*	new_node = (t_list*)malloc(sizeof(t_list));
+	t_queue_list*	new_node = (t_queue_list*)malloc(sizeof(t_queue_list));
 
 	if (!new_node)
 	{
@@ -29,26 +29,27 @@ void	enqueue(t_queue* queue, void* content)
 	else
 		queue->rear->next = new_node;
 	queue->rear = new_node;
+	printf("enqueued: %d\n", content);
 }
 
-void	dequeue(t_queue* queue)
+int	dequeue(t_queue* queue)
 {
 	if (is_empty(queue))
 	{
 		fprintf(stderr, "queue is empty, can't dequeue.\n");
-		return ;
+		return (-1);
 	}
 
-	t_list* temp = queue->front;
-	printf("dequeue:%d\n", *(int*)temp->content);
-	// void*	content = (void*)malloc(sizeof(temp->content));
+	t_queue_list* temp = queue->front;
+	int	content = temp->content;
 	queue->front = temp->next;
 
 	if (queue->front == NULL)
 		queue->rear = NULL;
 
 	free(temp);
-	// return content;
+	printf("dequeued: %d\n", content);
+	return (content);
 }
 
 void	free_queue(t_queue* queue)
@@ -57,32 +58,27 @@ void	free_queue(t_queue* queue)
 		dequeue(queue);
 }
 
-int	dequeue_test(void)
+int	queue_test(void)
 {
 	t_queue	queue;
-	void*	inputs[5];
+	int	inputs[5];
 
 	for (int i = 0; i < 5; ++i)
-	{
-		inputs[i] = (void*)malloc(sizeof(int));
-		*(int*)inputs[i] = i*5;
-	}
+		inputs[i] = i*5;
 
 	init_queue(&queue);
  	enqueue(&queue, inputs[0]);
  	enqueue(&queue, inputs[1]);
  	enqueue(&queue, inputs[2]);
 
-    dequeue(&queue);
-    dequeue(&queue);
-    dequeue(&queue);
+	printf("dequeue:%d\n",dequeue(&queue));
+	printf("dequeue:%d\n",dequeue(&queue));
+	printf("dequeue:%d\n",dequeue(&queue));
  	enqueue(&queue, inputs[3]);
 
-	dequeue(&queue);
+	printf("dequeue:%d\n",dequeue(&queue));
 
     free_queue(&queue);
-	for (int i = 0; i < 5; ++i)
-		free(inputs[i]);
 
 	return (0);
 }
