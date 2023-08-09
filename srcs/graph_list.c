@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:39:43 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/09 14:02:30 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/09 18:05:17 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,6 +198,7 @@ void parse_to_graph(t_parse *parse)
     int list_size = ft_lstsize(parse->nodes_head) - 1;
     char **node_map;
 
+
 	node_map = (char **)malloc(sizeof(char *) * (list_size + 1));
 
 	int i = 0;
@@ -232,6 +233,7 @@ void parse_to_graph(t_parse *parse)
 			break;
 		tmp = list_tmp->content;
 		insert_edge(g, node_find_index(node_map, tmp->key), node_find_index(node_map, tmp->val));
+		insert_edge(g, node_find_index(node_map, tmp->val), node_find_index(node_map, tmp->key));
 		list_tmp = list_tmp->next;
 
 	}
