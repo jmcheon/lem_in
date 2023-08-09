@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 20:44:25 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/09 14:28:53 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/09 15:19:52 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	parse_check_edgeline(t_list **line_head, t_parse **parse)
 			tmp = tmp->next;
 		}
 		(*line_head) = (*line_head)->next;
-		// line_count++;
 	}
 }
 
@@ -81,64 +80,54 @@ int	nodeline_to_struct(char *line, int parse_status, t_list **node)
 	return 1;
 }
 
-// needs to separate first line(ant num) and node lines
-// also comment (string startes with #) is not implemented
-int	check_nodeline_status(char *line, int line_count, int parse_status, t_list **node)
+int	check_nodeline_status(char *line, int parse_status, t_list **node)
 {
-	if (line_count == 1)
+	if(check_split_count(line, '-') == 2)
 	{
-		// needs atoi
-		if (!(ft_strlen(line) == 1 && ft_isdigit(line[0])))
-			return false;
-		else
-			parse_status =  PARSE_XY;
+		printf("line:%s\n",line);
+		return PARSE_EDGE;
 	}
-	else if (line_count > 1)
+	// needs to handle when already start and end were read
+	if (ft_strncmp(line, "##start", 7) == 0)
+		return PARSE_XY_START;
+	else if (ft_strncmp(line, "##end", 5) == 0)
+		return PARSE_XY_END;
+	else if (line[0] == '#' && line[1] != '#')
+		return PARSE_COMMENT;
+
+	else
 	{
-		if(check_split_count(line, '-') == 2)
-			return PARSE_EDGE;
-
-		// needs to handle when already start and end were read
-		if (ft_strncmp(line, "##start", 7) == 0)
-			return PARSE_XY_START;
-		else if (ft_strncmp(line, "##end", 5) == 0)
-			return PARSE_XY_END;
-		else if (line[0] == '#' && line[1] != '#')
-			return PARSE_COMMENT;
-
-		if (parse_status == PARSE_XY || parse_status == PARSE_XY_START || parse_status == PARSE_XY_END)
-		{
-			if (check_split_count(line, ' ') != 3)
-				return false;
-			if (!nodeline_to_struct(line, parse_status, node))
-				return false;
-			parse_status = PARSE_XY;
-		}
+		if (check_split_count(line, ' ') != 3)
+			return false;
+		if (!nodeline_to_struct(line, parse_status, node))
+			return false;
+		parse_status = PARSE_XY;
 	}
 	return parse_status;
 }
 
-// check above comment
+// line number keep? or no?
 void	parse_check_nodeline(t_list **line_head, t_parse **parse)
 {
 	t_list	*tmp;
 	int parse_status;
-	int	line_count;
+	// int	line_count;
 
 	tmp = (*parse)->nodes_head;
 	parse_status = 0;
-	line_count = 1;
+	// line_count = 1;
 	while ((*line_head) != NULL)
 	{
-		parse_status = check_nodeline_status((*line_head)->content, line_count, parse_status, &tmp);
+		parse_status = check_nodeline_status((*line_head)->content, parse_status, &tmp);
 		if (parse_status == PARSE_EDGE)
 			break;
 		else if (parse_status == PARSE_COMMENT)
 			parse_status = PARSE_XY;
 		else if (!parse_status)
 		{
-			ft_putstr_fd("Error in line ", STDOUT_FILENO);
-			ft_putnbr_fd(line_count, STDOUT_FILENO);
+			printf("%s",(char *)(*line_head)->content);
+			ft_putstr_fd("Error in line aaaa", STDOUT_FILENO);
+			// ft_putnbr_fd(line_count, STDOUT_FILENO);
 			ft_putchar_fd('\n', STDOUT_FILENO);
 			exit(1);
 		}
@@ -148,6 +137,19 @@ void	parse_check_nodeline(t_list **line_head, t_parse **parse)
 			tmp = tmp->next;
 		}
 		(*line_head) = (*line_head)->next;
-		line_count++;
+		// line_count++;
 	}
+}
+
+void	parse_check_antnum(t_list **line_head, t_parse **parse)
+{
+	if (!(0 < ft_atoi((*line_head)->content) && \
+			ft_atoi((*line_head)->content) <= INT_MAX))
+	{
+		ft_putstr_fd("Error in first line: ant number is wrong \n", STDOUT_FILENO);
+		exit(1);
+	}
+	(*parse)->ant_num = ft_atoi((*line_head)->content);
+	printf("hhi\n");
+	(*line_head) = (*line_head)->next;
 }

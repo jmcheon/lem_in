@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 16:23:39 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/09 14:32:42 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/09 15:20:07 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ t_parse	*parsing()
 	ret = init_parse_struct();
 	lines = ft_lstnew(NULL);
 	parse_readlines(lines);
+	parse_check_antnum(&lines, &ret);
 	parse_check_nodeline(&lines, &ret);
 	parse_check_edgeline(&lines, &ret);
 	if(!duplicates_check(ret))

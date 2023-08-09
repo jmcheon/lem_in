@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:07:32 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/09 14:13:22 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/09 15:01:55 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_edge
 
 typedef struct	s_parse
 {
+	int ant_num;
 	t_list *nodes_head;
 	t_list *edge_info_head;
 }	t_parse;
@@ -59,8 +60,9 @@ bool	parse_node_xy_check(char *line);
 int		edgeline_to_struct(char *line, t_list **node);
 void	parse_check_edgeline(t_list **line_head, t_parse **parse);
 int		nodeline_to_struct(char *line, int parse_status, t_list **node);
-int		check_nodeline_status(char *line, int line_count, int parse_status,  t_list **node);
+int		check_nodeline_status(char *line, int parse_status, t_list **node);
 void	parse_check_nodeline(t_list **line_head, t_parse **parse);
+void	parse_check_antnum(t_list **line_head, t_parse **parse);
 
 /*
 **	parse.c
