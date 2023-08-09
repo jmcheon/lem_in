@@ -1,0 +1,20 @@
+5
+##start
+start 6 1
+##end
+end 3 5
+c1 4 2
+c2 2 3
+t1 1 4
+t2 6 4
+b1 7 3
+b2 8 2
+start-c1
+c1-c2
+c1-t2
+t1-c2
+t2-end
+t1-end
+start-b2
+b1-t2
+b2-b1
