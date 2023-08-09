@@ -1,4 +1,4 @@
-#include "algo.h"
+#include "../includes/algo.h"
 
 void	init_queue(t_queue* queue)
 {
@@ -31,23 +31,24 @@ void	enqueue(t_queue* queue, void* content)
 	queue->rear = new_node;
 }
 
-void*	dequeue(t_queue* queue)
+void	dequeue(t_queue* queue)
 {
 	if (is_empty(queue))
 	{
 		fprintf(stderr, "queue is empty, can't dequeue.\n");
-		return NULL;
+		return ;
 	}
 
 	t_list* temp = queue->front;
-	void*	content = temp->content;
+	printf("dequeue:%d\n", *(int*)temp->content);
+	// void*	content = (void*)malloc(sizeof(temp->content));
 	queue->front = temp->next;
 
 	if (queue->front == NULL)
 		queue->rear = NULL;
 
 	free(temp);
-	return content;
+	// return content;
 }
 
 void	free_queue(t_queue* queue)
@@ -56,24 +57,32 @@ void	free_queue(t_queue* queue)
 		dequeue(queue);
 }
 
-int	main(void)
+int	dequeue_test(void)
 {
 	t_queue	queue;
+	void*	inputs[5];
+
+	for (int i = 0; i < 5; ++i)
+	{
+		inputs[i] = (void*)malloc(sizeof(int));
+		*(int*)inputs[i] = i*5;
+	}
 
 	init_queue(&queue);
- 	enqueue(&queue, (void*)5);
-    enqueue(&queue, (void*)10);
-    enqueue(&queue, (void*)15);
+ 	enqueue(&queue, inputs[0]);
+ 	enqueue(&queue, inputs[1]);
+ 	enqueue(&queue, inputs[2]);
 
-    printf("Dequeued: %d\n", (int)dequeue(&queue));
-    printf("Dequeued: %d\n", (int)dequeue(&queue));
+    dequeue(&queue);
+    dequeue(&queue);
+    dequeue(&queue);
+ 	enqueue(&queue, inputs[3]);
 
-    enqueue(&queue, (void*)20);
-
-    printf("Dequeued: %d\n", (int)dequeue(&queue));
-    printf("Dequeued: %d\n", (int)dequeue(&queue));
+	dequeue(&queue);
 
     free_queue(&queue);
+	for (int i = 0; i < 5; ++i)
+		free(inputs[i]);
 
 	return (0);
 }

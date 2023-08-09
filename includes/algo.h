@@ -4,12 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-
-typedef struct s_list
-{
-	void			*content;
-	struct s_list	*next;
-}					t_list;
+#include "./lem-in.h"
 
 typedef struct s_queue
 {
@@ -17,5 +12,7 @@ typedef struct s_queue
 	t_list*	rear;
 
 } t_queue;
+
+int bfs(int start, int end, int* parent, t_graph_type* graph, int capacity[][MAX_VERTICES]);
 
 #endif
