@@ -6,7 +6,7 @@
 #    By: sucho <sucho@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/05 02:01:35 by sucho             #+#    #+#              #
-#    Updated: 2023/08/08 19:38:16 by sucho            ###   ########.fr        #
+#    Updated: 2023/08/09 13:58:00 by sucho            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ all: 						$(NAME)
 
 ${NAME}:					${OBJS}
 							make bonus -C ${LIBFT_PATH}
-							$(CC) $(CFLAGS) ${INCS} ${INCLIB} -o $(NAME) $(OBJS)
+							$(CC) $(CFLAGS) -o $(NAME) $(OBJS) ${INCS} ${INCLIB}
 
 clean:
 							$(MAKE) -C $(LIBFT_PATH) clean

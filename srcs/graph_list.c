@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:39:43 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/08 22:30:18 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/09 13:51:02 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,8 @@ void node_map_to_array(t_list *nodes_head, char **node_map)
 	char *start;
 	char *end;
 
+	start = NULL;
+	end = NULL;
 	i = 0;
 	while (nodes_head != 0)
 	{
