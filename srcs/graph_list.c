@@ -6,7 +6,7 @@
 /*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:39:43 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/09 02:20:57 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/09 16:22:12 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,9 +135,11 @@ void node_map_to_array(t_list *nodes_head, char **node_map)
 {
 	int i;
 	t_node_xy *tmp;
-	char *start = NULL;
-	char *end = NULL;
+	char *start;
+	char *end;
 
+	start = NULL;
+	end = NULL;
 	i = 0;
 	while (nodes_head != 0)
 	{
@@ -179,13 +181,24 @@ t_graph_type* parse_to_graph(t_parse *parse)
 	t_graph_type *g;
 	t_edge *tmp;
 
-    int list_size = ft_lstsize(parse->nodes_head);
-    char **node_map = malloc(sizeof(char *) * list_size);
+    int list_size = ft_lstsize(parse->nodes_head) - 1;
+    char **node_map;
+
+	node_map = (char **)malloc(sizeof(char *) * (list_size + 1));
+
+	int i = 0;
+	while (i < list_size)
+	{
+		node_map[i] = (char *)malloc(sizeof(char *) + 1);
+		i++;
+	}
+	node_map[i] = NULL;
+
 
 	node_map[list_size] = NULL;
 	node_map_to_array(parse->nodes_head, node_map);
 
-	int i = 0;
+	i = 0;
 	while (i < (list_size - 1))
 	{
 		printf("index: %d, str:[%s]\n", i, node_map[i]);
@@ -205,6 +218,7 @@ t_graph_type* parse_to_graph(t_parse *parse)
 			break;
 		tmp = list_tmp->content;
 		insert_edge(g, node_find_index(node_map, tmp->key), node_find_index(node_map, tmp->val));
+		insert_edge(g, node_find_index(node_map, tmp->val), node_find_index(node_map, tmp->key));
 		list_tmp = list_tmp->next;
 
 	}
@@ -221,7 +235,7 @@ t_graph_type* parse_to_graph(t_parse *parse)
 	// insert_edge(g,2,1);
 	// insert_edge(g,2,3);
 	// insert_edge(g,3,2);
-	// print_adj_list(g);
+	print_adj_list(g);
 
 	// free(g);
 	return g;

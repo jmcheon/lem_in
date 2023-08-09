@@ -6,7 +6,7 @@
 /*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:07:32 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/09 04:00:09 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/09 16:22:08 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct s_edge
 
 typedef struct	s_parse
 {
+	int ant_num;
 	t_list *nodes_head;
 	t_list *edge_info_head;
 }	t_parse;
@@ -76,8 +77,9 @@ bool	parse_node_xy_check(char *line);
 int		edgeline_to_struct(char *line, t_list **node);
 void	parse_check_edgeline(t_list **line_head, t_parse **parse);
 int		nodeline_to_struct(char *line, int parse_status, t_list **node);
-int		check_nodeline_status(char *line, int line_count, int parse_status,  t_list **node);
+int		check_nodeline_status(char *line, int parse_status, t_list **node);
 void	parse_check_nodeline(t_list **line_head, t_parse **parse);
+void	parse_check_antnum(t_list **line_head, t_parse **parse);
 
 /*
 **	parse.c
@@ -94,13 +96,15 @@ t_parse	*parsing();
 int		check_split_count(char *line, char delim);
 // for debugging
 void	parse_result_print(t_parse *parse);
+void	free_2d(char **ptr);
+
 
 
 /*
 **	graph_list.c
 */
 
-t_graph_type*	parse_to_graph(t_parse *parse);
-void node_map_to_array(t_list *nodes_head, char **node_map);
+t_graph_type* parse_to_graph(t_parse *parse);
 void print_adj_list(t_graph_type *g);
+void node_map_to_array(t_list *nodes_head, char **node_map);
 #endif

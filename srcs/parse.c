@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 16:23:39 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/08 18:29:30 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/09 15:20:07 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,13 @@ void parse_readlines(t_list *lines)
 
 	tmp_read = get_next_line(STDIN_FILENO);
 	lines->content = ft_strtrim(tmp_read, "\n");
+	free(tmp_read);
+	tmp_read = NULL;
 	tmp_read = get_next_line(STDIN_FILENO);
 	while (ft_strlen(tmp_read) > 0)
 	{
 		tmp = ft_lstnew(ft_strtrim(tmp_read, "\n"));
+		free(tmp_read);
 		ft_lstadd_back(&lines, tmp);
 		tmp_read = get_next_line(STDIN_FILENO);
 		if (!tmp_read)
@@ -69,6 +72,7 @@ t_parse	*parsing()
 	ret = init_parse_struct();
 	lines = ft_lstnew(NULL);
 	parse_readlines(lines);
+	parse_check_antnum(&lines, &ret);
 	parse_check_nodeline(&lines, &ret);
 	parse_check_edgeline(&lines, &ret);
 	if(!duplicates_check(ret))
