@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:02:52 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/09 18:14:16 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/09 20:00:19 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void free_node_xy(void *node)
 	node_xy->name = NULL;
 	node_xy->x= NULL;
 	node_xy->y= NULL;
+	free(node_xy);
 }
 
 void free_edge(void *node)
@@ -30,6 +31,7 @@ void free_edge(void *node)
     free(edge->val);
     edge->key = NULL;
     edge->val = NULL;
+	free(edge);
 }
 
 int main(void)
@@ -40,7 +42,7 @@ int main(void)
 	parse = parsing();
 
 	parse_result_print(parse);
-	// parse_to_graph(parse);
+	parse_to_graph(parse);
 	ft_putstr_fd("lem-in\n", STDOUT_FILENO);
 
 	t_list *tmp;
@@ -56,6 +58,13 @@ int main(void)
 		i++;
 	}
 
+	while(parse->nodes_head != NULL)
+	{
+		tmp = parse->nodes_head;
+		parse->nodes_head = parse->nodes_head->next;
+		free(tmp);
+	}
+
 	tmp = parse->edge_info_head;
 	i  = 0;
 	while (tmp != NULL)
@@ -66,10 +75,18 @@ int main(void)
 		tmp = tmp->next;
 		i++;
 	}
+	while(parse->edge_info_head != NULL)
+	{
+		tmp = parse->edge_info_head;
+		parse->edge_info_head = parse->edge_info_head->next;
+		free(tmp);
+	}
 	ft_lstclear(&parse->nodes_head, NULL);
 	ft_lstclear(&parse->edge_info_head, NULL);
 	free(parse);
 	printf("%d\n", i);
+
+
 	// free(parse);
 
 	return (0);
