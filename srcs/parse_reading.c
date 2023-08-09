@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 20:44:25 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/09 14:14:07 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/09 14:28:53 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,12 @@ int	nodeline_to_struct(char *line, int parse_status, t_list **node)
 		return 0;
 	tmp = (t_node_xy *)malloc(sizeof(t_node_xy));
 	split_tmp = ft_split(line, ' ');
-	tmp->name = split_tmp[0];
-	tmp->x = split_tmp[1];
-	tmp->y = split_tmp[2];
+	tmp->name = ft_strdup(split_tmp[0]);
+	tmp->x = ft_strdup(split_tmp[1]);
+	tmp->y = ft_strdup(split_tmp[2]);
 	tmp->node_type = parse_status;
 	(*node)->content = tmp;
+	free_2d(split_tmp);
 
 	// printf("name:[%s] x:[%s] y:[%s]\n", tmp->name, tmp->x, tmp->y);
 	return 1;

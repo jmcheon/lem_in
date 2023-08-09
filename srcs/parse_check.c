@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 14:25:42 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/08 18:18:35 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/09 14:31:33 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,18 @@ bool	parse_node_xy_check(char *line)
 	char **node_tmp;
 	int split_count;
 	int i;
+	bool ret;
 
+	ret = true;
 	node_tmp = ft_split(line, ' ');
 	split_count = 0;
 	while (node_tmp[split_count] != NULL)
 		split_count++;
 	if (split_count != 3)
+	{
+		free_2d(node_tmp);
 		return false;
+	}
 	i = 0;
 	// needs to use atoi
 	while (node_tmp[1][i] != 0)
@@ -90,7 +95,7 @@ bool	parse_node_xy_check(char *line)
 		if (!ft_isdigit(node_tmp[1][i]))
 		{
 			printf("a - no digit:%c\n", node_tmp[1][i]);
-			return false;
+			ret = false;
 		}
 		i++;
 	}
@@ -100,9 +105,10 @@ bool	parse_node_xy_check(char *line)
 		if (!ft_isdigit(node_tmp[2][i]))
 		{
 			printf("b - no digit:[%c]\n", node_tmp[2][i]);
-			return false;
+			ret = false;
 		}
 		i++;
 	}
-	return true;
+	free_2d(node_tmp);
+	return ret;
 }
