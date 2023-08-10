@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 16:23:39 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/10 16:33:49 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/10 16:52:21 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,19 +63,6 @@ t_parse	*init_parse_struct(void)
 	parse->edge_info_head = ft_lstnew(NULL);
 	return (parse);
 }
-
-// void	remove_last_linkedlist_last(t_list *list)
-// {
-// 	t_node_xy *tmp;
-// 	while (list->content != NULL)
-// 	{
-// 		printf("list:[%s]\n", (tmp = list->content)->name);
-// 		list = list->next;
-// 	}
-// 	list = list->next;
-// 	free(list);
-// 	list = NULL;
-// }
 
 t_parse	*parsing()
 {
