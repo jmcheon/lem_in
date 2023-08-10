@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 20:44:25 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/09 17:25:56 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/10 16:33:34 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	parse_check_edgeline(t_list **line_head, t_parse **parse)
 		}
 		else if (parse_status == PARSE_EDGE && tmp->content != NULL)
 		{
+			if((*line_head)->next == NULL)
+				break;
 			tmp->next = ft_lstnew(NULL);
 			tmp = tmp->next;
 		}
@@ -131,6 +133,11 @@ void	parse_check_nodeline(t_list **line_head, t_parse **parse)
 		}
 		else if (parse_status == PARSE_XY && tmp->content != NULL)
 		{
+			if(check_split_count((*line_head)->next->content, '-') == 2)
+			{
+				(*line_head) = (*line_head)->next;
+				break;
+			}
 			tmp->next = ft_lstnew(NULL);
 			tmp = tmp->next;
 		}
