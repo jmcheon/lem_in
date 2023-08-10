@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:02:52 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/10 16:43:29 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/10 16:51:56 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	free_linked_list(t_list **list_head)
 
 int main(void)
 {
-
 	t_parse *parse;
 
 	parse = parsing();
@@ -58,9 +57,9 @@ int main(void)
 	ft_putstr_fd("lem-in\n", STDOUT_FILENO);
 
 	ft_lstclear(&parse->nodes_head, free_node_xy);
-	free_linked_list(&parse->nodes_head);
+	// free_linked_list(&parse->nodes_head);
 	ft_lstclear(&parse->edge_info_head, free_edge);
-	free_linked_list(&parse->edge_info_head);
+	// free_linked_list(&parse->edge_info_head);
 	free(parse);
 
 	return (0);
