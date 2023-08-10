@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:07:32 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/09 19:53:26 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/10 21:35:00 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 
 #define PARSE_EDGE 4
 #define PARSE_COMMENT 5
+
+#define MAX_VERTICES 10
 
 typedef struct s_node_xy
 {
@@ -45,6 +47,12 @@ typedef struct	s_parse
 	t_list *edge_info_head;
 }	t_parse;
 
+
+typedef struct s_graph
+{
+	int	n; // 실 정점의 개수
+	int	matrix[MAX_VERTICES][MAX_VERTICES];
+}				t_graph;
 
 /*
 **	parse_check.c
@@ -90,3 +98,19 @@ void	free_list(t_list *head);
 */
 
 void	parse_to_graph(t_parse *parse);
+
+
+/*
+**	graph_matrix.c
+*/
+
+void	parse_to_graph_matrix(t_parse *parse);
+
+
+/*
+**	graph_util.c
+*/
+void node_map_to_array(t_list *nodes_head, char **node_map);
+int	node_find_index(char **node_array, char *node_name);
+void	print_graph_mapping(int list_size, char **node_map);
+char **init_nodes_mapping(int list_size);

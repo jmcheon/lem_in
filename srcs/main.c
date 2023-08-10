@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:02:52 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/10 16:51:56 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/10 21:31:29 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ int main(void)
 	parse = parsing();
 
 	parse_result_print(parse);
-	// parse_to_graph(parse);
+	printf("=======matrix ver=============\n");
+	parse_to_graph_matrix(parse);
+	printf("=======graph ver=============\n");
+	parse_to_graph(parse);
 	ft_putstr_fd("lem-in\n", STDOUT_FILENO);
 
 	ft_lstclear(&parse->nodes_head, free_node_xy);
