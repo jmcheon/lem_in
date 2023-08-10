@@ -6,24 +6,26 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:07:32 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/10 21:35:00 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/10 22:30:06 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
-#include "./get_next_line/get_next_line_bonus.h"
+#ifndef LEM_IN_H
+# define LEM_IN_H
+# include "../libft/libft.h"
+# include "./get_next_line/get_next_line_bonus.h"
 
 // for perror
-#include <stdio.h>
+# include <stdio.h>
 
-#define PARSE_XY 1
-#define PARSE_XY_START 2
-#define PARSE_XY_END 3
+# define PARSE_XY 1
+# define PARSE_XY_START 2
+# define PARSE_XY_END 3
 
-#define PARSE_EDGE 4
-#define PARSE_COMMENT 5
+# define PARSE_EDGE 4
+# define PARSE_COMMENT 5
 
-#define MAX_VERTICES 10
+# define MAX_VERTICES 10
 
 typedef struct s_node_xy
 {
@@ -47,12 +49,33 @@ typedef struct	s_parse
 	t_list *edge_info_head;
 }	t_parse;
 
+typedef struct s_graph_node {
+	int vertex;
+	struct s_graph_node *link;
+}	t_graph_node;
+
+typedef struct s_graph_type{
+	int	n;
+	t_graph_node *adj_list[MAX_VERTICES];
+}	t_graph_type;
+
 
 typedef struct s_graph
 {
-	int	n; // 실 정점의 개수
-	int	matrix[MAX_VERTICES][MAX_VERTICES];
+	int	num_paths; // 실 정점의 개수
+	int	paths[MAX_VERTICES][MAX_VERTICES];
 }				t_graph;
+
+typedef struct s_route
+{
+	t_graph_type*	graph;
+    int start;
+    int end;
+    int num_vertices;
+
+    int list_size;
+    char**  node_map;
+} t_route;
 
 /*
 **	parse_check.c
@@ -104,8 +127,7 @@ void	parse_to_graph(t_parse *parse);
 **	graph_matrix.c
 */
 
-void	parse_to_graph_matrix(t_parse *parse);
-
+t_graph	*parse_to_graph_matrix(t_parse *parse, t_route *route);
 
 /*
 **	graph_util.c
@@ -114,3 +136,4 @@ void node_map_to_array(t_list *nodes_head, char **node_map);
 int	node_find_index(char **node_array, char *node_name);
 void	print_graph_mapping(int list_size, char **node_map);
 char **init_nodes_mapping(int list_size);
+#endif

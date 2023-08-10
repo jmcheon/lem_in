@@ -6,11 +6,12 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:02:52 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/10 21:31:29 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/10 22:23:16 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem-in.h"
+#include "../includes/algo.h"
 
 void free_node_xy(void *node)
 {
@@ -49,22 +50,28 @@ void	free_linked_list(t_list **list_head)
 int main(void)
 {
 	t_parse *parse;
+	t_graph	*path;
+	t_route	route;
 
 	parse = parsing();
 
 	parse_result_print(parse);
 	printf("=======matrix ver=============\n");
-	parse_to_graph_matrix(parse);
-	printf("=======graph ver=============\n");
-	parse_to_graph(parse);
+	path = parse_to_graph_matrix(parse, &route);
+	(void)path;
+	// printf("=======graph ver=============\n");
+	// parse_to_graph(parse);
+
+	// ft_lstclear(&parse->nodes_head, free_node_xy);
+	// // free_linked_list(&parse->nodes_head);
+	// ft_lstclear(&parse->edge_info_head, free_edge);
+	// // free_linked_list(&parse->edge_info_head);
+	// free(parse);
+
+
+
+
 	ft_putstr_fd("lem-in\n", STDOUT_FILENO);
-
-	ft_lstclear(&parse->nodes_head, free_node_xy);
-	// free_linked_list(&parse->nodes_head);
-	ft_lstclear(&parse->edge_info_head, free_edge);
-	// free_linked_list(&parse->edge_info_head);
-	free(parse);
-
 	return (0);
 }
 

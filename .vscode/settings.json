@@ -1,3 +1,11 @@
 {
-  "cmake.configureOnOpen": true
+  "cmake.configureOnOpen": true,
+  "files.associations": {
+    "*.c": "c",
+    "*.h": "c",
+    "*.cpp": "cpp",
+    "*.hpp": "cpp",
+    "*.mdx": "markdown",
+    "__locale": "c"
+  }
 }

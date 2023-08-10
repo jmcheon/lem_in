@@ -6,23 +6,11 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:39:43 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/10 21:35:57 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/10 22:27:11 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem-in.h"
-
-typedef struct s_graph_node
-{
-	int vertex;
-	struct s_graph_node *link;
-} t_graph_node;
-
-typedef struct s_graph_type
-{
-	int n;
-	t_graph_node *adj_list[MAX_VERTICES];
-} t_graph_type;
 
 void init(t_graph_type *graph)
 {
@@ -86,9 +74,7 @@ void insert_edge(t_graph_type *g, int u, int v)
 	{
 		t_graph_node *curr = g->adj_list[u];
 		while (curr->link != NULL)
-		{
 			curr = curr->link;
-		}
 		curr->link = new_edge;
 	}
 }
