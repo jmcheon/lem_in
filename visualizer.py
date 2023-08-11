@@ -1,11 +1,41 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-import sys, argparse
+import sys, argparse, os
 
 def read_input_file(file_path):
     with open(file_path, 'r') as file:
         input_string = file.read()
     return input_string
+
+def parse_ant_movements(ant_movements_string, start_node):
+    ant_paths = []
+
+    lines = []
+    for line in ant_movements_string.strip().split('\n'):
+        lines.append(line.split(' '))
+    #print(lines)
+
+    parsed_list = [[tuple(s.split('-')) for s in line] for line in lines]
+    #print(parsed_list)
+
+
+    for line in parsed_list:
+        #print('line:', line)
+        for elem in line:
+            #print('elem:', elem)
+            ant_info, node_info = elem 
+            ant_number = int(ant_info[1:])
+            node_name = node_info
+            #print('ant num:', ant_number, 'node name:', node_name)
+            #print(f"L{ant_number}-{node_name}")
+
+            if len(ant_paths) < ant_number:
+                ant_paths.append([start_node])
+            ant_paths[ant_number - 1].append(node_name)
+
+    print('ant_paths:', ant_paths)
+    return ant_paths
+
 
 def parse_input(input_string):
     lines = input_string.strip().split('\n')
@@ -38,7 +68,11 @@ def parse_input(input_string):
 
     return nodes, edges, pos, start_node, end_node
 
-def visualize_graph(nodes, edges, pos, node_color='skyblue', font_color='black', font_weight='bold', node_size=1500, legend=None):
+def visualize_graph(input_string, node_color='skyblue', font_color='black', font_weight='bold', node_size=1500, legend=None):
+
+    nodes, edges, pos, start_node, end_node = parse_input(input_string)
+    node_colors = ['green' if node == start_node else 'red' if node == end_node else 'skyblue' for node in nodes]
+
     G = nx.Graph()
     G.add_nodes_from(nodes)
     G.add_edges_from(edges)
@@ -50,11 +84,38 @@ def visualize_graph(nodes, edges, pos, node_color='skyblue', font_color='black',
         plt.legend(scatterpoints=1, frameon=False, labelspacing=1.5)
     plt.show()
 
+def visualize_ants(input_string, ant_movements_string, node_colors=None,
+                  font_color='black', font_weight='bold', node_size=1500):
+
+    nodes, edges, pos, start_node, end_node = parse_input(input_string)
+    ant_paths = parse_ant_movements(ant_movements_string, start_node)
+    node_colors = ['green' if node == start_node else 'red' if node == end_node else 'skyblue' for node in nodes]
+
+    G = nx.Graph()
+    G.add_nodes_from(nodes)
+    G.add_edges_from(edges)
+
+    nx.draw(G, pos, with_labels=True, node_color=node_colors,
+            font_color=font_color, font_weight=font_weight, node_size=node_size)
+
+    # Plot ant paths
+    for i, path in enumerate(ant_paths):
+        edge_list = [(path[i], path[i + 1]) for i in range(len(path) - 1)]
+        edge_colors = [plt.get_cmap('viridis')(i / len(ant_paths)) for j in range(len(edge_list))]
+        nx.draw_networkx_edges(G, pos, edgelist=edge_list, edge_color=edge_colors, width=2)
+
+    plt.show()
+
+def load_ant_movements_string(file_path):
+    file_name = os.path.basename(file_path)
+    graph_name, _ = os.path.splitext(file_name)
+    ant_movements_path = f"paths/{graph_name}.path"
+    ant_movements_string = read_input_file(ant_movements_path)
+
+    return ant_movements_string
 
 if __name__ == "__main__":
     legend = {'Start': 'green', 'End': 'red'}
-
-
 
     parser = argparse.ArgumentParser(description="visuallizer")
 
@@ -66,15 +127,12 @@ if __name__ == "__main__":
     if args.input:
 
         input_string = read_input_file(args.input)
-        nodes, edges, pos, start_node, end_node = parse_input(input_string)
-        #print(start_node, end_node)
-        node_color = ['green' if node == start_node else 'red' if node == end_node else 'skyblue' for node in nodes]
-        #print(node_color)
-        #print("nodes:", nodes)
-        #print("edges:", edges)
-        #print("positions:", pos)
 
-        visualize_graph(nodes, edges, pos, node_color=node_color, legend=legend)
+        ant_movements_string = load_ant_movements_string(args.input)
+        print(ant_movements_string)
+
+        visualize_graph(input_string, legend=legend)
+        visualize_ants(input_string, ant_movements_string)
     else:
         print(f"Usage: python {sys.argv[0]} -h")
 
