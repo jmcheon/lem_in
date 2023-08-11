@@ -70,6 +70,21 @@ void	graph_print(t_graph *graph)
 	}
 }
 
+static void printAdjacencyList(int graphMatrix[][5], int numNodes) {
+    for (int nodeIndex = 0; nodeIndex < numNodes; nodeIndex++) {
+        printf("Adjacency list for node %d: ", nodeIndex);
+
+        for (int i = 0; i < numNodes; i++) {
+            if (graphMatrix[nodeIndex][i] == 1) {
+                printf("%d ", i);
+            }
+        }
+
+        printf("\n");
+    }
+}
+
+
 int	main(void)
 {
 	t_graph	*g;

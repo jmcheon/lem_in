@@ -14,10 +14,16 @@ typedef struct s_graph_node {
 	struct s_graph_node *link;
 }	t_graph_node;
 
-typedef struct s_graph{
-	int	n;
-	t_graph_node *adj_list[MAX_VERTICES];
-}	t_graph;
+// typedef struct s_graph{
+// 	int	n;
+// 	t_graph_node *adj_list[MAX_VERTICES];
+// }	t_graph;
+
+typedef struct s_graph
+{
+	int	n; // 실 정점의 개수
+	int	matrix[MAX_VERTICES][MAX_VERTICES];
+}				t_graph;
 
 
 typedef struct s_paths
@@ -40,27 +46,32 @@ typedef struct s_route
     char	**node_map;
 } t_route;
 
-int bfs(t_route* route, int* parent, int capacity[][MAX_VERTICES]);
-void	print_path(t_route* route, int* parent, int path_id);
-void	print_array(int *parent, int n);
 /*
 **	edmonds-karp.c
 */
 void	print_path(t_route* route, int* parent, int path_id);
 int		bfs(t_route* route, int* parent, int capacity[][MAX_VERTICES]);
 void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int capacity[][MAX_VERTICES]);
-void	fill_capacity(t_graph*paths, int capacity[][MAX_VERTICES]);
+void	fill_capacity(t_graph* paths, int capacity[][MAX_VERTICES]);
 void	print_capacity(int capacity[][MAX_VERTICES], int n);
 void	print_paths(t_route* route, t_paths* paths);
 void	init_route(t_route* route, t_parse* parse);
 void	init_paths(t_paths* paths);
-void print_paths_list(t_paths *paths);
+void 	print_paths_list(t_paths *paths);
 
 /*
 **	graph_list.c
 */
 
 t_graph	*parse_to_graph(t_parse *parse);
+
+/*
+**	graph_matrix.c
+*/
+
+t_graph	*parse_to_graph(t_parse *parse);
+void	graph_print(t_graph *graph);
+
 
 
 
