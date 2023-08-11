@@ -59,6 +59,30 @@ void	print_path(t_route* route, int* parent, int path_id)
 	printf("\n");
 }
 
+void print_paths_list(t_paths *paths)
+{
+	int i;
+
+	i = 0;
+	while (i < paths->num_paths)
+	{
+		t_int_list *curr = paths->paths_list[i];
+		printf("path %d - ", i + 1);
+		if (curr != NULL)
+		{
+			printf("%d", curr->content);
+			curr = curr->next;
+		}
+		while (curr != NULL)
+		{
+			printf(" <- %d", curr->content);
+			curr = curr->next;
+		}
+		printf("\n");
+		i++;
+	}
+}
+
 void	print_paths(t_route* route, t_paths* paths)
 {
 	for (int i = 0; i < paths->num_paths; ++i)
@@ -122,6 +146,29 @@ void	init_paths(t_paths* paths)
 {
 	paths->num_paths = 0;
 	ft_memset(paths->paths, 0, sizeof(paths->paths));
+	for (int i = 0; i < MAX_VERTICES; ++i)
+		paths->paths_list[i] = NULL;
+}
+
+void insert_next_parent(t_paths *paths, int v)
+{
+	// create a new node
+	t_int_list *new_node = malloc(sizeof(t_int_list));
+	new_node->content = v;
+	new_node->next = NULL;
+
+	// add new node to the end of the adjacency list for current path id
+	if (paths->paths_list[paths->num_paths] == NULL)
+	{
+		paths->paths_list[paths->num_paths] = new_node;
+	}
+	else
+	{
+		t_int_list *curr = paths->paths_list[paths->num_paths];
+		while (curr->next != NULL)
+			curr = curr->next;
+		curr->next = new_node;
+	}
 }
 
 void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int capacity[][MAX_VERTICES])
@@ -135,7 +182,13 @@ void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int capacity[][MA
 		{
 			int u = parent[v];
 			//printf("u, v = %d, %d\n", u, v);
+			if (v == route->end)
+			{
+				paths->paths[paths->num_paths][i++] = v;
+				insert_next_parent(paths, v);
+			}
 			paths->paths[paths->num_paths][i++] = u;
+			insert_next_parent(paths, u);
 			capacity[u][v] -= 1;
 			capacity[v][u] += 1;
 		}
@@ -145,17 +198,43 @@ void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int capacity[][MA
 	}
 }
 
+void	init_route(t_route* route, t_parse* parse)
+{
+	route->list_size = ft_lstsize(parse->nodes_head) - 1;
+	route->node_map = (char **)malloc(sizeof(char *) * (route->list_size + 1));
+
+	int i = 0;
+	while (i < route->list_size)
+	{
+		route->node_map[i] = (char *)malloc(sizeof(char *) + 1);
+		i++;
+	}
+	route->node_map[route->list_size] = NULL;
+	node_map_to_array(parse->nodes_head, route->node_map);
+
+	route->start = 0;
+	route->end = route->list_size - 1;
+	route->num_vertices = route->graph->n;
+
+	route->paths = (t_paths*)malloc(sizeof(t_paths));
+	init_paths(route->paths);
+}
+
+void	destroy_route(t_route* route)
+{
+	(void)route;
+}
+
 int	main(void)
 {
 	t_parse	*parse;
-	t_paths	paths;
+	//t_paths	paths;
 	t_route	route;
 
 	int	capacity[MAX_VERTICES][MAX_VERTICES] = {0};
 	int	temp[MAX_VERTICES][MAX_VERTICES] = {0};
 	int	parent[MAX_VERTICES];
 
-	init_paths(&paths);
 	parse = parsing();
 	printf("parse result:\n");
 	parse_result_print(parse);
@@ -164,21 +243,8 @@ int	main(void)
 	/*
 	**	create node map 
 	*/
-	route.list_size = ft_lstsize(parse->nodes_head) - 1;
-	route.node_map = (char **)malloc(sizeof(char *) * (route.list_size + 1));
-
-	int i = 0;
-	while (i < route.list_size)
-	{
-		route.node_map[i] = (char *)malloc(sizeof(char *) + 1);
-		i++;
-	}
-	route.node_map[route.list_size] = NULL;
-	node_map_to_array(parse->nodes_head, route.node_map);
-
-	route.start = 0;
-	route.end = route.list_size - 1;
-	route.num_vertices = route.graph->n;
+	init_route(&route, parse);
+	//init_paths(&paths);
 
 	printf("number of vertices: %d\n", route.num_vertices);
 	printf("start: (%d)\n", route.start);
@@ -189,8 +255,8 @@ int	main(void)
 	/*
 	**	edmonds-karp
 	*/
-	edmonds_karp(&route, &paths, parent, capacity);
-	i = 0;
+	edmonds_karp(&route, route.paths, parent, capacity);
+	int i = 0;
 	while (i < (route.list_size - 1))
 	{
 		printf("index: %d, str:[%s]\n", i, route.node_map[i]);
@@ -217,10 +283,11 @@ int	main(void)
 	/*
 	** run edmonds-karp with new temp capacity	
 	*/
-	init_paths(&paths);
-	edmonds_karp(&route, &paths, parent, temp);
+	init_paths(route.paths);
+	edmonds_karp(&route, route.paths, parent, temp);
 
 	printf("\n\ndisjoin paths:\n");
-	print_paths(&route, &paths);
+	print_paths(&route, route.paths);
+	print_paths_list(route.paths);
 	return (0);
 }

@@ -13,7 +13,7 @@ bool	is_empty(t_queue* queue)
 
 void	enqueue(t_queue* queue, int	content)
 {
-	t_queue_list*	new_node = (t_queue_list*)malloc(sizeof(t_queue_list));
+	t_int_list*	new_node = (t_int_list*)malloc(sizeof(t_int_list));
 
 	if (!new_node)
 	{
@@ -40,7 +40,7 @@ int	dequeue(t_queue* queue)
 		return (-1);
 	}
 
-	t_queue_list* temp = queue->front;
+	t_int_list* temp = queue->front;
 	int	content = temp->content;
 	queue->front = temp->next;
 

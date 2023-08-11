@@ -7,33 +7,29 @@
 #include <limits.h>
 #include "./lem-in.h"
 
-typedef struct s_queue_list
+typedef struct s_int_list
 {
 	int		content;
-	struct s_queue_list*	next;
-}	t_queue_list;
+	struct s_int_list*	next;
+}	t_int_list;
 
 typedef struct s_queue
 {
-	t_queue_list*	front;
-	t_queue_list*	rear;
+	t_int_list*	front;
+	t_int_list*	rear;
 } t_queue;
-
-typedef struct s_path
-{
-    int path[MAX_VERTICES];
-    int id;
-} t_path;
 
 typedef struct s_paths
 {
-  int   paths[MAX_VERTICES][MAX_VERTICES];
-  int   num_paths;
+	t_int_list *paths_list[MAX_VERTICES];
+	int	paths[MAX_VERTICES][MAX_VERTICES];
+	int	num_paths;
 } t_paths;
 
 typedef struct s_route
 {
 	t_graph_type*	graph;
+	t_paths*	paths;
     int start;
     int end;
     int num_vertices;
