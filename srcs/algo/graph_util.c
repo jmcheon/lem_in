@@ -1,4 +1,4 @@
-#include "../includes/lem-in.h"
+#include "../../includes/lem-in.h"
 
 static void	swap_start_end(char **node_map, char *start, char *end, int array_len)
 {

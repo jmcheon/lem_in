@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 14:25:42 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/09 14:31:33 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/11 19:07:22 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lem-in.h"
+#include "../../includes/parse.h"
 
 int compare_nodename(void *content1, void *content2)
 {

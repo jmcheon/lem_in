@@ -6,13 +6,13 @@
 /*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:39:43 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/11 17:01:03 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/11 19:03:14 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lem-in.h"
+#include "../../includes/lem-in.h"
 
-void init(t_graph_type *graph)
+static void init(t_graph *graph)
 {
 	int v;
 
@@ -25,20 +25,9 @@ void init(t_graph_type *graph)
 	}
 }
 
-void insert_vertex(t_graph_type *g, int v)
-{
-	(void)v;
-
-	if (((g->n) + 1) > MAX_VERTICES)
-	{
-		fprintf(stderr, "overflow");
-		return;
-	}
-	g->n++;
-}
 
 // link in reverse way
-// void insert_edge(t_graph_type *g, int u, int v)
+// void insert_edge(t_graph *g, int u, int v)
 // {
 // 	t_graph_node* node;
 //     if(u>=g->n||v>=g->n){
@@ -52,7 +41,7 @@ void insert_vertex(t_graph_type *g, int v)
 // 	g->adj_list[u] = node;
 // }
 
-void insert_edge(t_graph_type *g, int u, int v)
+static void insert_edge(t_graph *g, int u, int v)
 {
 	if (u >= g->n || v >= g->n)
 	{
@@ -79,7 +68,7 @@ void insert_edge(t_graph_type *g, int u, int v)
 	}
 }
 
-void print_adjlist_list(t_graph_type *g)
+static void print_adjlist_list(t_graph *g)
 {
 	int i;
 	// int j;
@@ -99,9 +88,9 @@ void print_adjlist_list(t_graph_type *g)
 	}
 }
 
-t_graph_type* parse_to_graph(t_parse *parse)
+t_graph* parse_to_graph(t_parse *parse)
 {
-	t_graph_type *g;
+	t_graph *g;
 	t_edge *tmp;
 
     int list_size = ft_lstsize(parse->nodes_head);
@@ -111,10 +100,9 @@ t_graph_type* parse_to_graph(t_parse *parse)
 	node_map_to_array(parse->nodes_head, node_map);
 	print_graph_mapping(list_size, node_map);
 
-	g = (t_graph_type*)malloc(sizeof(t_graph_type));
+	g = (t_graph*)malloc(sizeof(t_graph));
 	init(g);
-	for(int i=0 ; i< ft_lstsize(parse->nodes_head) ; i++)
-	    insert_vertex(g,i);
+	g->n = ft_lstsize(parse->nodes_head);
 
 	t_list *list_tmp;
 	list_tmp = parse->edge_info_head;

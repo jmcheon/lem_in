@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ant_dist.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 07:19:48 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/11 16:26:51 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/11 18:42:40 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,54 +75,49 @@ int	ft_intlen(int *s)
 	}
 	return (i);
 }
-void distribute_ant(t_graph paths, int ant_num)
-{
-	printf("num_paths:%d\tant_num:%d\n", paths.num_paths, ant_num);
 
-	t_path_len elements[paths.num_paths];
+t_path_len *distribute_ant(t_route route)
+{
+	printf("num_paths:%d\tant_num:%d\n", route.paths->num_paths, route.num_ants);
+
+	t_path_len *elements;
+	
+	elements = (t_path_len*)malloc(sizeof(t_path_len) * (route.paths->num_paths));
 	int i =0;
-	while (i < paths.num_paths)
+	while (i < route.paths->num_paths)
 	{
 		elements[i].index = i;
-		elements[i].value = ft_intlen(paths.paths[i]) + 2; // start and end
+		elements[i].value = ft_intlen(route.paths->paths[i]); // start and end
 		elements[i].num_ants = 0;
 		i++;
 	}
-	// int ant_num = 9;
-	// int arr[] = {2, 8, 3};
-	// int n = sizeof(arr) / sizeof(arr[0]);
+	
 
-	// t_path_len elements[n];
 
-	// for (int i = 0; i < n; i++)
-	// {
-	// 	elements[i].value = arr[i];
-	// 	elements[i].index = i;
-	// }
 
     printf("Original array:\n");
-    for (int i = 0; i < paths.num_paths; i++) {
+    for (int i = 0; i < route.paths->num_paths; i++) {
         printf("%d ", elements[i].value);
     }
     printf("\n");
 
-	quicksort(elements, 0, paths.num_paths - 1);
+	quicksort(elements, 0, route.paths->num_paths - 1);
 
     printf("Sorted array in descending order:\n");
-    for (int i = 0; i < paths.num_paths; i++) {
+    for (int i = 0; i < route.paths->num_paths; i++) {
         printf("%d (Index: %d) ", elements[i].value, elements[i].index);
     }
 	printf("\n");
 
 	int dist_begin = 0;
-	for (int i = 0; i < paths.num_paths; i++)
+	for (int i = 0; i < route.paths->num_paths; i++)
 	{
 		int tmp = 0;
-		for (int j = i + 1; j < paths.num_paths; j++)
+		for (int j = i + 1; j < route.paths->num_paths; j++)
 			tmp += (elements[i].value - elements[j].value);
 		// printf("tmp:%d\n", tmp);
-		// printf("tmp2:%d \n", tmp + (paths.num_paths - i));
-		if (tmp + (paths.num_paths - i) < ant_num)
+		// printf("tmp2:%d \n", tmp + (route.paths->num_paths - i));
+		if (tmp + (route.paths->num_paths - i) < route.num_ants)
 		{
 			dist_begin = i;
 			break;
@@ -130,16 +125,16 @@ void distribute_ant(t_graph paths, int ant_num)
 	}
 	printf("distribution begins from here: [%d]\n", dist_begin);
 
-	int ant_num_temp = ant_num;
-	int dist_len = paths.num_paths - dist_begin;
+	int ant_num_temp = route.num_ants;
+	int dist_len = route.paths->num_paths - dist_begin;
 
-	int ant_dist[paths.num_paths];
+	int ant_dist[route.paths->num_paths];
 
 	ft_memset(&ant_dist, 0, sizeof(ant_dist));
 
 	printf("%d\n", dist_len);
 
-	for (int i = paths.num_paths - 1; i > dist_begin; i--)
+	for (int i = route.paths->num_paths - 1; i > dist_begin; i--)
 	{
 		int dist = elements[i - 1].value - elements[i].value;
 		ant_dist[i] += dist;
@@ -150,10 +145,10 @@ void distribute_ant(t_graph paths, int ant_num)
 
 	int ant_remainder = ant_num_temp % dist_len;
 	printf("ant_num_temp:%d\tdist_len:%d\ttmp:%d\n", ant_num_temp, dist_len, ant_remainder);
-	for(int i= paths.num_paths - 1; i >= dist_begin; i--)
+	for(int i= route.paths->num_paths - 1; i >= dist_begin; i--)
 	{
 		ant_dist[i] += ant_num_temp / dist_len;
-		printf("ant_dist[%d]:%d\t%d\n",i, ant_dist[i], ant_num_temp / paths.num_paths);
+		printf("ant_dist[%d]:%d\t%d\n",i, ant_dist[i], ant_num_temp / route.paths->num_paths);
 		if (ant_remainder != 0)
 		{
 			ant_dist[i] += 1;
@@ -163,11 +158,8 @@ void distribute_ant(t_graph paths, int ant_num)
 
 	printf("=========================\n");
 
-	for(int i = 0; i < paths.num_paths; i++)
+	for(int i = 0; i < route.paths->num_paths; i++)
 		elements[i].num_ants = ant_dist[i];
-
-	for(int i = 0; i < paths.num_paths; i++)
-		printf("elements - value: %d\t index:%d\tnum_ants:%d\n", \
-			elements[i].value, elements[i].index, elements[i].num_ants);
+	return (elements);
 
 }

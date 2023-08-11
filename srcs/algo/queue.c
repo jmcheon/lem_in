@@ -1,4 +1,4 @@
-#include "../includes/algo.h"
+#include "../../includes/queue.h"
 
 void	init_queue(t_queue* queue)
 {

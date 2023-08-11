@@ -4,7 +4,7 @@
 #define MAX_VERTICES 50
 
 
-void init(t_graph_type *graph)
+void init(t_graph *graph)
 {
 	int v;
 
@@ -18,7 +18,7 @@ void init(t_graph_type *graph)
 }
 
 
-void insert_vertex(t_graph_type *g, int v)
+void insert_vertex(t_graph *g, int v)
 {
 	if(((g->n)+1)>MAX_VERTICES){
         fprintf(stderr,"overflow");
@@ -28,7 +28,7 @@ void insert_vertex(t_graph_type *g, int v)
 }
 
 // link in reverse way
-// void insert_edge(t_graph_type *g, int u, int v)
+// void insert_edge(t_graph *g, int u, int v)
 // {
 // 	t_graph_node* node;
 //     if(u>=g->n||v>=g->n){
@@ -42,7 +42,7 @@ void insert_vertex(t_graph_type *g, int v)
 // 	g->adj_list[u] = node;
 // }
 
-void insert_edge(t_graph_type* g, int u, int v) {
+void insert_edge(t_graph* g, int u, int v) {
     if (u >= g->n || v >= g->n) {
         printf("vertex index error\n");
         return;
@@ -65,7 +65,7 @@ void insert_edge(t_graph_type* g, int u, int v) {
     }
 }
 
-void print_adj_list(t_graph_type *g)
+void print_adj_list(t_graph *g)
 {
 	int i;
 	int j;
@@ -87,8 +87,8 @@ void print_adj_list(t_graph_type *g)
 
 int main()
 {
-    t_graph_type *g;
-    g = (t_graph_type*)malloc(sizeof(t_graph_type));
+    t_graph *g;
+    g = (t_graph*)malloc(sizeof(t_graph));
 
     init(g);
     for(int i=0 ; i<4; i++)

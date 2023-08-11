@@ -6,11 +6,11 @@
 /*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:52:20 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/11 16:58:24 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/11 19:07:40 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lem-in.h"
+#include "../../includes/parse.h"
 
 int	check_split_count(char *line, char delim)
 {

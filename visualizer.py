@@ -128,11 +128,11 @@ if __name__ == "__main__":
 
         input_string = read_input_file(args.input)
 
-        ant_movements_string = load_ant_movements_string(args.input)
-        print(ant_movements_string)
+        # ant_movements_string = load_ant_movements_string(args.input)
+        # print(ant_movements_string)
 
         visualize_graph(input_string, legend=legend)
-        visualize_ants(input_string, ant_movements_string)
+        # visualize_ants(input_string, ant_movements_string)
     else:
         print(f"Usage: python {sys.argv[0]} -h")
 

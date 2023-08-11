@@ -6,11 +6,11 @@
 /*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 20:44:25 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/11 16:57:18 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/11 19:07:33 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lem-in.h"
+#include "../../includes/parse.h"
 
 int	edgeline_to_struct(char *line, t_list **node)
 {
@@ -154,6 +154,6 @@ void	parse_check_antnum(t_list **line_head, t_parse **parse)
 		ft_putstr_fd("Error in first line: ant number is wrong \n", STDOUT_FILENO);
 		exit(1);
 	}
-	(*parse)->ant_num = ft_atoi((*line_head)->content);
+	(*parse)->num_ants = ft_atoi((*line_head)->content);
 	(*line_head) = (*line_head)->next;
 }

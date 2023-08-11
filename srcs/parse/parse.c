@@ -6,12 +6,11 @@
 /*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 16:23:39 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/11 16:58:34 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/11 19:07:16 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lem-in.h"
-
+#include "../../includes/parse.h"
 
 bool	duplicates_check(t_parse *parse)
 {
