@@ -184,7 +184,7 @@ int	main(void)
 	printf("start: (%d)\n", route.start);
 	printf("end: (%d)\n", route.end);
 	fill_capacity(route.graph, capacity);
-	//print_capacity(capacity, route.num_vertices);
+	print_capacity(capacity, route.num_vertices);
 
 	/*
 	**	edmonds-karp

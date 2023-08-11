@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 20:52:00 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/10 22:29:55 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/10 22:40:17 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,22 +105,30 @@ t_graph	*parse_to_graph_matrix(t_parse *parse, t_route *route)
 	// t_edge *tmp;
 	t_graph	*g;
 
-    int list_size = ft_lstsize(parse->nodes_head);
     // char **node_map;
-
-	route->node_map = init_nodes_mapping(list_size);
+	route->list_size = ft_lstsize(parse->nodes_head);
+	route->node_map = init_nodes_mapping(route->list_size);
 	node_map_to_array(parse->nodes_head, route->node_map);
-	print_graph_mapping(list_size, route->node_map);
+	print_graph_mapping(route->list_size, route->node_map);
+	/*
+	**	---------------graph------------------------
+	*/
 
 	g = (t_graph *)malloc(sizeof(t_graph));
 	graph_init(g);
 	for (int i = 0; i < 4; i++)
 		graph_insert_vertex(g, i);
 	graph_insert_edges(g, parse->edge_info_head, route->node_map);
-	graph_print(g);
 	printf("================\n");
 	print_adjlist_matrix(g, route->node_map);
 	printf("================\n");
+	/*
+	**	---------------graph------------------------
+	*/
+	route->start = 0;
+	route->end = route->list_size - 1;
+	route->num_vertices = g->num_paths;
+	route->graph = g;
 	return (g);
 }
 

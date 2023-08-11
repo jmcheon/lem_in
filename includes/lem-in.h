@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:07:32 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/10 22:30:06 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/11 03:46:49 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ typedef struct s_graph
 
 typedef struct s_route
 {
-	t_graph_type*	graph;
+	t_graph*	graph;
     int start;
     int end;
     int num_vertices;
@@ -128,6 +128,7 @@ void	parse_to_graph(t_parse *parse);
 */
 
 t_graph	*parse_to_graph_matrix(t_parse *parse, t_route *route);
+void	graph_print(t_graph *graph);
 
 /*
 **	graph_util.c
@@ -136,4 +137,15 @@ void node_map_to_array(t_list *nodes_head, char **node_map);
 int	node_find_index(char **node_array, char *node_name);
 void	print_graph_mapping(int list_size, char **node_map);
 char **init_nodes_mapping(int list_size);
+
+/*
+**	edmonds-karp-tmp.c
+*/
+void	print_path(t_route* route, int* parent, int path_id);
+int		bfs(t_route* route, int* parent, int capacity[][MAX_VERTICES]);
+void	edmonds_karp(t_route* route, t_graph* paths, int* parent, int capacity[][MAX_VERTICES]);
+void	fill_capacity(t_graph *graph, int capacity[][MAX_VERTICES]);
+void	print_capacity(int capacity[][MAX_VERTICES], int n);
+
+
 #endif
