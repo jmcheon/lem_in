@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 16:23:39 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/09 15:20:07 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/11 16:58:34 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,17 @@ t_parse	*init_parse_struct(void)
 t_parse	*parsing()
 {
 	t_list	*lines;
+	t_list	*lines_head;
 	t_parse *ret;
 
 	ret = init_parse_struct();
 	lines = ft_lstnew(NULL);
 	parse_readlines(lines);
+	lines_head = lines;
 	parse_check_antnum(&lines, &ret);
 	parse_check_nodeline(&lines, &ret);
 	parse_check_edgeline(&lines, &ret);
+	free_list(lines_head);
 	if(!duplicates_check(ret))
 		exit(1);
 	return ret;

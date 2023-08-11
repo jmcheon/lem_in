@@ -6,7 +6,7 @@
 /*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:39:43 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/09 16:22:12 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/11 17:01:03 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,12 @@ void insert_edge(t_graph_type *g, int u, int v)
 	{
 		t_graph_node *curr = g->adj_list[u];
 		while (curr->link != NULL)
-		{
 			curr = curr->link;
-		}
 		curr->link = new_edge;
 	}
 }
 
-void print_adj_list(t_graph_type *g)
+void print_adjlist_list(t_graph_type *g)
 {
 	int i;
 	// int j;
@@ -101,142 +99,32 @@ void print_adj_list(t_graph_type *g)
 	}
 }
 
-static void	swap_start_end(char **node_map, char *start, char *end, int array_len)
-{
-	int i;
-	char *str_tmp;
-
-	i = 0;
-	while (i < array_len)
-	{
-		if (ft_strncmp(node_map[i], start, ft_strlen(start)) == 0)
-		{
-			str_tmp = node_map[0];
-			node_map[0] = start;
-			node_map[i] = str_tmp;
-		}
-
-		i++;
-	}
-	i = 0;
-	while (i < array_len)
-	{
-		if (ft_strncmp(node_map[i], end, ft_strlen(end)) == 0)
-		{
-			str_tmp = node_map[array_len - 1];
-			node_map[array_len - 1] = end;
-			node_map[i] = str_tmp;
-		}
-		i++;
-	}
-}
-
-void node_map_to_array(t_list *nodes_head, char **node_map)
-{
-	int i;
-	t_node_xy *tmp;
-	char *start;
-	char *end;
-
-	start = NULL;
-	end = NULL;
-	i = 0;
-	while (nodes_head != 0)
-	{
-		if (nodes_head->content == NULL)
-			break;
-		tmp = nodes_head->content;
-		node_map[i] = tmp->name;
-		if (tmp->node_type == PARSE_XY_START)
-			start = tmp->name;
-		else if (tmp->node_type == PARSE_XY_END)
-			end = tmp->name;
-		i++;
-		nodes_head = nodes_head->next;
-	}
-	swap_start_end(node_map, start, end, i);
-}
-
-int	node_find_index(char **node_array, char *node_name)
-{
-	int i;
-
-	i = 0;
-	(void) node_name;
-	while (node_array[i] != NULL)
-	{
-		if (ft_strncmp(node_array[i], node_name, ft_strlen(node_name)) == 0)
-		// {
-			// printf("node_array:[%s]\n", node_array[i]);
-			break ;
-		// }
-		i++;
-	}
-	return i;
-}
-
-
 t_graph_type* parse_to_graph(t_parse *parse)
 {
 	t_graph_type *g;
 	t_edge *tmp;
 
-    int list_size = ft_lstsize(parse->nodes_head) - 1;
+    int list_size = ft_lstsize(parse->nodes_head);
     char **node_map;
 
-	node_map = (char **)malloc(sizeof(char *) * (list_size + 1));
-
-	int i = 0;
-	while (i < list_size)
-	{
-		node_map[i] = (char *)malloc(sizeof(char *) + 1);
-		i++;
-	}
-	node_map[i] = NULL;
-
-
-	node_map[list_size] = NULL;
+	node_map = init_nodes_mapping(list_size);
 	node_map_to_array(parse->nodes_head, node_map);
-
-	i = 0;
-	while (i < (list_size - 1))
-	{
-		printf("index: %d, str:[%s]\n", i, node_map[i]);
-		i++;
-	}
+	print_graph_mapping(list_size, node_map);
 
 	g = (t_graph_type*)malloc(sizeof(t_graph_type));
 	init(g);
-	for(int i=0 ; i< ft_lstsize(parse->nodes_head) - 1; i++)
+	for(int i=0 ; i< ft_lstsize(parse->nodes_head) ; i++)
 	    insert_vertex(g,i);
 
 	t_list *list_tmp;
 	list_tmp = parse->edge_info_head;
-	for(int i = 0; i < ft_lstsize(parse->edge_info_head) - 1; i++)
+	for(int i = 0; i < ft_lstsize(parse->edge_info_head); i++)
 	{
-		if(list_tmp->content == NULL)
-			break;
 		tmp = list_tmp->content;
 		insert_edge(g, node_find_index(node_map, tmp->key), node_find_index(node_map, tmp->val));
 		insert_edge(g, node_find_index(node_map, tmp->val), node_find_index(node_map, tmp->key));
 		list_tmp = list_tmp->next;
-
 	}
-
-	// 	parse->edge_info_head = parse->edge_info_head->next;
-	// }
-	// insert_edge(g,0,1);
-	// insert_edge(g,1,0);
-	// insert_edge(g,0,2);
-	// insert_edge(g,2,0);
-	// insert_edge(g,0,3);
-	// insert_edge(g,3,0);
-	// insert_edge(g,1,2);
-	// insert_edge(g,2,1);
-	// insert_edge(g,2,3);
-	// insert_edge(g,3,2);
-	print_adj_list(g);
-
-	// free(g);
+	print_adjlist_list(g);
 	return g;
 }

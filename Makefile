@@ -6,7 +6,7 @@
 #    By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/05 02:01:35 by sucho             #+#    #+#              #
-#    Updated: 2023/08/09 16:18:29 by cjung-mo         ###   ########.fr        #
+#    Updated: 2023/08/11 17:49:14 by cjung-mo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,13 +26,16 @@ INCLIB					=	-L${LIBFT_PATH} -lft
 
 SRCS					=	./includes/get_next_line/get_next_line_bonus.c \
 							./includes/get_next_line/get_next_line_utils_bonus.c \
-							./srcs/queue.c \
-							./srcs/edmonds-karp.c \
 							./srcs/parse.c \
 							./srcs/parse_reading.c \
 							./srcs/parse_check.c \
 							./srcs/parse_util.c \
-							./srcs/graph_list.c
+							./srcs/graph_list.c \
+							./srcs/graph_matrix.c \
+							./srcs/graph_util.c \
+							./srcs/queue.c \
+							./srcs/edmonds-karp.c \
+							./srcs/ant_dist.c
 
 OBJS					=	${SRCS:.c=.o}
 

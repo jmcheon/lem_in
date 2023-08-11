@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_reading.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 20:44:25 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/09 15:41:15 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/11 16:57:18 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	edgeline_to_struct(char *line, t_list **node)
 	tmp->val = ft_strdup(split_tmp[1]);
 	(*node)->content = tmp;
 	free_2d(split_tmp);
+	split_tmp = NULL;
 	return PARSE_EDGE;
 }
 
@@ -51,6 +52,8 @@ void	parse_check_edgeline(t_list **line_head, t_parse **parse)
 		}
 		else if (parse_status == PARSE_EDGE && tmp->content != NULL)
 		{
+			if((*line_head)->next == NULL)
+				break;
 			tmp->next = ft_lstnew(NULL);
 			tmp = tmp->next;
 		}
@@ -130,6 +133,11 @@ void	parse_check_nodeline(t_list **line_head, t_parse **parse)
 		}
 		else if (parse_status == PARSE_XY && tmp->content != NULL)
 		{
+			if(check_split_count((*line_head)->next->content, '-') == 2)
+			{
+				(*line_head) = (*line_head)->next;
+				break;
+			}
 			tmp->next = ft_lstnew(NULL);
 			tmp = tmp->next;
 		}

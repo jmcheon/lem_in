@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_util.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:52:20 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/09 14:14:51 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/11 16:58:24 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,16 @@ void		free_2d(char **ptr)
 	while (*(ptr + i))
 		free(*(ptr + i++));
 	free(ptr);
+}
+
+void	free_list(t_list *head)
+{
+	t_list* tmp;
+	while (head != NULL)
+	{
+		tmp = head;
+		head = head->next;
+		free(tmp->content);
+		free(tmp);
+	}
 }

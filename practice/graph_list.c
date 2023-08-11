@@ -3,16 +3,6 @@
 
 #define MAX_VERTICES 50
 
-typedef struct s_graph_node {
-	int vertex;
-	struct t_graph_node *link;
-}	t_graph_node;
-
-typedef struct s_graph_type{
-	int	n;
-	t_graph_node *adj_list[MAX_VERTICES];
-}	t_graph_type;
-
 
 void init(t_graph_type *graph)
 {
