@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 07:19:48 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/11 13:42:04 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/11 15:33:26 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ void	*ft_memset(void *b, int c, size_t len)
 int main()
 {
 
-	int ant_num = 9;
-	int arr[] = {2, 3, 8};
+	int ant_num = 2;
+	int arr[] = {2, 3};
 	int n = sizeof(arr) / sizeof(arr[0]);
 
 	t_path_len elements[n];
@@ -128,48 +128,41 @@ int main()
 
 	int ant_num_temp = ant_num;
 	int dist_len = n - dist_begin;
-	int ant_dist[dist_len];
 
-	ft_memset(&ant_dist, 0, dist_len);
+	int ant_dist[n];
 
-	printf("%d\n", n-dist_begin);
-	for (int i = dist_len - 1 ; i >= 0; i--)
+	ft_memset(&ant_dist, 0, sizeof(ant_dist));
+
+	printf("%d\n", dist_len);
+
+	for (int i = n - 1; i > dist_begin; i--)
 	{
-		printf("%d\n", i);
+		int dist = elements[i - 1].value - elements[i].value;
+		ant_dist[i] += dist;
+		ant_num_temp -= dist;
 	}
 
-	// // for (int i = 0; i < dist_len ; i++)
-	// // {
+	printf("ant_num_temp:[%d]\n",ant_num_temp);
 
-	// // 	ant_dist[i] = elements[dist_begin + i- 1].value - elements[dist_begin + i].value;
-	// // 	ant_num_temp -= ant_dist[i];
-	// // 	printf("ant_dist[%d]:%d\n",i, ant_dist[i]);
-	// // }
+	int ant_remainder = ant_num_temp % dist_len;
+	printf("ant_num_temp:%d\tdist_len:%d\ttmp:%d\n", ant_num_temp, dist_len, ant_remainder);
+	for(int i=n - 1; i >= dist_begin; i--)
+	{
+		ant_dist[i] += ant_num_temp / dist_len;
+		printf("ant_dist[%d]:%d\t%d\n",i, ant_dist[i], ant_num_temp / n);
+		if (ant_remainder != 0)
+		{
+			ant_dist[i] += 1;
+			ant_remainder--;
+		}
+	}
 
-	// printf("ant_num_temp:[%d]\n",ant_num_temp);
-	// printf("ant_num_dist:[%d] remainder:[%d]\n",ant_num_temp / n, ant_num_temp % n);
+	printf("=========================\n");
 
-	// for(int i = 0; i < n; i++)
-	// {
-	// 	printf("ant_dist[%d]:%d\n",i, ant_dist[i]);
-	// }
-
-	// int tmp = ant_num_temp % n;
-	// for(int i=n - 1; i >= 0; i--)
-	// {
-	// 	ant_dist[i] += ant_num_temp / n;
-	// 	printf("ant_dist[%d]:%d\t%d\n",i, ant_dist[i], ant_num_temp / n);
-	// 	if (tmp != 0)
-	// 	{
-	// 		ant_dist[i] += 1;
-	// 		tmp--;
-	// 	}
-	// }
-
-	// for(int i = 0; i < n; i++)
-	// {
-	// 	printf("ant_dist[%d]:%d\n",i, ant_dist[i]);
-	// }
+	for(int i = 0; i < n; i++)
+	{
+		printf("ant_dist[%d]:%d\n",i, ant_dist[i]);
+	}
 
 	return 0;
 }
