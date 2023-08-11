@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:07:32 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/11 04:58:27 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/11 16:22:55 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,13 @@ typedef struct s_route
     int list_size;
     char**  node_map;
 } t_route;
+
+typedef struct s_path_len
+{
+	int value;
+	int index;
+	int	num_ants;
+} t_path_len;
 
 /*
 **	parse_check.c
@@ -148,5 +155,13 @@ void	fill_capacity(t_graph *graph, int capacity[][MAX_VERTICES]);
 void	print_capacity(int capacity[][MAX_VERTICES], int n);
 void	print_paths(t_route* route, t_graph* paths);
 
+/*
+**	ant_dist.c
+*/
 
+void	swap(t_path_len *a, t_path_len *b);
+int		partition_asc(t_path_len arr[], int low, int high);
+int		partition_desc(t_path_len arr[], int low, int high);
+void	quicksort(t_path_len arr[], int low, int high);
+void	distribute_ant(t_graph paths, int ant_num);
 #endif
