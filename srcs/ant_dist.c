@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 07:19:48 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/11 16:26:51 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/11 17:12:10 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int partition_desc(t_path_len arr[], int low, int high)
 }
 
 // Function to perform Quicksort
-void quicksort(t_path_len arr[], int low, int high)
+void quicksort(t_path_len *arr, int low, int high)
 {
 	if (low < high)
 	{
@@ -75,11 +75,15 @@ int	ft_intlen(int *s)
 	}
 	return (i);
 }
-void distribute_ant(t_graph paths, int ant_num)
+t_path_len *distribute_ant(t_graph paths, int ant_num)
 {
 	printf("num_paths:%d\tant_num:%d\n", paths.num_paths, ant_num);
 
-	t_path_len elements[paths.num_paths];
+	t_path_len *elements;
+
+	elements = (t_path_len *)malloc(sizeof(t_path_len) * (paths.num_paths + 1));
+
+
 	int i =0;
 	while (i < paths.num_paths)
 	{
@@ -88,6 +92,8 @@ void distribute_ant(t_graph paths, int ant_num)
 		elements[i].num_ants = 0;
 		i++;
 	}
+	i = 0;
+	// elements[i] = NULL;
 	// int ant_num = 9;
 	// int arr[] = {2, 8, 3};
 	// int n = sizeof(arr) / sizeof(arr[0]);
@@ -166,8 +172,5 @@ void distribute_ant(t_graph paths, int ant_num)
 	for(int i = 0; i < paths.num_paths; i++)
 		elements[i].num_ants = ant_dist[i];
 
-	for(int i = 0; i < paths.num_paths; i++)
-		printf("elements - value: %d\t index:%d\tnum_ants:%d\n", \
-			elements[i].value, elements[i].index, elements[i].num_ants);
-
+	return elements;
 }

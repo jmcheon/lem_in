@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:02:52 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/11 16:23:05 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/11 17:37:24 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,9 @@ int main(void)
 	// ft_lstclear(&parse->edge_info_head, free_edge);
 	// // free_linked_list(&parse->edge_info_head);
 	// free(parse);
-	distribute_ant(paths, parse->ant_num);
+	t_path_len *elements = distribute_ant(paths, parse->ant_num);
+
+	print_ant(elements, &paths);
 
 	ft_putstr_fd("lem-in\n", STDOUT_FILENO);
 	return (0);

@@ -6,6 +6,8 @@
     "*.cpp": "cpp",
     "*.hpp": "cpp",
     "*.mdx": "markdown",
-    "__locale": "c"
+    "__locale": "c",
+    "variant": "c",
+    "chrono": "c"
   }
 }

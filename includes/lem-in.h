@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:07:32 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/11 16:22:55 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/11 17:36:58 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,12 @@ void	print_paths(t_route* route, t_graph* paths);
 void	swap(t_path_len *a, t_path_len *b);
 int		partition_asc(t_path_len arr[], int low, int high);
 int		partition_desc(t_path_len arr[], int low, int high);
-void	quicksort(t_path_len arr[], int low, int high);
-void	distribute_ant(t_graph paths, int ant_num);
+void	quicksort(t_path_len *arr, int low, int high);
+t_path_len	*distribute_ant(t_graph paths, int ant_num);
+
+/*
+**	ant_dist.c
+*/
+
+void	print_ant(t_path_len *elements, t_graph *paths);
 #endif
