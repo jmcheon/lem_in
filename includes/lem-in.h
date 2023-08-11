@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:07:32 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/11 03:46:49 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/11 04:58:27 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ int		bfs(t_route* route, int* parent, int capacity[][MAX_VERTICES]);
 void	edmonds_karp(t_route* route, t_graph* paths, int* parent, int capacity[][MAX_VERTICES]);
 void	fill_capacity(t_graph *graph, int capacity[][MAX_VERTICES]);
 void	print_capacity(int capacity[][MAX_VERTICES], int n);
+void	print_paths(t_route* route, t_graph* paths);
 
 
 #endif

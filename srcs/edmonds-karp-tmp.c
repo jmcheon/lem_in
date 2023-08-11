@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 22:35:14 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/11 03:51:32 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/11 04:58:42 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ void	print_array(int *parent, int n)
 
 int bfs(t_route* route, int* parent, int capacity[][MAX_VERTICES])
 {
-	(void)parent;
-	(void)capacity;
 	int n = route->graph->num_paths;
 	int visited[n];
 	t_queue queue;
@@ -59,13 +57,15 @@ int bfs(t_route* route, int* parent, int capacity[][MAX_VERTICES])
 
 		for (int v =0; v < n; v++)
 		{
-			printf("visited:");
-			print_array(visited, n);
-			printf("current vertex: %d\n", v);
-			printf("node's vertex: %d\n", v);
+			// printf("visited:");
+			// print_array(visited, n);
+			// printf("current vertex: %d\n", v);
+			// printf("node's vertex: %d\n", v);
 			if (!visited[v] && capacity[u][v] > 0)
 			{
 				parent[v] = u;
+				// printf("parent: ");
+				// print_array(parent, n);
 				visited[v] = 1;
 				if (v == route->end)
 					return (1);
@@ -82,7 +82,6 @@ void	edmonds_karp(t_route* route, t_graph* paths, int* parent, int capacity[][MA
 
 	while (bfs(route, parent, capacity) != -1)
 	{
-		printf("here\n");
 		int i = 0;
 		for (int v = route->end; v != route->start; v = parent[v])
 		{
@@ -119,5 +118,32 @@ void	print_capacity(int capacity[][MAX_VERTICES], int n)
 		for (int v = 0; v < n; ++v)
 			printf("%d ", capacity[u][v]);
 		printf("\n");
+	}
+}
+
+
+void	print_paths(t_route* route, t_graph* paths)
+{
+	for (int i = 0; i < paths->num_paths; ++i)
+	{
+		int path[MAX_VERTICES];
+		int path_len = 0;
+
+		for (int j = 0; j < route->num_vertices; ++j)
+		{
+			if (paths->paths[i][j] != 0)
+			{
+				//printf("%d ", paths->paths[i][j]);
+				path[path_len++] = paths->paths[i][j];
+			}
+		}
+		//printf("path_len:%d\n", path_len);
+		printf("path %d - [%d]:%s", i + 1, route->end, route->node_map[route->end]);
+		for (int j = 0; j < path_len; ++j)
+		{
+			if (path[j] != route->start && path[j] != route->end)
+				printf(" <- [%d]:%s", path[j], route->node_map[path[j]]);
+		}
+		printf(" <- [%d]:%s\n", route->start, route->node_map[route->start]);
 	}
 }

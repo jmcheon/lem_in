@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:02:52 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/11 03:50:00 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/11 04:57:23 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int main(void)
 	t_graph	paths;
 
 	int	capacity[MAX_VERTICES][MAX_VERTICES] = {0};
+	int	temp[MAX_VERTICES][MAX_VERTICES] = {0};
 	int	parent[MAX_VERTICES];
 	(void)parent;
 
@@ -78,8 +79,33 @@ int main(void)
 	print_capacity(capacity, route.num_vertices);
 
 
-	bfs(&route, parent, capacity);
-	// edmonds_karp(&route, &paths, parent, capacity);
+	// bfs(&route, parent, capacity);
+	edmonds_karp(&route, &paths, parent, capacity);
+	int i = 0;
+
+	while (i < route.list_size)
+	{
+		printf("index: %d, str:[%s]\n", i, route.node_map[i]);
+		i++;
+	}
+
+	/*
+	**	create new temp capacity based on the updated capacity
+	*/
+	fill_capacity(route.graph, temp);
+	for (int u = 0; u < route.num_vertices; ++u)
+	{
+		for (int v = 0; v < route.num_vertices; ++v)
+		{
+			if (capacity[u][v] == 1)
+				temp[u][v] = 0;
+		}
+	}
+	init_paths(&paths);
+	edmonds_karp(&route, &paths, parent, temp);
+
+	printf("\n\ndisjoin paths:\n");
+	print_paths(&route, &paths);
 	// printf("=======graph ver=============\n");
 	// parse_to_graph(parse);
 
@@ -88,8 +114,6 @@ int main(void)
 	// ft_lstclear(&parse->edge_info_head, free_edge);
 	// // free_linked_list(&parse->edge_info_head);
 	// free(parse);
-
-
 
 
 	ft_putstr_fd("lem-in\n", STDOUT_FILENO);

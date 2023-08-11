@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 20:52:00 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/10 22:40:17 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/11 05:00:31 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ t_graph	*parse_to_graph_matrix(t_parse *parse, t_route *route)
 
 	g = (t_graph *)malloc(sizeof(t_graph));
 	graph_init(g);
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < route->list_size; i++)
 		graph_insert_vertex(g, i);
 	graph_insert_edges(g, parse->edge_info_head, route->node_map);
 	printf("================\n");
