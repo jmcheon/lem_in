@@ -19,8 +19,15 @@ void print_frames(t_route route, t_path_len **elements)
 		t_path_list *test = route.paths->paths_list[elements[i]->index];
 		while (test != NULL)
 		{
-			printf("%d ",test->content);
+			if (test->next == NULL)
+				break;
 			test = test->next;
+		}
+		test = test->prev;
+		while (test != NULL)
+		{
+			printf("%d ",test->vertex);
+			test = test->prev;
 		}
 		printf("\n");
 		i++;
