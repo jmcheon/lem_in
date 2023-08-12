@@ -1,6 +1,130 @@
 #include "../includes/queue.h"
 #include "../includes/lem-in.h"
 
+void    init_paths_ants(t_paths_ants* paths_ants, int num_paths)
+{
+    printf("num_paths:%d\n", num_paths);
+    paths_ants->paths_ants = (t_ants**)malloc(sizeof(t_ants*) * (num_paths + 1));
+    //for (int i = 0; i < num_paths; ++i)
+    //	paths_ants->paths_ants[i] = (t_ants*)malloc(sizeof(t_ants) * (elements[i].num_ants + 1));
+}
+
+void    init_ants(t_ants* ants, t_path_len *elements, int num_paths)
+{
+    printf("num_paths:%d\n", num_paths);
+    ants->movements_list = (t_path_list**)malloc(sizeof(t_path_list*) * (num_paths + 1));
+    for (int i = 0; i < num_paths; ++i)
+    	ants->movements_list[i] = (t_path_list*)malloc(sizeof(t_path_list) * (elements[i].num_ants + 1));
+}
+
+void	print_ant_movement(t_route *route, int num_ants)
+{
+	t_path_list *curr;
+	(void)num_ants;
+
+	//for(int i = 0; i < route->paths->num_paths; i++)
+    {
+		int i = 0;
+		curr = route->paths->paths_list[i];
+		//printf("forward\n");
+        while (curr->next != NULL)
+		{
+			//printf("%d\n", curr->vertex);
+            curr = curr->next;
+		}
+		/*
+		//curr = route->paths->paths_list[i];
+		printf("backard\n");
+        while (curr->prev != NULL)
+		{
+            curr = curr->prev;
+			printf("%d\n", curr->vertex);
+		}
+		*/
+        while (curr->prev != NULL)
+        {
+            curr = curr->prev;
+			printf("%dL%d-%s", num_ants, ++curr->count_ants, route->node_map[curr->vertex]);
+			if (curr->prev != NULL && num_ants != curr->count_ants)
+				printf("\n");
+			else
+				printf(" ");
+        }
+    }
+}
+
+void    print_test(t_route *route, t_path_len *elements)
+{
+    printf("\n\n==================print test=====================\n\n");
+
+	t_paths_ants paths_ants;
+	t_ants ants;
+	int	max_num_ants = 0;
+
+    init_ants(&ants, elements, route->paths->num_paths);
+    init_paths_ants(&paths_ants, route->paths->num_paths);
+	for(int i = 0; i < route->paths->num_paths; ++i)
+    {
+		if (max_num_ants < elements[i].num_ants)
+			max_num_ants = elements[i].num_ants;
+	}
+	printf("max num ants:%d\n\n", max_num_ants);
+	for(int i = 0; i < route->paths->num_paths; ++i)
+	{
+    	for (int j = 0; j < elements[i].num_ants; ++j)
+		{
+			ants.movements_list[j] = route->paths->paths_list[i];
+    	}
+	}
+    for (int i = 0; i < max_num_ants; ++i)
+	{
+		print_ant_movement(route, elements[0].num_ants--);
+    }
+
+	return ;
+
+/*
+    t_t q;
+
+    init_q(&q, route->paths->num_paths);
+	for(int i = 0; i < route->paths->num_paths; i++)
+    {
+        init_queue(q.lst[i]);
+		if (max_num_ants < elements[i].num_ants)
+			max_num_ants = elements[i].num_ants;
+		t_path_list *curr = route->paths->paths_list[i];
+        while (curr->next != NULL)
+        {
+			if (elements[i].num_ants > 0)
+            	enqueue(q.lst[i], curr->vertex);
+            curr = curr->next;
+        }
+		printf("elements - value: %d\t index:%d\tnum_ants:%d\n", 
+			elements[i].value, elements[i].index, elements[i].num_ants);
+    }
+    //int v;
+	
+	printf("max num ants:%d\n\n", max_num_ants);
+    for (int i = 0; i < max_num_ants; ++i)
+	{
+		for(int j = 0; j < route->paths->num_paths; ++j)
+    	{
+			t_path_list *curr = route->paths->paths_list[j];
+    	    //v = route->paths->paths_list[0]->content;
+    	    //printf("L%d-%d", curr->count_ants, dequeue(q.lst[0]));
+			if (!is_empty(q.lst[j]))
+			{
+    	    	printf("L%d-%d", ++curr->count_ants, dequeue(q.lst[j]));
+				curr = curr->next;
+			}
+    	    //printf("L%d-%d", curr->count_ants, curr->vertex);
+    	    printf(" ");
+    	    //printf("\n");
+    	}
+	}
+	*/
+}
+
 int	main(void)
 {
 	t_parse	*parse;
@@ -70,6 +194,8 @@ int	main(void)
 	for(int i = 0; i < route.paths->num_paths; i++)
 		printf("elements - value: %d\t index:%d\tnum_ants:%d\n", 
 			elements[i].value, elements[i].index, elements[i].num_ants);
+
+    print_test(&route, elements);
 
 	return (0);
 }

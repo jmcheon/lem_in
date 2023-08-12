@@ -3,8 +3,12 @@ import matplotlib.pyplot as plt
 import sys, argparse, os
 
 def read_input_file(file_path):
-    with open(file_path, 'r') as file:
-        input_string = file.read()
+    try:
+        with open(file_path, 'r') as file:
+            input_string = file.read()
+    except:
+        print("Input error: invalid file.")
+        return None
     return input_string
 
 def parse_ant_movements(ant_movements_string, start_node):
@@ -77,7 +81,7 @@ def visualize_graph(input_string, node_color='skyblue', font_color='black', font
     G.add_nodes_from(nodes)
     G.add_edges_from(edges)
 
-    nx.draw(G, pos, with_labels=True, node_color=node_color, font_color=font_color, font_weight=font_weight, node_size=node_size)
+    nx.draw(G, pos, with_labels=True, node_color=node_colors, font_color=font_color, font_weight=font_weight, node_size=node_size)
     if legend:
         for label, color in legend.items():
             plt.scatter([], [], c=color, label=label, s=node_size)
@@ -128,11 +132,13 @@ if __name__ == "__main__":
 
         input_string = read_input_file(args.input)
 
-        # ant_movements_string = load_ant_movements_string(args.input)
-        # print(ant_movements_string)
+        ant_movements_string = load_ant_movements_string(args.input)
+        print(ant_movements_string)
 
-        visualize_graph(input_string, legend=legend)
-        # visualize_ants(input_string, ant_movements_string)
+        if input_string:
+            visualize_graph(input_string, legend=legend)
+        if ant_movements_string:
+            visualize_ants(input_string, ant_movements_string)
     else:
         print(f"Usage: python {sys.argv[0]} -h")
 

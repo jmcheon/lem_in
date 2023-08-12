@@ -29,7 +29,7 @@ void	enqueue(t_queue* queue, int	content)
 	else
 		queue->rear->next = new_node;
 	queue->rear = new_node;
-	//printf("enqueued: %d\n", content);
+	printf("enqueued: %d\n", content);
 }
 
 int	dequeue(t_queue* queue)
