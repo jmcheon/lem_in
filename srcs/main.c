@@ -1,6 +1,13 @@
 #include "../includes/queue.h"
 #include "../includes/lem-in.h"
 
+typedef struct s_ant_print
+{
+	char *node_name;
+	int	ant_max;
+	int ant_current;
+}	t_ant_print;
+
 void print_frames(t_route route, t_path_len **elements)
 {
 	int longest_path = 0;
@@ -11,39 +18,60 @@ void print_frames(t_route route, t_path_len **elements)
 	}
 	printf("longest_path:%d\n", longest_path);
 
+	char **test;
+	test = (char **)malloc(sizeof(char *) * (route.paths->num_paths +1));
 
 	int i = 0;
-
 	while (i < route.paths->num_paths)
 	{
-		t_path_list *test = route.paths->paths_list[elements[i]->index];
-		while (test != NULL)
+		test[i] = (char *)malloc(sizeof(char) * (longest_path + 1));
+		ft_memset(test[i], 'x', sizeof(test[i]));
+		test[i][longest_path] = '\0';
+		i++;
+	}
+	test[i] = NULL;
+
+
+	i = 0;
+	while (i < route.paths->num_paths)
+	{
+		t_path_list *one_path = route.paths->paths_list[elements[i]->index];
+		while (one_path != NULL)
 		{
-			if (test->next == NULL)
+			if (one_path->next == NULL)
 				break;
-			test = test->next;
+			one_path = one_path->next;
 		}
-		test = test->prev;
-		while (test != NULL)
+		int begin = longest_path - elements[i]->value;
+		one_path = one_path->prev;
+		// printf("begin:%d\ti:%d\n", begin, i);
+		while (one_path != NULL)
 		{
-			printf("%d ",test->vertex);
-			test = test->prev;
+			// needs to change
+			test[i][begin] = one_path->vertex + '0';
+			// printf("%d ",one_path->vertex);
+			begin++;
+			one_path = one_path->prev;
+		}
+		// printf("\n");
+		i++;
+	}
+
+	printf("================================\n");
+	i = 0;
+	while (i < route.paths->num_paths)
+	{
+		int j = 0;
+		while (j < longest_path)
+		{
+			if (test[i][j] != '\0')
+				printf("%c ",test[i][j]);
+			j++;
 		}
 		printf("\n");
 		i++;
 	}
 
-	char **test;
-	test = (char **)malloc(sizeof(char *) * (route.paths->num_paths +1));
-
-	i = 0;
-	while (i < route.paths->num_paths)
-	{
-		test[i] = (char *)malloc(sizeof(char) * (longest_path + 1));
-		test[i][longest_path] = '\0';
-		i++;
-	}
-	test[i] = NULL;
 
 }
 
