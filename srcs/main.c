@@ -142,7 +142,7 @@ int	main(void)
 	route.graph = parse_to_graph(parse);
 
 	/*
-	**	create node map 
+	**	create node map
 	*/
 	init_route(&route, parse);
 	//init_paths(&paths);
@@ -182,7 +182,7 @@ int	main(void)
 	//print_capacity(temp, route.num_vertices);
 
 	/*
-	** run edmonds-karp with new temp capacity	
+	** run edmonds-karp with new temp capacity
 	*/
 	init_paths(route.paths);
 	edmonds_karp(&route, route.paths, parent, temp);
@@ -190,10 +190,10 @@ int	main(void)
 	printf("\n\ndisjoin paths:\n");
 	print_paths(&route, route.paths);
 	print_paths_list(route.paths);
-	t_path_len *elements =distribute_ant(route);
+	t_path_len **elements =distribute_ant(route);
 	for(int i = 0; i < route.paths->num_paths; i++)
-		printf("elements - value: %d\t index:%d\tnum_ants:%d\n", 
-			elements[i].value, elements[i].index, elements[i].num_ants);
+		printf("elements - value: %d\t index:%d\tnum_ants:%d\n",
+			elements[i]->value, elements[i]->index, elements[i]->num_ants);
 
     print_test(&route, elements);
 
