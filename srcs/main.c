@@ -9,12 +9,13 @@ void    init_paths_ants(t_paths_ants* paths_ants, int num_paths)
     //	paths_ants->paths_ants[i] = (t_ants*)malloc(sizeof(t_ants) * (elements[i].num_ants + 1));
 }
 
-void    init_ants(t_ants* ants, t_path_len *elements, int num_paths)
+void    init_ants(t_ants* ants, t_path_len **elements, int num_paths)
 {
+	(void)elements;
     printf("num_paths:%d\n", num_paths);
     ants->movements_list = (t_path_list**)malloc(sizeof(t_path_list*) * (num_paths + 1));
-    for (int i = 0; i < num_paths; ++i)
-    	ants->movements_list[i] = (t_path_list*)malloc(sizeof(t_path_list) * (elements[i].num_ants + 1));
+    //for (int i = 0; i < num_paths; ++i)
+    	//ants->movements_list[i] = (t_path_list*)malloc(sizeof(t_path_list) * (elements[i]->num_ants + 1));
 }
 
 void	print_ant_movement(t_route *route, int num_ants)
@@ -45,7 +46,7 @@ void	print_ant_movement(t_route *route, int num_ants)
         {
             curr = curr->prev;
 			printf("%dL%d-%s", num_ants, ++curr->count_ants, route->node_map[curr->vertex]);
-			if (curr->prev != NULL && num_ants != curr->count_ants)
+			if (curr->prev != NULL)// && num_ants != curr->count_ants)
 				printf("\n");
 			else
 				printf(" ");
@@ -53,34 +54,98 @@ void	print_ant_movement(t_route *route, int num_ants)
     }
 }
 
-void    print_test(t_route *route, t_path_len *elements)
+void	move_ant(t_route *route, t_path_list **curr)
+{
+	if ((*curr) == NULL || (*curr)->prev == NULL)
+        return;
+    *curr = (*curr)->prev;
+	printf("L%d-%s ", ++(*curr)->count_ants, route->node_map[(*curr)->vertex]);
+}
+
+void	move_ants(t_route *route, t_ants *paths_ants, int num_ants)
+{
+	t_path_list *curr;
+
+	//printf("num_ants:%d\n", num_ants);
+    for (int i = 0; i < num_ants; ++i)
+    {
+		curr = paths_ants->movements_list[i];
+    	curr = curr->prev;
+		printf("L%d-%s", ++curr->count_ants, route->node_map[curr->vertex]);
+		if (curr->prev != NULL)// && num_ants != curr->count_ants)
+			printf("\n");
+		else
+			printf(" ");
+		paths_ants->movements_list[i] = curr;
+	}
+}
+
+void    print_test(t_route *route, t_path_len **elements)
 {
     printf("\n\n==================print test=====================\n\n");
 
 	t_paths_ants paths_ants;
-	t_ants ants;
+	t_path_list *curr;
 	int	max_num_ants = 0;
+	int k, l, num_ants, max_moves;
 
-    init_ants(&ants, elements, route->paths->num_paths);
     init_paths_ants(&paths_ants, route->paths->num_paths);
 	for(int i = 0; i < route->paths->num_paths; ++i)
     {
-		if (max_num_ants < elements[i].num_ants)
-			max_num_ants = elements[i].num_ants;
+		if (max_num_ants < elements[i]->num_ants)
+			max_num_ants = elements[i]->num_ants;
 	}
 	printf("max num ants:%d\n\n", max_num_ants);
 	for(int i = 0; i < route->paths->num_paths; ++i)
 	{
-    	for (int j = 0; j < elements[i].num_ants; ++j)
-		{
-			ants.movements_list[j] = route->paths->paths_list[i];
-    	}
-	}
-    for (int i = 0; i < max_num_ants; ++i)
-	{
-		print_ant_movement(route, elements[0].num_ants--);
-    }
+		t_ants ants;
 
+		curr = route->paths->paths_list[i];
+    	init_ants(&ants, elements, route->paths->num_paths);
+        while (curr->next != NULL)
+            curr = curr->next;
+    	for (int j = 0; j < elements[i]->num_ants; ++j)
+			ants.movements_list[j] = curr;
+		paths_ants.paths_ants[i] = &ants;
+
+		num_ants = elements[i]->num_ants;
+		max_moves = num_ants + elements[i]->value - 1;
+		for (k = 0; k < max_moves; k++)
+		{
+		    for (l = 0; l < num_ants; l++)
+			{
+		        //if (l <= k)
+		            //move_ant(route, &(paths_ants.paths_ants[i]->movements_list[l]));
+		    }
+		    printf("\n");
+		}
+	}
+    //for (int i = 0; i < max_num_ants; ++i)
+		//print_ant_movement(route, elements[0]->num_ants--);
+
+	//print_ant_movement(route, elements[0]->num_ants--);
+	//for(int i = 0; i < route->paths->num_paths; ++i)
+	{
+		//move_ant(route, paths_ants.paths_ants[i]->movements_list[0], 1);
+	}
+
+	
+	int i, j;
+	
+	num_ants = elements[1]->num_ants;
+	max_moves = num_ants + elements[1]->value - 1;     
+	printf("max_moves:%d, num_ants:%d\n", max_moves, num_ants);
+	printf("index:%d, value:%d, num_ants:%d\n", elements[1]->index, elements[1]->value, elements[1]->num_ants);
+	for (i = 0; i < max_moves; i++) {
+	    for (j = 0; j < num_ants; j++) {
+			for (k = 0; k < route->paths->num_paths; k++) {
+		        if (j <= i)
+	            	move_ant(route, &(paths_ants.paths_ants[k]->movements_list[j]));
+	            
+	        }
+	    }
+	    printf("\n");
+	}
 	return ;
 
 /*
