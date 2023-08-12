@@ -3,32 +3,28 @@
 
 int bfs(t_route* route, int* parent, int capacity[][MAX_VERTICES])
 {
-	int	n = route->graph->n;
-	int	visited[n];
-	t_queue	queue;
-
+	int n = route->graph->n;
+	int visited[n];
+	t_queue queue;
+	printf("%d\n", n);
 	ft_memset(visited, 0, sizeof(visited));
 	visited[route->start] = 1;
 	init_queue(&queue);
 	enqueue(&queue, route->start);
 
-
 	while (!is_empty(&queue))
 	{
 		int u = dequeue(&queue);
 
-		for (t_graph_node* node = route->graph->adj_list[u]; node != NULL; node = node->link)
+		for (int v =0; v < n; v++)
 		{
-			//printf("visited:");
-			//print_array(visited, n);
-			int v = node->vertex;
-			//printf("current vertex: %d\n", v);
-			//printf("node's vertex: %d\n", v);
+			// printf("visited:");
+			print_array(visited, n);
+			// printf("current vertex: %d\n", v);
+			// printf("node's vertex: %d\n", v);
 			if (!visited[v] && capacity[u][v] > 0)
 			{
 				parent[v] = u;
-				//printf("parent: ");
-				//print_array(parent, n);
 				visited[v] = 1;
 				if (v == route->end)
 					return (1);
@@ -89,7 +85,7 @@ void	print_paths(t_route* route, t_paths* paths)
 	{
 		int path[MAX_VERTICES];
 		int path_len = 0;
-		
+
 		for (int j = 0; j < route->num_vertices; ++j)
 		{
 			if (paths->paths[i][j] != 0)
@@ -109,17 +105,14 @@ void	print_paths(t_route* route, t_paths* paths)
 	}
 }
 
-void	fill_capacity(t_graph* graph, int capacity[][MAX_VERTICES])
+void	fill_capacity(t_graph *graph, int capacity[][MAX_VERTICES])
 {
 	for (int u = 0; u < graph->n; ++u)
 	{
-		t_graph_node* node = graph->adj_list[u];
-		while (node != NULL)
+		for (int v = 0; v < graph->n; ++v)
 		{
-			int v = node->vertex;
-			capacity[u][v] = 1;
-			capacity[v][u] = 1;
-			node = node->link;
+			if (graph->matrix[u][v] == 1)
+				capacity[u][v] = 1;
 		}
 	}
 }
@@ -182,13 +175,7 @@ void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int capacity[][MA
 		{
 			int u = parent[v];
 			//printf("u, v = %d, %d\n", u, v);
-			if (v == route->end)
-			{
-				paths->paths[paths->num_paths][i++] = v;
-				insert_next_parent(paths, v);
-			}
 			paths->paths[paths->num_paths][i++] = u;
-			insert_next_parent(paths, u);
 			capacity[u][v] -= 1;
 			capacity[v][u] += 1;
 		}
