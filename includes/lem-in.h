@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem-in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:07:32 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/11 19:08:27 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/12 10:23:58 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,6 @@ typedef struct s_path_len
 // int		partition_asc(t_path_len arr[], int low, int high);
 // int		partition_desc(t_path_len arr[], int low, int high);
 // void	quicksort(t_path_len arr[], int low, int high);
-t_path_len *distribute_ant(t_route route);
+t_path_len **distribute_ant(t_route route);
 
 #endif
