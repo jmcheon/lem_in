@@ -8,50 +8,55 @@ typedef struct s_ant_print
 	int ant_current;
 }	t_ant_print;
 
-void	pass_ants_to_nodes(t_ant_print **test, t_route route, int start, int end)
+void	pass_ants_to_nodes(t_ant_print **test, int total_used_path, int start, int end)
 {
-	for (int i = 0; i < route.paths->num_paths; i++)
+	for (int i = 0; i < total_used_path; i++)
 	{
 		for(int j = start; j <= end; j++)
 		{
 			if (test[i][j].node_name != NULL)
+			{
 				// printf("[%s] ", test[i][j].node_name);
 				test[i][j].ant_current++;
+			}
 		}
-		// printf("\n");
 	}
 }
 
-void	print_one_frame(t_ant_print **test, t_route route, int longest_path)
+void	print_one_frame(t_ant_print **test, int total_used_path, int longest_path)
 {
-	for (int i = 0; i < route.paths->num_paths; i++)
+	for (int i = 0; i < total_used_path; i++)
 	{
-		for(int j = 0; j < longest_path; j++)
+		for(int j = 0; j <= longest_path; j++)
 		{
 			if (test[i][j].node_name != NULL && \
 				test[i][j].ant_current <= test[i][j].ant_max &&\
 				test[i][j].ant_current != 0)
 				printf("L%d-%s ", test[i][j].ant_current, test[i][j].node_name);
 		}
-		// printf("\n");
 	}
 }
 
 void print_frames(t_route route, t_path_len **elements)
 {
 	int longest_path = 0;
+	int total_used_path = 0;
 	for(int i = 0; i < route.paths->num_paths; i++)
 	{
-		if (longest_path < elements[i]->value)
-			longest_path = elements[i]->value;
+		if (elements[i]->num_ants > 0)
+		{
+			if (longest_path < elements[i]->value)
+				longest_path = elements[i]->value;
+			total_used_path++;
+		}
 	}
-	printf("longest_path:%d\n", longest_path);
+	printf("longest_path:%d total_used_path:%d\n", longest_path, total_used_path);
 
 	t_ant_print **test;
-	test = (t_ant_print **)malloc(sizeof(t_ant_print *) * (route.paths->num_paths +1));
+	test = (t_ant_print **)malloc(sizeof(t_ant_print *) * (total_used_path +1));
 
 	int i = 0;
-	while (i < route.paths->num_paths)
+	while (i < total_used_path)
 	{
 		test[i] = (t_ant_print *)malloc(sizeof(t_ant_print) * (longest_path + 1));
 		ft_memset(test[i], '\0', sizeof(test[i]));
@@ -61,9 +66,10 @@ void print_frames(t_route route, t_path_len **elements)
 
 
 	i = 0;
-	while (i < route.paths->num_paths)
+	while (i < total_used_path)
 	{
-		t_path_list *one_path = route.paths->paths_list[elements[i]->index];
+		printf("[%d]", (route.paths->num_paths - total_used_path) + i);
+		t_path_list *one_path = route.paths->paths_list[elements[(route.paths->num_paths - total_used_path) + i]->index];
 		while (one_path != NULL)
 		{
 			if (one_path->next == NULL)
@@ -78,7 +84,7 @@ void print_frames(t_route route, t_path_len **elements)
 		{
 			// needs to change
 			test[i][begin].node_name = ft_strdup(route.node_map[one_path->vertex]);
-			test[i][begin].ant_max = elements[i]->num_ants;
+			test[i][begin].ant_max = elements[(route.paths->num_paths - total_used_path) + i]->num_ants;
 			test[i][begin].ant_current = 0;
 			// printf("%d ",one_path->vertex);
 			begin++;
@@ -90,7 +96,7 @@ void print_frames(t_route route, t_path_len **elements)
 
 	printf("================================\n");
 	i = 0;
-	while (i < route.paths->num_paths)
+	while (i < total_used_path)
 	{
 		int j = 0;
 		while (j < longest_path)
@@ -105,20 +111,21 @@ void print_frames(t_route route, t_path_len **elements)
 		i++;
 	}
 	printf("================================\n");
+
 	int loop = 0;
-	for(int i = 0; i < route.paths->num_paths; i++)
+	for(int i = route.paths->num_paths - total_used_path ; i < route.paths->num_paths; i++)
 	{
 		if (loop < elements[i]->value + elements[i]->num_ants)
 			loop = elements[i]->value + elements[i]->num_ants;
 	}
 	printf("loop:%d\n", loop);
 
-	for(int i = 0; i < loop - 1 ; i++)
+	for(int i = 0; i < (loop - 1); i++)
 	{
 		if (i < longest_path)
 		{
 			// printf("begin:%d end:%d\n", 0, i);
-			pass_ants_to_nodes(test, route, 0, i);
+			pass_ants_to_nodes(test, total_used_path, 0, i);
 		}
 		// else if (loop - i < longest_path)
 		// {
@@ -130,10 +137,10 @@ void print_frames(t_route route, t_path_len **elements)
 		else
 		{
 			// printf("begin:%d end:%d\n", 0, longest_path);
-			pass_ants_to_nodes(test, route, 0, longest_path);
+			pass_ants_to_nodes(test, total_used_path, 0, longest_path);
 		}
 
-		print_one_frame(test, route, longest_path);
+		print_one_frame(test, total_used_path, longest_path);
 		printf("\n");
 	}
 
