@@ -1,6 +1,45 @@
 #include "../includes/queue.h"
 #include "../includes/lem-in.h"
 
+void print_frames(t_route route, t_path_len **elements)
+{
+	int longest_path = 0;
+	for(int i = 0; i < route.paths->num_paths; i++)
+	{
+		if (longest_path < elements[i]->value)
+			longest_path = elements[i]->value;
+	}
+	printf("longest_path:%d\n", longest_path);
+
+
+	int i = 0;
+
+	while (i < route.paths->num_paths)
+	{
+		t_path_list *test = route.paths->paths_list[elements[i]->index];
+		while (test != NULL)
+		{
+			printf("%d ",test->content);
+			test = test->next;
+		}
+		printf("\n");
+		i++;
+	}
+
+	char **test;
+	test = (char **)malloc(sizeof(char *) * (route.paths->num_paths +1));
+
+	i = 0;
+	while (i < route.paths->num_paths)
+	{
+		test[i] = (char *)malloc(sizeof(char) * (longest_path + 1));
+		test[i][longest_path] = '\0';
+		i++;
+	}
+	test[i] = NULL;
+
+}
+
 void    init_paths_ants(t_paths_ants* paths_ants, int num_paths)
 {
     printf("num_paths:%d\n", num_paths);
@@ -99,11 +138,11 @@ void    print_test(t_route *route, t_path_len *elements)
             	enqueue(q.lst[i], curr->vertex);
             curr = curr->next;
         }
-		printf("elements - value: %d\t index:%d\tnum_ants:%d\n", 
+		printf("elements - value: %d\t index:%d\tnum_ants:%d\n",
 			elements[i].value, elements[i].index, elements[i].num_ants);
     }
     //int v;
-	
+
 	printf("max num ants:%d\n\n", max_num_ants);
     for (int i = 0; i < max_num_ants; ++i)
 	{
@@ -195,7 +234,7 @@ int	main(void)
 		printf("elements - value: %d\t index:%d\tnum_ants:%d\n",
 			elements[i]->value, elements[i]->index, elements[i]->num_ants);
 
-    print_test(&route, elements);
+    print_frames(route, elements);
 
 	return (0);
 }
