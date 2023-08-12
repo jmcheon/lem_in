@@ -278,6 +278,7 @@ void insert_next_parent(t_paths *paths, int v)
 	//t_vertex_list *curr_ptr;
 
 	node_ptr->vertex= v;
+	node_ptr->count_ants = 0;
 	node_ptr->next = NULL;
 	node_ptr->prev = NULL;
 
