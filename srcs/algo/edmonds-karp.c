@@ -61,22 +61,46 @@ void	print_path(t_route* route, int* parent, int path_id)
 
 void print_paths_list(t_paths *paths)
 {
+	t_path_list *curr_ptr;
 	int i;
 
 	i = 0;
 	while (i < paths->num_paths)
 	{
-		t_int_list *curr = paths->paths_list[i];
+		curr_ptr = paths->paths_list[i];
 		printf("path %d - ", i + 1);
-		if (curr != NULL)
+		if (curr_ptr != NULL)
 		{
-			printf("%d", curr->content);
-			curr = curr->next;
+			printf("%d", curr_ptr->vertex);
+			curr_ptr = curr_ptr->next;
 		}
-		while (curr != NULL)
+		while (curr_ptr != NULL)
 		{
-			printf(" <- %d", curr->content);
-			curr = curr->next;
+			printf(" <- %d", curr_ptr->vertex);
+			curr_ptr = curr_ptr->next;
+		}
+		printf("\n");
+		i++;
+	}
+	i = 0;
+	while (i < paths->num_paths)
+	{
+		curr_ptr = paths->paths_list[i];
+		while (curr_ptr->next != NULL)
+			curr_ptr = curr_ptr->next;
+		//printf("last vertex:%d\n", curr_ptr->vertex);
+		
+
+		printf("path %d - ", i + 1);
+		if (curr_ptr != NULL)
+		{
+			printf("%d", curr_ptr->vertex);
+			curr_ptr = curr_ptr->prev;
+		}
+		while (curr_ptr != NULL)
+		{
+			printf(" -> %d", curr_ptr->vertex);
+			curr_ptr = curr_ptr->prev;
 		}
 		printf("\n");
 		i++;
@@ -142,32 +166,47 @@ void	print_array(int *parent, int n)
 	printf("\n\n");
 }
 
+void	init_path(t_path_list* path)
+{
+	path->vertex = -1;
+	path->count_ants = 0;
+	path->next = NULL;
+	path->prev = NULL;
+}
+
 void	init_paths(t_paths* paths)
 {
 	paths->num_paths = 0;
 	ft_memset(paths->paths, 0, sizeof(paths->paths));
 	for (int i = 0; i < MAX_VERTICES; ++i)
+	{
+		//init_path(paths->paths_list[i]);
 		paths->paths_list[i] = NULL;
+	}
 }
 
 void insert_next_parent(t_paths *paths, int v)
 {
 	// create a new node
-	t_int_list *new_node = malloc(sizeof(t_int_list));
-	new_node->content = v;
-	new_node->next = NULL;
+	t_path_list *node_ptr = malloc(sizeof(t_int_list));
+	t_path_list *curr_ptr;
+
+	node_ptr->vertex= v;
+	node_ptr->next = NULL;
+	node_ptr->prev = NULL;
 
 	// add new node to the end of the adjacency list for current path id
 	if (paths->paths_list[paths->num_paths] == NULL)
 	{
-		paths->paths_list[paths->num_paths] = new_node;
+		paths->paths_list[paths->num_paths] = node_ptr;
 	}
 	else
 	{
-		t_int_list *curr = paths->paths_list[paths->num_paths];
-		while (curr->next != NULL)
-			curr = curr->next;
-		curr->next = new_node;
+		curr_ptr = paths->paths_list[paths->num_paths];
+		while (curr_ptr->next != NULL)
+			curr_ptr = curr_ptr->next;
+		curr_ptr->next = node_ptr;
+		node_ptr->prev = curr_ptr;
 	}
 }
 

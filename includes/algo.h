@@ -19,10 +19,27 @@ typedef struct s_graph{
 	t_graph_node *adj_list[MAX_VERTICES];
 }	t_graph;
 
+typedef struct s_path_list
+{
+	int	    vertex;
+    int     count_ants;
+	struct s_path_list	*next;
+	struct s_path_list	*prev;
+}	t_path_list;
+
+typedef struct s_ants
+{
+    t_path_list **movements_list;
+} t_ants;
+
+typedef struct s_paths_ants
+{
+	t_ants **paths_ants;
+} t_paths_ants;
 
 typedef struct s_paths
 {
-	t_int_list *paths_list[MAX_VERTICES];
+	t_path_list *paths_list[MAX_VERTICES];
 	int	paths[MAX_VERTICES][MAX_VERTICES];
 	int	num_paths;
 } t_paths;
