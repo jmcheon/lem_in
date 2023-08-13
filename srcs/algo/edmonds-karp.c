@@ -240,18 +240,17 @@ void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int capacity[][MA
 void	init_route(t_route* route, t_parse* parse)
 {
 	route->num_ants = parse->num_ants;
-	route->list_size = ft_lstsize(parse->nodes_head);
+	route->num_vertices = ft_lstsize(parse->nodes_head);
 	route->node_map = node_map_to_array(parse->nodes_head);
 	int	i = 0;
-	while (i < route->list_size)
+	while (i < route->num_vertices)
 	{
 		// printf("[%s]\n", route->node_map[i]);
 		i++;
 	}
-	printf("%d\n", i);
-	// route->graph = parse_to_graph(parse, route);
+	route->graph = parse_to_graph(parse, route);
 	route->start = 0;
-	route->end = route->list_size - 1;
+	route->end = route->num_vertices - 1;
 	// route->num_vertices = route->graph->n;
 
 	route->paths = (t_paths*)malloc(sizeof(t_paths));

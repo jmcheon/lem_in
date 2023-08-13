@@ -16,7 +16,7 @@ typedef struct s_graph_node {
 
 typedef struct s_graph{
 	int	n;
-	t_graph_node *adj_list[MAX_VERTICES];
+	t_graph_node **adj_list;
 }	t_graph;
 
 typedef struct s_path_list
@@ -53,7 +53,6 @@ typedef struct s_route
     int num_vertices;
 	int	num_ants;
 
-    int list_size;
     char	**node_map;
 } t_route;
 

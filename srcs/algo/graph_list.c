@@ -6,23 +6,25 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:39:43 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/13 16:28:22 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/13 19:07:50 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/lem-in.h"
 
-static void init(t_graph *graph)
+static void init(t_graph *graph, int num_vertices)
 {
 	int v;
 
-	graph->n = 0;
+	graph->n = num_vertices;
 	v = 0;
-	while (v < MAX_VERTICES)
+	graph->adj_list = (t_graph_node **)malloc(sizeof(t_graph_node *) * (num_vertices + 1));
+	while (v < num_vertices)
 	{
 		graph->adj_list[v] = NULL;
 		v++;
 	}
+	graph->adj_list[v] = NULL;
 }
 
 
@@ -90,36 +92,24 @@ static void print_adjlist_list(t_graph *g)
 
 t_graph* parse_to_graph(t_parse *parse, t_route *route)
 {
-	(void)parse;
-	(void)route;
-	(void)print_adjlist_list;
-	(void)insert_edge;
-	(void)init;
 	t_graph *g;
-	// t_edge *tmp;
+	t_edge *tmp;
 
-    // int list_size = ft_lstsize(parse->nodes_head);
-    // char **node_map;
-
-	// node_map = init_nodes_mapping(list_size);
-	// node_map_to_array(parse->nodes_head, node_map);
-	// print_graph_mapping(list_size, node_map);
+	// print_graph_mapping(route->num_vertices, route->node_map);
 
 	g = (t_graph*)malloc(sizeof(t_graph));
-	// init(g);
-	// g->n = route->list_size;
-	// printf("%d\n", route->list_size);
+	init(g, route->num_vertices);
+	printf("num_vertices:%d, edge_info_head: %d\n", route->num_vertices, ft_lstsize(parse->edge_info_head));
 
-	// t_list *list_tmp;
-	// list_tmp = parse->edge_info_head;
-	// for(int i = 0; i < ft_lstsize(parse->edge_info_head); i++)
-	// {
-	// 	printf("i: %d\n", i);
-	// 	tmp = list_tmp->content;
-	// 	insert_edge(g, node_find_index(node_map, tmp->key), node_find_index(node_map, tmp->val));
-	// 	insert_edge(g, node_find_index(node_map, tmp->val), node_find_index(node_map, tmp->key));
-	// 	list_tmp = list_tmp->next;
-	// }
-	// (void)print_adjlist_list;
+	t_list *edge_head;
+	edge_head = parse->edge_info_head;
+	for(int i = 0; i < ft_lstsize(parse->edge_info_head); i++)
+	{
+		tmp = edge_head->content;
+		insert_edge(g, node_find_index(route->node_map, tmp->key), node_find_index(route->node_map, tmp->val));
+		insert_edge(g, node_find_index(route->node_map, tmp->val), node_find_index(route->node_map, tmp->key));
+		edge_head = edge_head->next;
+	}
+	// print_adjlist_list(g);
 	return g;
 }

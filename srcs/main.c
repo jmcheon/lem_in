@@ -273,10 +273,10 @@ void    print_test(t_route *route, t_path_len *elements)
 int	main(void)
 {
 	t_parse	*parse;
-	//t_paths	paths;
-	// t_route	route;
+	// t_paths	paths;
+	t_route	route;
 
-	// int	capacity[MAX_VERTICES][MAX_VERTICES] = {0};
+	// int **capacity;
 	// int	temp[MAX_VERTICES][MAX_VERTICES] = {0};
 	// int	parent[MAX_VERTICES];
 
@@ -287,14 +287,14 @@ int	main(void)
 	/*
 	**	create node map
 	*/
-	// init_route(&route, parse);
-	//init_paths(&paths);
+	init_route(&route, parse);
+	// init_paths(&paths);
 
-	// // printf("number of vertices: %d\n", route.num_vertices);
-	// // printf("start: (%d)\n", route.start);
-	// // printf("end: (%d)\n", route.end);
+	// printf("number of vertices: %d\n", route.num_vertices);
+	// printf("start: (%d)\n", route.start);
+	// printf("end: (%d)\n", route.end);
 	// fill_capacity(route.graph, capacity);
-	// //print_capacity(capacity, route.num_vertices);
+	//print_capacity(capacity, route.num_vertices);
 
 	// /*
 	// **	edmonds-karp
@@ -341,7 +341,7 @@ int	main(void)
 	// free(route.paths);
 	ft_lstclear(&parse->nodes_head, free_node_xy);
 	ft_lstclear(&parse->edge_info_head, free_edge);
-	// free(parse);
+	free(parse);
 
 	// free(route.node_map);
     // print_frames(route, elements);
