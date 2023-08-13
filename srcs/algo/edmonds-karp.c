@@ -212,7 +212,7 @@ void insert_next_parent(t_paths *paths, int v)
 
 void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int capacity[][MAX_VERTICES])
 {
-	int	path_id = 0;
+	// int	path_id = 0;
 
 	while (bfs(route, parent, capacity) != -1)
 	{
@@ -232,8 +232,8 @@ void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int capacity[][MA
 			capacity[v][u] += 1;
 		}
 		paths->num_paths++;
-		path_id++;
-		print_path(route, parent, path_id);
+		// path_id++;
+		// print_path(route, parent, path_id);
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   graph_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:39:43 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/11 19:03:14 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/13 02:20:11 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ t_graph* parse_to_graph(t_parse *parse)
 
 	node_map = init_nodes_mapping(list_size);
 	node_map_to_array(parse->nodes_head, node_map);
-	print_graph_mapping(list_size, node_map);
+	// print_graph_mapping(list_size, node_map);
 
 	g = (t_graph*)malloc(sizeof(t_graph));
 	init(g);
@@ -113,6 +113,6 @@ t_graph* parse_to_graph(t_parse *parse)
 		insert_edge(g, node_find_index(node_map, tmp->val), node_find_index(node_map, tmp->key));
 		list_tmp = list_tmp->next;
 	}
-	print_adjlist_list(g);
+	(void)print_adjlist_list;
 	return g;
 }
