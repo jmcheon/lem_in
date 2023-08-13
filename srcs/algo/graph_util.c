@@ -98,3 +98,24 @@ char **init_nodes_mapping(int list_size)
 	nodes_map[i] = NULL;
 	return (nodes_map);
 }
+
+
+void	free_graph(t_graph *g)
+{
+	int i;
+
+	i = 0;
+	t_graph_node *tmp;
+	printf("n:%d\n", g->n);
+	while (i < g->n)
+	{
+		while(g->adj_list[i] != NULL)
+		{
+			tmp = g->adj_list[i];
+			g->adj_list[i] = g->adj_list[i]->link;
+			free(tmp);
+			tmp = NULL;
+		}
+		i++;
+	}
+}

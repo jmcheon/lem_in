@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:39:43 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/13 19:08:54 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/13 20:11:34 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,14 @@ static void init(t_graph *graph, int num_vertices)
 
 	graph->n = num_vertices;
 	v = 0;
-	graph->adj_list = (t_graph_node **)malloc(sizeof(t_graph_node *) * (num_vertices + 1));
+	graph->adj_list = (t_graph_node **)malloc(sizeof(t_graph_node *) * (num_vertices));
 	while (v < num_vertices)
 	{
 		graph->adj_list[v] = NULL;
 		v++;
 	}
-	graph->adj_list[v] = NULL;
+
 }
-
-
 // link in reverse way
 // void insert_edge(t_graph *g, int u, int v)
 // {

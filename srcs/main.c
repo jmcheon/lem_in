@@ -277,7 +277,7 @@ int	main(void)
 	t_route	route;
 
 	int **capacity;
-	int	**temp;
+	// int	**temp;
 	int	*parent;
 
 	parse = parsing();
@@ -295,6 +295,7 @@ int	main(void)
 	while (i < route.num_vertices)
 	{
 		capacity[i] = (int *)malloc(sizeof(int) * (route.num_vertices + 1));
+		ft_memset(capacity[i], 0, route.num_vertices);
 		capacity[i][route.num_vertices] = '\0';
 		i++;
 	}
@@ -311,59 +312,71 @@ int	main(void)
 	// **	edmonds-karp
 	// */
 	parent = (int *)malloc(sizeof(int) * (route.num_vertices));
-	edmonds_karp(&route, route.paths, parent, capacity);
-	// int i = 0;
-	// while (i < (route.list_size))
+	// edmonds_karp(&route, route.paths, parent, capacity);
+	// // int i = 0;
+	// // while (i < (route.list_size))
+	// // {
+	// // 	printf("index: %d, str:[%s]\n", i, route.node_map[i]);
+	// // 	i++;
+	// // }
+	// // print_capacity(capacity, route.num_vertices);
+	// // printf("disjoin paths:\n");
+	// // print_paths(&route, route.paths);
+
+	// // /*
+	// // **	create new temp capacity based on the updated capacity
+	// // */
+	// temp = (int **)malloc(sizeof(int*) * (route.num_vertices + 1));
+	// i = 0;
+	// while (i < route.num_vertices)
 	// {
-	// 	printf("index: %d, str:[%s]\n", i, route.node_map[i]);
+	// 	temp[i] = (int *)malloc(sizeof(int) * (route.num_vertices + 1));
+	// 	temp[i][route.num_vertices] = '\0';
 	// 	i++;
 	// }
-	// print_capacity(capacity, route.num_vertices);
-	// printf("disjoin paths:\n");
-	// print_paths(&route, route.paths);
+	// temp[i] = NULL;
 
-	// /*
-	// **	create new temp capacity based on the updated capacity
-	// */
-	temp = (int **)malloc(sizeof(int*) * (route.num_vertices + 1));
+	// fill_capacity(route.graph, temp);
+	// for (int u = 0; u < route.num_vertices; ++u)
+	// {
+	// 	for (int v = 0; v < route.num_vertices; ++v)
+	// 	{
+	// 		if (capacity[u][v] == 1)
+	// 			temp[u][v] = 0;
+	// 	}
+	// }
+	// // print_capacity(temp, route.num_vertices);
+
+	// // /*
+	// // ** run edmonds-karp with new temp capacity
+	// // */
+	// // init_paths(route.paths);
+	// edmonds_karp(&route, route.paths, parent, temp);
+
+	// // printf("\n\ndisjoin paths:\n");
+	// // print_paths(&route, route.paths);
+	// // print_paths_list(route.paths);
+	// // t_path_len **elements = distribute_ant(route);
+	// // for(int i = 0; i < route.paths->num_paths; i++)
+	// // 	printf("elements - value: %d\t index:%d\tnum_ants:%d\n",
+	// // 		elements[i]->value, elements[i]->index, elements[i]->num_ants);
+
+	// // free(route.paths);
+	ft_lstclear(&parse->nodes_head, free_node_xy);
+	ft_lstclear(&parse->edge_info_head, free_edge);
+	free_graph(route.graph);
+	free(route.graph);
+	free(route.node_map);
+	free(parse);
+	free(parent);
+
 	i = 0;
 	while (i < route.num_vertices)
 	{
-		temp[i] = (int *)malloc(sizeof(int) * (route.num_vertices + 1));
-		temp[i][route.num_vertices] = '\0';
+		free(capacity[i]);
 		i++;
 	}
-	temp[i] = NULL;
-
-	fill_capacity(route.graph, temp);
-	for (int u = 0; u < route.num_vertices; ++u)
-	{
-		for (int v = 0; v < route.num_vertices; ++v)
-		{
-			if (capacity[u][v] == 1)
-				temp[u][v] = 0;
-		}
-	}
-	// print_capacity(temp, route.num_vertices);
-
-	// /*
-	// ** run edmonds-karp with new temp capacity
-	// */
-	// init_paths(route.paths);
-	edmonds_karp(&route, route.paths, parent, temp);
-
-	// printf("\n\ndisjoin paths:\n");
-	// print_paths(&route, route.paths);
-	// print_paths_list(route.paths);
-	// t_path_len **elements =distribute_ant(route);
-	// for(int i = 0; i < route.paths->num_paths; i++)
-	// 	printf("elements - value: %d\t index:%d\tnum_ants:%d\n",
-	// 		elements[i]->value, elements[i]->index, elements[i]->num_ants);
-
-	// free(route.paths);
-	ft_lstclear(&parse->nodes_head, free_node_xy);
-	ft_lstclear(&parse->edge_info_head, free_edge);
-	free(parse);
+	free(capacity);
 
 	// free(route.node_map);
     // print_frames(route, elements);

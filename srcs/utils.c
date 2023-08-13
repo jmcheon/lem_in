@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 16:58:03 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/13 18:32:32 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/13 19:59:55 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,4 @@ void free_edge(void *node)
     edge->key = NULL;
     edge->val = NULL;
 	free(edge);
-}
-
-void	free_linked_list(t_list **list_head)
-{
-	t_list *tmp;
-	while((*list_head) != NULL)
-	{
-		tmp = (*list_head);
-		(*list_head) = (*list_head)->next;
-		free(tmp);
-		tmp = NULL;
-	}
 }
