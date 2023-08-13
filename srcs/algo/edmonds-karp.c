@@ -89,7 +89,7 @@ void print_paths_list(t_paths *paths)
 		while (curr_ptr->next != NULL)
 			curr_ptr = curr_ptr->next;
 		//printf("last vertex:%d\n", curr_ptr->vertex);
-		
+
 
 		printf("path %d - ", i + 1);
 		if (curr_ptr != NULL)
@@ -113,7 +113,7 @@ void	print_paths(t_route* route, t_paths* paths)
 	{
 		int path[MAX_VERTICES];
 		int path_len = 0;
-		
+
 		for (int j = 0; j < route->num_vertices; ++j)
 		{
 			if (paths->paths[i][j] != 0)
@@ -188,11 +188,10 @@ void	init_paths(t_paths* paths)
 void insert_next_parent(t_paths *paths, int v)
 {
 	// create a new node
-	t_path_list *node_ptr = malloc(sizeof(t_int_list));
+	t_path_list *node_ptr = malloc(sizeof(t_path_list));
 	t_path_list *curr_ptr;
 
 	node_ptr->vertex= v;
-	node_ptr->count_ants = 0;
 	node_ptr->next = NULL;
 	node_ptr->prev = NULL;
 

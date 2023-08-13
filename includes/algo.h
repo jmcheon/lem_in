@@ -7,7 +7,7 @@
 # include "./queue.h"
 # include "./parse.h"
 
-#define MAX_VERTICES 10
+#define MAX_VERTICES 50
 
 typedef struct s_graph_node {
 	int vertex;
