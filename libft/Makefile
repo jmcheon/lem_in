@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sucho <sucho@student.42.fr>                +#+  +:+       +#+         #
+#    By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/08 22:03:29 by sucho             #+#    #+#              #
-#    Updated: 2023/08/09 14:47:02 by sucho            ###   ########.fr        #
+#    Updated: 2023/08/13 23:11:40 by cjung-mo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,8 @@ SRCS_BONUS	=	./ft_lstnew.c \
 				./ft_lstdelone.c \
 				./ft_lstclear.c \
 				./ft_lstiter.c \
-				./ft_lstmap.c
+				./ft_lstmap.c \
+				./ft_lstfind_node.c
 
 OBJS		=	${SRCS:.c=.o}
 OBJS_BONUS	=	${SRCS_BONUS:.c=.o}

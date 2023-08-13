@@ -121,26 +121,30 @@ void	free_graph(t_graph *g)
 	free(g->adj_list);
 }
 
-
+void	free_paths_list(t_paths *paths)
+{
+	ft_lstclear(&paths->paths, free);
+}
+/*
 void	free_paths_list(t_paths *paths)
 {
 	int i;
 
 	i = 0;
-	t_path_list *tmp;
+	t_vertex_list *tmp;
 	printf("n:%d\n", paths->num_paths);
 	while (i < paths->num_paths)
 	{
-		while(paths->paths_list[i] != NULL)
+		while(paths->paths[i] != NULL)
 		{
-			tmp = paths->paths_list[i];
-			paths->paths_list[i] = paths->paths_list[i]->next;
+			tmp = paths->paths[i];
+			paths->paths[i] = paths->paths[i]->next;
 			free(tmp);
 			tmp = NULL;
 		}
 		i++;
 	}
-	free(paths->paths_list);
+	free(paths->paths);
 
 	i = 0;
 	while (i < paths->num_paths)
@@ -151,3 +155,4 @@ void	free_paths_list(t_paths *paths)
 	free(paths->paths[i]);
 	free(paths->paths);
 }
+*/
