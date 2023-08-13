@@ -339,7 +339,6 @@ int	main(void)
 	// // 		elements[i]->value, elements[i]->index, elements[i]->num_ants);
 
 	free(route.paths);
-	// free_2d(route.node_map);
 	ft_lstclear(&parse->nodes_head, free_node_xy);
 	ft_lstclear(&parse->edge_info_head, free_edge);
 	free(parse);

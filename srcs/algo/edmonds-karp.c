@@ -241,12 +241,11 @@ void	init_route(t_route* route, t_parse* parse)
 {
 	route->num_ants = parse->num_ants;
 	route->list_size = ft_lstsize(parse->nodes_head);
-
 	route->node_map = node_map_to_array(parse->nodes_head);
 	int	i = 0;
 	while (i < route->list_size)
 	{
-		printf("%s\n", route->node_map[i]);
+		printf("[%s]\n", route->node_map[i]);
 		i++;
 	}
 

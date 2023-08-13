@@ -40,15 +40,6 @@ char	**node_map_to_array(t_list *nodes_head)
 	char *end;
 
 	ret = (char**)malloc(sizeof(char*) * (ft_lstsize(nodes_head) + 1));
-	i = 0;
-	printf("%d\n",ft_lstsize(nodes_head));
-	// while (i < ft_lstsize(nodes_head))
-	// {
-	// 	ret[i] = NULL;
-	// 	i++;
-	// }
-	// ret[i] = NULL;
-
 	start = NULL;
 	end = NULL;
 	i = 0;
