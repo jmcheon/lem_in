@@ -1,7 +1,7 @@
 #include "../../includes/queue.h"
 #include "../../includes/lem-in.h"
 
-int bfs(t_route* route, int* parent, int capacity[][MAX_VERTICES])
+int bfs(t_route* route, int* parent, int **capacity)
 {
 	int	n = route->graph->n;
 	int	visited[n];
@@ -111,7 +111,7 @@ void	print_paths(t_route* route, t_paths* paths)
 {
 	for (int i = 0; i < paths->num_paths; ++i)
 	{
-		int path[MAX_VERTICES];
+		int path[route->num_vertices];
 		int path_len = 0;
 
 		for (int j = 0; j < route->num_vertices; ++j)
@@ -133,7 +133,7 @@ void	print_paths(t_route* route, t_paths* paths)
 	}
 }
 
-void	fill_capacity(t_graph* graph, int capacity[][MAX_VERTICES])
+void	fill_capacity(t_graph* graph, int **capacity)
 {
 	for (int u = 0; u < graph->n; ++u)
 	{
@@ -148,7 +148,7 @@ void	fill_capacity(t_graph* graph, int capacity[][MAX_VERTICES])
 	}
 }
 
-void	print_capacity(int capacity[][MAX_VERTICES], int n)
+void	print_capacity(int **capacity, int n)
 {
 	printf("\nprint capacity:\n\n");
 	for (int u = 0; u < n; ++u)
@@ -174,15 +174,18 @@ void	init_path(t_path_list* path)
 	path->prev = NULL;
 }
 
-void	init_paths(t_paths* paths)
+void	init_paths(t_paths* paths, int num_vertices)
 {
 	paths->num_paths = 0;
-	ft_memset(paths->paths, 0, sizeof(paths->paths));
-	for (int i = 0; i < MAX_VERTICES; ++i)
+	paths->paths = (int **)malloc(sizeof(int **) *(num_vertices + 1));
+	paths->paths_list = (t_path_list **)malloc(sizeof(t_path_list *) * (num_vertices));
+	for (int i = 0; i < num_vertices; ++i)
 	{
+		paths->paths[i] = (int*)malloc(sizeof(int**) * (num_vertices));
 		//init_path(paths->paths_list[i]);
 		paths->paths_list[i] = NULL;
 	}
+	paths->paths[num_vertices] = 0;
 }
 
 void insert_next_parent(t_paths *paths, int v)
@@ -210,7 +213,7 @@ void insert_next_parent(t_paths *paths, int v)
 	}
 }
 
-void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int capacity[][MAX_VERTICES])
+void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int **capacity)
 {
 	// int	path_id = 0;
 
@@ -242,19 +245,18 @@ void	init_route(t_route* route, t_parse* parse)
 	route->num_ants = parse->num_ants;
 	route->num_vertices = ft_lstsize(parse->nodes_head);
 	route->node_map = node_map_to_array(parse->nodes_head);
-	int	i = 0;
-	while (i < route->num_vertices)
-	{
-		// printf("[%s]\n", route->node_map[i]);
-		i++;
-	}
+	// int	i = 0;
+	// while (i < route->num_vertices)
+	// {
+	// 	// printf("[%s]\n", route->node_map[i]);
+	// 	i++;
+	// }
 	route->graph = parse_to_graph(parse, route);
 	route->start = 0;
 	route->end = route->num_vertices - 1;
-	// route->num_vertices = route->graph->n;
 
 	route->paths = (t_paths*)malloc(sizeof(t_paths));
-	init_paths(route->paths);
+	init_paths(route->paths, route->num_vertices);
 
 }
 

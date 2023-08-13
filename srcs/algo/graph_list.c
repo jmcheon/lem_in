@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:39:43 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/13 19:07:50 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/13 19:08:54 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ t_graph* parse_to_graph(t_parse *parse, t_route *route)
 		insert_edge(g, node_find_index(route->node_map, tmp->val), node_find_index(route->node_map, tmp->key));
 		edge_head = edge_head->next;
 	}
+	(void)print_adjlist_list;
 	// print_adjlist_list(g);
 	return g;
 }
