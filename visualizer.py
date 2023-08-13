@@ -45,6 +45,8 @@ def parse_input(input_string):
     lines = input_string.strip().split('\n')
     nodes = []
     edges = []
+    pos = {}
+
     start_flag = 0
     end_flag = 0
     start_node = 0
@@ -58,7 +60,7 @@ def parse_input(input_string):
             start_flag = 1
         elif line == '##end':
             end_flag = 1
-        elif '##' not in line and len(line) > 1:
+        elif '##' and '#' not in line and len(line) > 1:
             node_info = line.split()
             node = node_info[0]
             nodes.append(node)
@@ -68,7 +70,7 @@ def parse_input(input_string):
             if end_flag == 1:
                 end_node = node_info[0]
                 end_flag = 0
-    pos = { node_info[0]: (float(node_info[1]), float(node_info[2])) for node_info in [line.split() for line in lines if '##' not in line and len(line) > 1 and '-' not in line] }
+            pos[node] = (float(node_info[1]), float(node_info[2]))
 
     return nodes, edges, pos, start_node, end_node
 
