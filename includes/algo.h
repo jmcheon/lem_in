@@ -77,14 +77,14 @@ void print_paths_list(t_paths *paths);
 **	graph_list.c
 */
 
-t_graph	*parse_to_graph(t_parse *parse);
+t_graph	*parse_to_graph(t_parse *parse, t_route *route);
 
 
 
 /*
 **	graph_util.c
 */
-void node_map_to_array(t_list *nodes_head, char **node_map);
+char **node_map_to_array(t_list *nodes_head);
 int	node_find_index(char **node_array, char *node_name);
 void	print_graph_mapping(int list_size, char **node_map);
 char **init_nodes_mapping(int list_size);

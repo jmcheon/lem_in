@@ -13,8 +13,8 @@ static void	swap_start_end(char **node_map, char *start, char *end, int array_le
 			str_tmp = node_map[0];
 			node_map[0] = start;
 			node_map[i] = str_tmp;
+			break;
 		}
-
 		i++;
 	}
 	i = 0;
@@ -25,17 +25,29 @@ static void	swap_start_end(char **node_map, char *start, char *end, int array_le
 			str_tmp = node_map[array_len - 1];
 			node_map[array_len - 1] = end;
 			node_map[i] = str_tmp;
+			break;
 		}
 		i++;
 	}
 }
 
-void node_map_to_array(t_list *nodes_head, char **node_map)
+char	**node_map_to_array(t_list *nodes_head)
 {
+	char **ret;
 	int i;
 	t_node_xy *tmp;
 	char *start;
 	char *end;
+
+	ret = (char**)malloc(sizeof(char*) * (ft_lstsize(nodes_head) + 1));
+	i = 0;
+	printf("%d\n",ft_lstsize(nodes_head));
+	// while (i < ft_lstsize(nodes_head))
+	// {
+	// 	ret[i] = NULL;
+	// 	i++;
+	// }
+	// ret[i] = NULL;
 
 	start = NULL;
 	end = NULL;
@@ -43,15 +55,16 @@ void node_map_to_array(t_list *nodes_head, char **node_map)
 	while (nodes_head != 0)
 	{
 		tmp = nodes_head->content;
-		node_map[i] = tmp->name;
+		ret[i] = tmp->name;
 		if (tmp->node_type == PARSE_XY_START)
 			start = tmp->name;
 		else if (tmp->node_type == PARSE_XY_END)
 			end = tmp->name;
-		i++;
 		nodes_head = nodes_head->next;
+		i++;
 	}
-	swap_start_end(node_map, start, end, i);
+	swap_start_end(ret, start, end, i);
+	return (ret);
 }
 
 int	node_find_index(char **node_array, char *node_name)
