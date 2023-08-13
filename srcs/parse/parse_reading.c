@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 20:44:25 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/13 18:34:47 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/13 22:23:09 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,15 +120,13 @@ int	check_nodeline_status(char *line, int parse_status, t_list **node)
 }
 
 // line number keep? or no?
-void	parse_check_nodeline(t_list **line_head, t_parse **parse)
+int	parse_check_nodeline(t_list **line_head, t_parse **parse)
 {
 	t_list	*tmp;
 	int parse_status;
-	// int	line_count;
 
 	tmp = (*parse)->nodes_head;
 	parse_status = 0;
-	// line_count = 1;
 	while ((*line_head) != NULL)
 	{
 		parse_status = check_nodeline_status((*line_head)->content, parse_status, &tmp);
@@ -142,7 +140,7 @@ void	parse_check_nodeline(t_list **line_head, t_parse **parse)
 			ft_putstr_fd("Error in line ?????????????", STDOUT_FILENO);
 			// ft_putnbr_fd(line_count, STDOUT_FILENO);
 			ft_putchar_fd('\n', STDOUT_FILENO);
-			exit(1);
+			return (0);
 		}
 		else if (parse_status == PARSE_XY && tmp->content != NULL)
 		{
@@ -157,6 +155,7 @@ void	parse_check_nodeline(t_list **line_head, t_parse **parse)
 		(*line_head) = (*line_head)->next;
 		// line_count++;
 	}
+	return (1);
 }
 
 void	parse_check_antnum(t_list **line_head, t_parse **parse)

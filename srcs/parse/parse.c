@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 16:23:39 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/13 18:12:07 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/13 22:33:45 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,14 @@ t_parse	*parsing()
 	parse_readlines(lines);
 	lines_head = lines;
 	parse_check_antnum(&lines, &ret);
-	parse_check_nodeline(&lines, &ret);
+	if (!parse_check_nodeline(&lines, &ret))
+	{
+		free_list(lines_head);
+		ft_lstclear(&ret->nodes_head, free_node_xy);
+		ft_lstclear(&ret->edge_info_head, free_edge);
+		free(ret);
+		exit(1);
+	}
 	parse_check_edgeline(&lines, &ret);
 	free_list(lines_head);
 	if(!duplicates_check(ret))

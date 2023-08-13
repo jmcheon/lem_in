@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_util.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:52:20 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/11 19:07:40 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/13 22:33:26 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,3 +74,32 @@ void	free_list(t_list *head)
 		free(tmp);
 	}
 }
+
+void free_node_xy(void *node)
+{
+    t_node_xy *node_xy = (t_node_xy *)node;
+	if(node_xy == NULL)
+		return ;
+    free(node_xy->name);
+    free(node_xy->x);
+    free(node_xy->y);
+	node_xy->name = NULL;
+	node_xy->x= NULL;
+	node_xy->y= NULL;
+	free(node_xy);
+}
+
+void free_edge(void *node)
+{
+    t_edge *edge = (t_edge *)node;
+	if(edge == NULL)
+		return ;
+	if (edge->key != NULL)
+    	free(edge->key);
+	if (edge->val != NULL)
+ 	   free(edge->val);
+    edge->key = NULL;
+    edge->val = NULL;
+	free(edge);
+}
+

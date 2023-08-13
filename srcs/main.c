@@ -274,44 +274,44 @@ int	main(void)
 {
 	t_parse	*parse;
 	// t_paths	paths;
-	t_route	route;
+	// t_route	route;
 
-	int **capacity;
+	// int **capacity;
 	// int	**temp;
-	int	*parent;
+	// int	*parent;
 
 	parse = parsing();
 	// printf("parse result:\n");
 	// parse_result_print(parse);
 
-	/*
-	**	create node map
-	*/
-	init_route(&route, parse);
-	// init_paths(&paths);
-
-	capacity = (int **)malloc(sizeof(int*) * (route.num_vertices + 1));
-	int i = 0;
-	while (i < route.num_vertices)
-	{
-		capacity[i] = (int *)malloc(sizeof(int) * (route.num_vertices + 1));
-		ft_memset(capacity[i], 0, route.num_vertices);
-		capacity[i][route.num_vertices] = '\0';
-		i++;
-	}
-	capacity[i] = NULL;
-
-
-	printf("number of vertices: %d\n", route.num_vertices);
-	printf("start: (%d)\n", route.start);
-	printf("end: (%d)\n", route.end);
-	fill_capacity(route.graph, capacity);
-	// print_capacity(capacity, route.num_vertices);
-
 	// /*
-	// **	edmonds-karp
+	// **	create node map
 	// */
-	parent = (int *)malloc(sizeof(int) * (route.num_vertices));
+	// init_route(&route, parse);
+	// // init_paths(&paths);
+
+	// capacity = (int **)malloc(sizeof(int*) * (route.num_vertices + 1));
+	// int i = 0;
+	// while (i < route.num_vertices)
+	// {
+	// 	capacity[i] = (int *)malloc(sizeof(int) * (route.num_vertices + 1));
+	// 	ft_memset(capacity[i], 0, route.num_vertices);
+	// 	capacity[i][route.num_vertices] = '\0';
+	// 	i++;
+	// }
+	// capacity[i] = NULL;
+
+
+	// printf("number of vertices: %d\n", route.num_vertices);
+	// printf("start: (%d)\n", route.start);
+	// printf("end: (%d)\n", route.end);
+	// fill_capacity(route.graph, capacity);
+	// // print_capacity(capacity, route.num_vertices);
+
+	// // /*
+	// // **	edmonds-karp
+	// // */
+	// parent = (int *)malloc(sizeof(int) * (route.num_vertices));
 	// edmonds_karp(&route, route.paths, parent, capacity);
 	// // int i = 0;
 	// // while (i < (route.list_size))
@@ -365,26 +365,26 @@ int	main(void)
 	ft_lstclear(&parse->nodes_head, free_node_xy);
 	ft_lstclear(&parse->edge_info_head, free_edge);
 	// free_graph
-	free_graph(route.graph);
-	free(route.graph);
+	// free_graph(route.graph);
+	// free(route.graph);
 
-	//free paths
-	free_paths_list(route.paths);
-	free(route.paths);
+	// //free paths
+	// free_paths_list(route.paths);
+	// free(route.paths);
 
 
 
-	free(route.node_map);
+	// free(route.node_map);
 	free(parse);
-	free(parent);
+	// free(parent);
 
-	i = 0;
-	while (i < route.num_vertices)
-	{
-		free(capacity[i]);
-		i++;
-	}
-	free(capacity);
+	// i = 0;
+	// while (i < route.num_vertices)
+	// {
+	// 	free(capacity[i]);
+	// 	i++;
+	// }
+	// free(capacity);
 
 	// free(route.node_map);
     // print_frames(route, elements);

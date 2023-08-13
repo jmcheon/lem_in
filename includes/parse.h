@@ -59,7 +59,7 @@ int		edgeline_to_struct(char *line, t_list **node);
 void	parse_check_edgeline(t_list **line_head, t_parse **parse);
 int		nodeline_to_struct(char *line, int parse_status, t_list **node);
 int		check_nodeline_status(char *line, int parse_status, t_list **node);
-void	parse_check_nodeline(t_list **line_head, t_parse **parse);
+int		parse_check_nodeline(t_list **line_head, t_parse **parse);
 void	parse_check_antnum(t_list **line_head, t_parse **parse);
 
 /*
@@ -79,5 +79,7 @@ int		check_split_count(char *line, char delim);
 void	parse_result_print(t_parse *parse);
 void	free_2d(char **ptr);
 void	free_list(t_list *head);
+void	free_node_xy(void *node);
+void	free_edge(void *node);
 
 #endif
