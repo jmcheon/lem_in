@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:52:20 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/13 22:33:26 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/13 23:02:02 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,3 +103,20 @@ void free_edge(void *node)
 	free(edge);
 }
 
+t_parse	*init_parse_struct(void)
+{
+	t_parse *parse;
+	parse = (t_parse *)malloc(sizeof(t_parse));
+	parse->nodes_head = ft_lstnew(NULL);
+	parse->edge_info_head = ft_lstnew(NULL);
+	return (parse);
+}
+
+void free_ongoing_parse(t_list *lines_head, t_parse *parse)
+{
+	free_list(lines_head);
+	ft_lstclear(&parse->nodes_head, free_node_xy);
+	ft_lstclear(&parse->edge_info_head, free_edge);
+	free(parse);
+	exit(1);
+}

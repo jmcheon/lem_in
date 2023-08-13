@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 16:23:39 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/13 22:33:45 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/13 23:02:00 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,26 @@ void parse_readlines(t_list *lines)
 	}
 }
 
-t_parse	*init_parse_struct(void)
+
+int		check_start_and_end(t_list *nodes)
 {
-	t_parse *parse;
-	parse = (t_parse *)malloc(sizeof(t_parse));
-	parse->nodes_head = ft_lstnew(NULL);
-	parse->edge_info_head = ft_lstnew(NULL);
-	return (parse);
+	int check;
+
+	check = 0;
+	while(nodes != NULL)
+	{
+		t_node_xy *tmp;
+		tmp = (t_node_xy*) nodes->content;
+		if (tmp->node_type == PARSE_XY_START || tmp->node_type == PARSE_XY_END)
+			check += tmp->node_type;
+		nodes = nodes->next;
+	}
+	if (check != (PARSE_XY_START + PARSE_XY_END))
+	{
+		printf("error with start and end of nodes\n");
+		return (0);
+	}
+	return (1);
 }
 
 t_parse	*parsing()
@@ -75,14 +88,11 @@ t_parse	*parsing()
 	lines_head = lines;
 	parse_check_antnum(&lines, &ret);
 	if (!parse_check_nodeline(&lines, &ret))
-	{
-		free_list(lines_head);
-		ft_lstclear(&ret->nodes_head, free_node_xy);
-		ft_lstclear(&ret->edge_info_head, free_edge);
-		free(ret);
-		exit(1);
-	}
-	parse_check_edgeline(&lines, &ret);
+		free_ongoing_parse(lines_head, ret);
+	if (!check_start_and_end(ret->nodes_head))
+		free_ongoing_parse(lines_head, ret);
+	if (!parse_check_edgeline(&lines, &ret))
+		free_ongoing_parse(lines_head, ret);
 	free_list(lines_head);
 	if(!duplicates_check(ret))
 		exit(1);
