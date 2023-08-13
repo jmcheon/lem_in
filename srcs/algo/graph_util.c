@@ -118,4 +118,36 @@ void	free_graph(t_graph *g)
 		}
 		i++;
 	}
+	free(g->adj_list);
+}
+
+
+void	free_paths_list(t_paths *paths)
+{
+	int i;
+
+	i = 0;
+	t_path_list *tmp;
+	printf("n:%d\n", paths->num_paths);
+	while (i < paths->num_paths)
+	{
+		while(paths->paths_list[i] != NULL)
+		{
+			tmp = paths->paths_list[i];
+			paths->paths_list[i] = paths->paths_list[i]->next;
+			free(tmp);
+			tmp = NULL;
+		}
+		i++;
+	}
+	free(paths->paths_list);
+
+	i = 0;
+	while (i < paths->num_paths)
+	{
+		free(paths->paths[i]);
+		i++;
+	}
+	free(paths->paths[i]);
+	free(paths->paths);
 }

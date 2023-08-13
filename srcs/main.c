@@ -364,8 +364,16 @@ int	main(void)
 	// // free(route.paths);
 	ft_lstclear(&parse->nodes_head, free_node_xy);
 	ft_lstclear(&parse->edge_info_head, free_edge);
+	// free_graph
 	free_graph(route.graph);
 	free(route.graph);
+
+	//free paths
+	free_paths_list(route.paths);
+	free(route.paths);
+
+
+
 	free(route.node_map);
 	free(parse);
 	free(parent);

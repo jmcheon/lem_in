@@ -88,6 +88,8 @@ int	node_find_index(char **node_array, char *node_name);
 void	print_graph_mapping(int list_size, char **node_map);
 char **init_nodes_mapping(int list_size);
 void	free_graph(t_graph *g);
+void	free_paths_list(t_paths *paths);
+
 
 
 

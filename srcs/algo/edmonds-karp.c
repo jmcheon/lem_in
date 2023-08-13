@@ -176,12 +176,12 @@ void	init_path(t_path_list* path)
 
 void	init_paths(t_paths* paths, int num_vertices)
 {
-	paths->num_paths = 0;
+	paths->num_paths = num_vertices;
 	paths->paths = (int **)malloc(sizeof(int **) *(num_vertices + 1));
 	paths->paths_list = (t_path_list **)malloc(sizeof(t_path_list *) * (num_vertices));
-	for (int i = 0; i < num_vertices; ++i)
+	for (int i = 0; i < num_vertices; i++)
 	{
-		paths->paths[i] = (int*)malloc(sizeof(int**) * (num_vertices));
+		paths->paths[i] = (int*)malloc(sizeof(int) * (num_vertices));
 		//init_path(paths->paths_list[i]);
 		paths->paths_list[i] = NULL;
 	}
