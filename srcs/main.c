@@ -274,7 +274,7 @@ int	main(void)
 {
 	t_parse	*parse;
 	//t_paths	paths;
-	t_route	route;
+	// t_route	route;
 
 	// int	capacity[MAX_VERTICES][MAX_VERTICES] = {0};
 	// int	temp[MAX_VERTICES][MAX_VERTICES] = {0};
@@ -287,7 +287,7 @@ int	main(void)
 	/*
 	**	create node map
 	*/
-	init_route(&route, parse);
+	// init_route(&route, parse);
 	//init_paths(&paths);
 
 	// // printf("number of vertices: %d\n", route.num_vertices);
@@ -338,12 +338,12 @@ int	main(void)
 	// // 	printf("elements - value: %d\t index:%d\tnum_ants:%d\n",
 	// // 		elements[i]->value, elements[i]->index, elements[i]->num_ants);
 
-	free(route.paths);
+	// free(route.paths);
 	ft_lstclear(&parse->nodes_head, free_node_xy);
 	ft_lstclear(&parse->edge_info_head, free_edge);
-	free(parse);
+	// free(parse);
 
-	free(route.node_map);
+	// free(route.node_map);
     // print_frames(route, elements);
 
 	return (0);

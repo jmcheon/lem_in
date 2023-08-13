@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_reading.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 20:44:25 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/11 19:07:33 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/13 18:34:47 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,21 @@ void	parse_check_edgeline(t_list **line_head, t_parse **parse)
 {
 	t_list	*tmp;
 	int parse_status;
+	char *str_tmp;
 
 	tmp = (*parse)->edge_info_head;
 	while ((*line_head) != NULL)
 	{
 		parse_status = edgeline_to_struct((*line_head)->content, &tmp);
-		if (!parse_status)
+		if (parse_status == PARSE_COMMENT)
+		{
+			if ((*line_head)->next == NULL)
+			{
+				break;
+			}
+			parse_status = PARSE_EDGE;
+		}
+		else if (!parse_status)
 		{
 			ft_putstr_fd("Error in line ", STDOUT_FILENO);
 			// ft_putnbr_fd(line_count, STDOUT_FILENO);
@@ -54,8 +63,12 @@ void	parse_check_edgeline(t_list **line_head, t_parse **parse)
 		{
 			if((*line_head)->next == NULL)
 				break;
-			tmp->next = ft_lstnew(NULL);
-			tmp = tmp->next;
+			str_tmp = (*line_head)->next->content;
+			if (!(str_tmp[0] == '#'))
+			{
+				tmp->next = ft_lstnew(NULL);
+				tmp = tmp->next;
+			}
 		}
 		(*line_head) = (*line_head)->next;
 	}

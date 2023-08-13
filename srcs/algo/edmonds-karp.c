@@ -245,10 +245,10 @@ void	init_route(t_route* route, t_parse* parse)
 	int	i = 0;
 	while (i < route->list_size)
 	{
-		printf("[%s]\n", route->node_map[i]);
+		// printf("[%s]\n", route->node_map[i]);
 		i++;
 	}
-
+	printf("%d\n", i);
 	// route->graph = parse_to_graph(parse, route);
 	route->start = 0;
 	route->end = route->list_size - 1;

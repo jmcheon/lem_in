@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 16:58:03 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/13 16:59:39 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/13 18:32:32 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@ void free_node_xy(void *node)
 void free_edge(void *node)
 {
     t_edge *edge = (t_edge *)node;
-    free(edge->key);
-    free(edge->val);
+	if (edge->key != NULL)
+    	free(edge->key);
+	if (edge->val != NULL)
+ 	   free(edge->val);
     edge->key = NULL;
     edge->val = NULL;
 	free(edge);
