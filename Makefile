@@ -6,7 +6,7 @@
 #    By: sucho <sucho@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/05 02:01:35 by sucho             #+#    #+#              #
-#    Updated: 2023/08/13 16:59:26 by sucho            ###   ########.fr        #
+#    Updated: 2023/08/13 23:10:43 by sucho            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ SRCS					=	./includes/get_next_line/get_next_line_bonus.c \
 							./srcs/parse/parse.c \
 							./srcs/parse/parse_reading.c \
 							./srcs/parse/parse_check.c \
+							./srcs/parse/parse_free.c \
 							./srcs/parse/parse_util.c \
 							./srcs/algo/edmonds-karp.c \
 							./srcs/algo/graph_list.c \

@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 16:23:39 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/13 23:02:00 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/13 23:16:37 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,19 @@ bool	duplicates_check(t_parse *parse)
 	return result;
 }
 
+void	parse_check_antnum(t_list **line_head, t_parse **parse)
+{
+	if (!(0 < ft_atoi((*line_head)->content) && \
+			ft_atoi((*line_head)->content) <= INT_MAX))
+	{
+		ft_putstr_fd("Error in first line: ant number is wrong \n", STDOUT_FILENO);
+		exit(1);
+	}
+	(*parse)->num_ants = ft_atoi((*line_head)->content);
+	(*line_head) = (*line_head)->next;
+}
+
+
 void parse_readlines(t_list *lines)
 {
 	char *tmp_read;
@@ -54,26 +67,13 @@ void parse_readlines(t_list *lines)
 	}
 }
 
-
-int		check_start_and_end(t_list *nodes)
+t_parse	*init_parse_struct(void)
 {
-	int check;
-
-	check = 0;
-	while(nodes != NULL)
-	{
-		t_node_xy *tmp;
-		tmp = (t_node_xy*) nodes->content;
-		if (tmp->node_type == PARSE_XY_START || tmp->node_type == PARSE_XY_END)
-			check += tmp->node_type;
-		nodes = nodes->next;
-	}
-	if (check != (PARSE_XY_START + PARSE_XY_END))
-	{
-		printf("error with start and end of nodes\n");
-		return (0);
-	}
-	return (1);
+	t_parse *parse;
+	parse = (t_parse *)malloc(sizeof(t_parse));
+	parse->nodes_head = ft_lstnew(NULL);
+	parse->edge_info_head = ft_lstnew(NULL);
+	return (parse);
 }
 
 t_parse	*parsing()
@@ -93,8 +93,8 @@ t_parse	*parsing()
 		free_ongoing_parse(lines_head, ret);
 	if (!parse_check_edgeline(&lines, &ret))
 		free_ongoing_parse(lines_head, ret);
-	free_list(lines_head);
 	if(!duplicates_check(ret))
-		exit(1);
+		free_ongoing_parse(lines_head, ret);
+	free_list(lines_head);
 	return ret;
 }
