@@ -42,10 +42,10 @@ void insert_vertex(t_graph *g, int v)
 // 	g->adj_list[u] = node;
 // }
 
-void insert_edge(t_graph* g, int u, int v) {
+int insert_edge(t_graph* g, int u, int v) {
     if (u >= g->n || v >= g->n) {
         printf("vertex index error\n");
-        return;
+        return (0);
     }
 
     // create a new edge node
@@ -63,6 +63,7 @@ void insert_edge(t_graph* g, int u, int v) {
         }
         curr->link = new_edge;
     }
+	return (1);
 }
 
 void print_adj_list(t_graph *g)

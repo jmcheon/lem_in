@@ -6,13 +6,13 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 07:19:48 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/14 17:15:25 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/14 17:20:04 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/lem-in.h"
 
-int	ft_intlen(int *s)
+int		ft_intlen(int *s)
 {
 	int i = 0;
 	while (s[i] != '\0')
@@ -22,7 +22,7 @@ int	ft_intlen(int *s)
 	return (i);
 }
 
-void ants_dist_fillin(int *ant_dist, t_path_len **elements, t_route route, int dist_begin)
+void	ants_dist_fillin(int *ant_dist, t_path_len **elements, t_route route, int dist_begin)
 {
 	int ants_to_dist = route.num_ants;
 	int dist_len = route.paths->num_paths - dist_begin;
@@ -47,7 +47,7 @@ void ants_dist_fillin(int *ant_dist, t_path_len **elements, t_route route, int d
 	}
 }
 
-int	ants_find_dist_begin(t_path_len **elements, int num_paths, int num_ants)
+int		ants_find_dist_begin(t_path_len **elements, int num_paths, int num_ants)
 {
 	int ret;
 
@@ -68,11 +68,37 @@ int	ants_find_dist_begin(t_path_len **elements, int num_paths, int num_ants)
 	return (ret);
 }
 
-t_path_len **ants_init_elements(t_route route, int num_paths)
+void	ants_setup_elements(t_path_len **elements, t_route route)
+{
+	t_list *paths_head;
+	t_vertex_list *onepath_head;
+	int i;
+	int j;
+
+	paths_head = route.paths->paths;
+	onepath_head = (t_vertex_list*)paths_head->content;
+	i = 0;
+	while (paths_head != NULL)
+	{
+		elements[i]->index = i;
+		j = 0;
+		onepath_head = (t_vertex_list*)paths_head->content;
+		while(onepath_head != NULL)
+		{
+			j++;
+			onepath_head = onepath_head->next;
+		}
+		elements[i]->value = j; // start and end
+		elements[i]->num_ants = 0;
+		i++;
+		paths_head = paths_head->next;
+	}
+
+}
+
+t_path_len	**ants_init_elements(t_route route, int num_paths)
 {
 	t_path_len **ret;
-	t_vertex_list *onepath_head;
-
 
 	ret = (t_path_len**)malloc(sizeof(t_path_len*) * (num_paths + 1));
 	int i = 0;
@@ -82,36 +108,12 @@ t_path_len **ants_init_elements(t_route route, int num_paths)
 		i++;
 	}
 	ret[i] = NULL;
-
-	t_list *paths_head;
-
-	i =0;
-	paths_head = route.paths->paths;
-
-	onepath_head = (t_vertex_list*)paths_head->content;
-
-	int j;
-	i = 0;
-	while (paths_head != NULL)
-	{
-		ret[i]->index = i;
-		j = 0;
-		onepath_head = (t_vertex_list*)paths_head->content;
-		while(onepath_head != NULL)
-		{
-			j++;
-			onepath_head = onepath_head->next;
-		}
-		ret[i]->value = j; // start and end
-		ret[i]->num_ants = 0;
-		i++;
-		paths_head = paths_head->next;
-	}
+	ants_setup_elements(ret, route);
 
 	return (ret);
 }
 
-t_path_len **ants_distribute(t_route route)
+t_path_len	**ants_distribute(t_route route)
 {
 	// printf("num_paths:%d\tant_num:%d\n", route.paths->num_paths, route.num_ants);
 

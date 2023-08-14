@@ -296,6 +296,10 @@ int	main(void)
 	// // print_paths(&route, route.paths);
 	// // print_paths_list(route.paths);
 	t_path_len **elements = ants_distribute(route);
+	// for(int i = 0; i < route.paths->num_paths; i++)
+	// 	printf("elements - value: %d\t index:%d\tnum_ants:%d\n",
+	// 		elements[i]->value, elements[i]->index, elements[i]->num_ants);
+
     print_frames(route, elements);
 
 	for (int u = 0; u < route.num_vertices; ++u)

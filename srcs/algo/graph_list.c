@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:39:43 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/14 03:49:55 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/14 17:53:47 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ static void init(t_graph *graph, int num_vertices)
 // 	g->adj_list[u] = node;
 // }
 
-static void insert_edge(t_graph *g, int u, int v)
+static int insert_edge(t_graph *g, int u, int v)
 {
 	if (u >= g->n || v >= g->n)
 	{
 		printf("vertex index error\n");
-		return;
+		return 0;
 	}
 
 	// create a new edge node
@@ -66,6 +66,7 @@ static void insert_edge(t_graph *g, int u, int v)
 			curr = curr->link;
 		curr->link = new_edge;
 	}
+	return (1);
 }
 
 static void print_adjlist_list(t_graph *g)
@@ -103,8 +104,10 @@ t_graph* parse_to_graph(t_parse *parse, t_route *route)
 	for(int i = 0; i < ft_lstsize(parse->edge_info_head); i++)
 	{
 		tmp = edge_head->content;
-		insert_edge(g, node_find_index(route->node_map, tmp->key), node_find_index(route->node_map, tmp->val));
-		insert_edge(g, node_find_index(route->node_map, tmp->val), node_find_index(route->node_map, tmp->key));
+		if (!insert_edge(g, node_find_index(route->node_map, tmp->key), node_find_index(route->node_map, tmp->val)))
+			printf("free everything here");
+		if (!insert_edge(g, node_find_index(route->node_map, tmp->val), node_find_index(route->node_map, tmp->key)))
+			printf("free everything here");
 		edge_head = edge_head->next;
 	}
 	(void)print_adjlist_list;
