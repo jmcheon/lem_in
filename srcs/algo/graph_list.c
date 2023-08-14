@@ -93,21 +93,39 @@ t_graph* parse_to_graph(t_parse *parse, t_route *route)
 {
 	t_graph *g;
 	t_edge *tmp;
+	t_list *edge_head;
+	int edges_total_num;
+	int edge_one;
+	int edge_two;
 
 	// print_graph_mapping(route->num_vertices, route->node_map);
-
 	g = (t_graph*)malloc(sizeof(t_graph));
 	init(g, route->num_vertices);
-
-	t_list *edge_head;
 	edge_head = parse->edge_info_head;
-	for(int i = 0; i < ft_lstsize(parse->edge_info_head); i++)
+	edges_total_num = ft_lstsize(parse->edge_info_head);
+	for(int i = 0; i < edges_total_num; i++)
 	{
 		tmp = edge_head->content;
-		if (!insert_edge(g, node_find_index(route->node_map, tmp->key), node_find_index(route->node_map, tmp->val)))
+		edge_one = node_find_index(route->node_map, tmp->key, route->num_vertices);
+		edge_two = node_find_index(route->node_map, tmp->val, route->num_vertices);
+		if (edge_one < 0 || edge_two < 0)
+		{
+			free_graph(g);
+			free(g);
 			return (NULL);
-		if (!insert_edge(g, node_find_index(route->node_map, tmp->val), node_find_index(route->node_map, tmp->key)))
+		}
+		if (!insert_edge(g, edge_one, edge_two))
+		{
+			free_graph(g);
+			free(g);
 			return (NULL);
+		}
+		if (!insert_edge(g, edge_two, edge_one))
+		{
+			free_graph(g);
+			free(g);
+			return (NULL);
+		}
 		edge_head = edge_head->next;
 	}
 	(void)print_adjlist_list;
