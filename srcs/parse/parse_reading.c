@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 20:44:25 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/13 23:14:49 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/14 22:09:24 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,10 +135,7 @@ int	parse_check_nodeline(t_list **line_head, t_parse **parse)
 			parse_status = PARSE_XY;
 		else if (!parse_status)
 		{
-			printf("%s",(char *)(*line_head)->content);
-			ft_putstr_fd("Error in line ?????????????", STDOUT_FILENO);
-			// ft_putnbr_fd(line_count, STDOUT_FILENO);
-			ft_putchar_fd('\n', STDOUT_FILENO);
+			ft_putstr_fd("Error in node lines\n", STDOUT_FILENO);
 			return (0);
 		}
 		else if (parse_status == PARSE_XY && tmp->content != NULL)

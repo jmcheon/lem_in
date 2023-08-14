@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 16:36:46 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/14 18:03:06 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/14 22:06:23 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,13 @@ void	ants_print_oneframe(t_ants_print **test, int total_used_path, int longest_p
 			if (test[i][j].node_name != NULL && \
 				test[i][j].ant_current <= test[i][j].ant_max &&\
 				test[i][j].ant_current != 0)
-				printf("L%d-%s ", test[i][j].ant_current, test[i][j].node_name);
+			{
+				ft_putchar_fd('L', STDOUT_FILENO);
+				ft_putnbr_fd(test[i][j].ant_current, STDOUT_FILENO);
+				ft_putchar_fd('-', STDOUT_FILENO);
+				ft_putstr_fd(test[i][j].node_name, STDOUT_FILENO);
+				ft_putchar_fd(' ', STDOUT_FILENO);
+			}
 		}
 	}
 }
@@ -197,7 +203,7 @@ void ants_print_frames(t_route route, t_path_len **elements)
 		}
 
 		ants_print_oneframe(ants_print_matrix, total_used_path, longest_path);
-		printf("\n");
+		ft_putchar_fd('\n', STDOUT_FILENO);
 	}
 
 	int i = 0;

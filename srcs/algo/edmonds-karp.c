@@ -223,7 +223,7 @@ void insert_next_parent(t_paths *paths, int v)
  	new_path_ptr = (t_vertex_list*)malloc(sizeof(t_vertex_list));
 	if (new_path_ptr == NULL)
 	{
-		printf("malloc error\n");
+		ft_putstr_fd("malloc error\n", STDOUT_FILENO);
 		return ;
 	}
 
@@ -305,7 +305,6 @@ void	init_route(t_route* route, t_parse* parse)
 		free(route->node_map);
 		// free_graph(route->graph);
 		free(parse);
-		printf("leaks\n");
 		exit(1);
 	}
 	route->start = 0;

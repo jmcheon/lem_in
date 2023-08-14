@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:39:43 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/14 18:08:43 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/14 22:02:47 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int insert_edge(t_graph *g, int u, int v)
 {
 	if (u >= g->n || v >= g->n)
 	{
-		printf("vertex index error\n");
+		ft_putstr_fd("vertex index error\n", STDOUT_FILENO);
 		return 0;
 	}
 
