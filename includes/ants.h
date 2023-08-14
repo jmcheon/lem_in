@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 15:59:05 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/14 16:35:00 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/14 16:39:30 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@ typedef struct s_path_len
 	int index;
 	int	num_ants;
 } t_path_len;
+
+typedef struct s_ants_print
+{
+	char *node_name;
+	int	ant_max;
+	int ant_current;
+}	t_ants_print;
 
 /*
 **	ants_quicksort.c
@@ -37,5 +44,12 @@ void ants_dist_fillin(int *ant_dist, t_path_len **elements, t_route route, int d
 int	ants_find_dist_begin(t_path_len **elements, int num_paths, int num_ants);
 t_path_len **ants_init_elements(t_route route, int num_paths);
 t_path_len **ants_distribute(t_route route);
+
+/*
+**	ants_print_frame.c
+*/
+void	pass_ants_to_nodes(t_ants_print **test, int total_used_path, int start, int end);
+void	print_one_frame(t_ants_print **test, int total_used_path, int longest_path);
+void	print_frames(t_route route, t_path_len **elements);
 
 #endif
