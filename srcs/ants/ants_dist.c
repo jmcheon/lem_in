@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 07:19:48 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/14 16:34:29 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/14 17:15:25 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ t_path_len **ants_distribute(t_route route)
 	// t_list *paths_head;
 	// t_vertex_list *onepath_head;
 
-	elements = ants_init_elements(route, route.paths->num_paths + 1);
+	elements = ants_init_elements(route, route.paths->num_paths);
 
 	// int i;
 	// i =0;
