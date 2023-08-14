@@ -61,15 +61,17 @@ void	print_array(int *parent, int n);
 /*
 **	edmonds-karp.c
 */
+void	init_route(t_route* route, t_parse* parse);
+void	init_paths(t_paths* paths);
+
 void	print_path(t_route* route, int* parent, int path_id);
+void	print_capacity(int **capacity, int n);
+void	print_paths(t_route* route, t_paths* paths);
+void	print_paths_list(t_route *route);
+
 int		bfs(t_route* route, int* parent, int **capacity);
 void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int **capacity);
 void	fill_capacity(t_graph*paths, int **capacity);
-void	print_capacity(int **capacity, int n);
-void	print_paths(t_route* route, t_paths* paths);
-void	init_route(t_route* route, t_parse* parse);
-void	init_paths(t_paths* paths);
-void	print_paths_list(t_paths *paths);
 
 /*
 **	graph_list.c

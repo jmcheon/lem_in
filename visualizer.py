@@ -11,7 +11,29 @@ def read_input_file(file_path):
         return None
     return input_string
 
-def parse_ant_movements(ant_movements_string, start_node):
+def parse_ant_movements(ant_movements, start_node):
+    ant_paths = {}
+
+    lines = ant_movements.strip().split('\n')
+    ant_count = len(lines[0].split(' '))
+    print('paths num:', ant_count)
+    
+    for line in lines:
+        movements_in_line = line.split(' ')
+
+        for index, movement in enumerate(movements_in_line):
+            ant_number = index % ant_count + 1
+            _, node_info = movement.split('-')
+
+            if ant_number not in ant_paths:
+                ant_paths[ant_number] = [node_info]
+            else:
+                ant_paths[ant_number].append(node_info)
+                
+    print('ant_paths:', ant_paths)
+    return ant_paths
+
+def parse_ant_movements2(ant_movements_string, start_node):
     ant_paths = []
 
     lines = []

@@ -311,8 +311,8 @@ int	main(void)
 	// // 	i++;
 	// // }
 	// // print_capacity(capacity, route.num_vertices);
-	// printf("disjoin paths:\n");
-	// print_paths_list(route.paths);
+	printf("disjoin paths:\n");
+	print_paths_list(&route);
 
 	// /*
 	// **	create new temp capacity based on the updated capacity
