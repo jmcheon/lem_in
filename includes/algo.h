@@ -27,16 +27,6 @@ typedef struct s_vertex_list
 	struct s_vertex_list	*prev;
 }	t_vertex_list;
 
-typedef struct s_ants
-{
-    t_vertex_list **movements_list;
-} t_ants;
-
-typedef struct s_paths_ants
-{
-	t_ants **paths_ants;
-} t_paths_ants;
-
 typedef struct s_paths
 {
 	t_list *paths;
@@ -55,21 +45,24 @@ typedef struct s_route
     char	**node_map;
 } t_route;
 
-int bfs(t_route* route, int* parent, int **capacity);
-void	print_path(t_route* route, int* parent, int path_id);
-void	print_array(int *parent, int n);
 /*
 **	edmonds-karp.c
 */
-void	print_path(t_route* route, int* parent, int path_id);
-int		bfs(t_route* route, int* parent, int **capacity);
-void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int **capacity);
-void	fill_capacity(t_graph*paths, int **capacity);
-void	print_capacity(int **capacity, int n);
-void	print_paths(t_route* route, t_paths* paths);
+void	reset_parent_array(t_route *route, int **parent);
+void	init_parent_array(t_route *route, int **parent);
+
 void	init_route(t_route* route, t_parse* parse);
 void	init_paths(t_paths* paths);
-void	print_paths_list(t_paths *paths);
+
+void	print_path(t_route* route, int* parent, int path_id);
+void	print_capacity(int **capacity, int n);
+void	print_array(int *parent, int n);
+void	print_paths(t_route* route, t_paths* paths);
+void	print_paths_list(t_route *route);
+
+int bfs(t_route* route, int* parent, int **capacity, int **weights);
+void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int **capacity, int **weights);
+void	fill_capacity(t_graph*paths, int **capacity);
 
 /*
 **	graph_list.c
@@ -83,7 +76,7 @@ t_graph	*parse_to_graph(t_parse *parse, t_route *route);
 **	graph_util.c
 */
 char **node_map_to_array(t_list *nodes_head);
-int	node_find_index(char **node_array, char *node_name);
+int	node_find_index(char **node_array, char *node_name, int node_array_len);
 void	print_graph_mapping(int list_size, char **node_map);
 char **init_nodes_mapping(int list_size);
 void	free_graph(t_graph *g);

@@ -5,16 +5,16 @@ start 6 1
 end 3 5
 c1 4 2
 c2 2 3
-t1 1 4
-t2 6 4
-b1 7 3
-b2 8 2
+c3 1 4
+b1 8 2
+b2 7 3
+b3 6 4
 start-c1
 c1-c2
-c1-t2
-t1-c2
-t2-end
-t1-end
-start-b2
-b1-t2
+c1-b3
+c3-c2
+b3-end
+c3-end
+start-b1
+b1-b3
 b2-b1

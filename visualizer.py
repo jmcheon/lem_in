@@ -11,7 +11,29 @@ def read_input_file(file_path):
         return None
     return input_string
 
-def parse_ant_movements(ant_movements_string, start_node):
+def parse_ant_movements(ant_movements, start_node):
+    ant_paths = {}
+
+    lines = ant_movements.strip().split('\n')
+    ant_count = len(lines[0].split(' '))
+    print('paths num:', ant_count)
+    
+    for line in lines:
+        movements_in_line = line.split(' ')
+
+        for index, movement in enumerate(movements_in_line):
+            ant_number = index % ant_count + 1
+            _, node_info = movement.split('-')
+
+            if ant_number not in ant_paths:
+                ant_paths[ant_number] = [node_info]
+            else:
+                ant_paths[ant_number].append(node_info)
+                
+    print('ant_paths:', ant_paths)
+    return ant_paths
+
+def parse_ant_movements2(ant_movements_string, start_node):
     ant_paths = []
 
     lines = []
@@ -45,20 +67,23 @@ def parse_input(input_string):
     lines = input_string.strip().split('\n')
     nodes = []
     edges = []
+    pos = {}
+
     start_flag = 0
     end_flag = 0
     start_node = 0
     end_node = 0
 
     for line in lines:
-        if '-' in line:
+        if '-' in line and '#' not in line:
             edge = tuple(line.split('-'))
             edges.append(edge)
         elif line == '##start':
             start_flag = 1
         elif line == '##end':
             end_flag = 1
-        elif '##' not in line and len(line) > 1:
+        elif ('##' and '#') not in line and line is not lines[0]:
+            #print('line:', line)
             node_info = line.split()
             node = node_info[0]
             nodes.append(node)
@@ -68,7 +93,7 @@ def parse_input(input_string):
             if end_flag == 1:
                 end_node = node_info[0]
                 end_flag = 0
-    pos = { node_info[0]: (float(node_info[1]), float(node_info[2])) for node_info in [line.split() for line in lines if '##' not in line and len(line) > 1 and '-' not in line] }
+            pos[node] = (float(node_info[1]), float(node_info[2]))
 
     return nodes, edges, pos, start_node, end_node
 
@@ -105,7 +130,7 @@ def visualize_ants(input_string, ant_movements_string, node_colors=None,
     # Plot ant paths
     for i, path in enumerate(ant_paths):
         edge_list = [(path[i], path[i + 1]) for i in range(len(path) - 1)]
-        edge_colors = [plt.get_cmap('viridis')(i / len(ant_paths)) for j in range(len(edge_list))]
+        edge_colors = [plt.get_cmap('Oranges')(i / len(ant_paths)) for j in range(len(edge_list))]
         nx.draw_networkx_edges(G, pos, edgelist=edge_list, edge_color=edge_colors, width=2)
 
     plt.show()

@@ -1,40 +1,57 @@
-#include "../../includes/queue.h"
 #include "../../includes/lem-in.h"
 
-int bfs(t_route* route, int* parent, int **capacity)
+int bfs(t_route* route, int* parent, int **capacity, int **weights)
 {
-	int	n = route->graph->n;
-	int	visited[n];
+	int	visited[route->num_vertices];
+    int dist[route->num_vertices];
 	t_queue	queue;
 
-	ft_memset(visited, 0, sizeof(visited));
+	//ft_memset(visited, 0, sizeof(visited));
+
+    for (int i = 0; i < route->num_vertices; i++) {
+        visited[i] = 0;
+        dist[i] = INT_MAX;
+        parent[i] = -1;
+    }
+    //print_array(parent, route->num_vertices);
+    //reset_parent_array(route, &parent);
+
 	visited[route->start] = 1;
+    dist[route->start] = 0;
 	init_queue(&queue);
 	enqueue(&queue, route->start);
-
 
 	while (!is_empty(&queue))
 	{
 		int u = dequeue(&queue);
 
+		visited[u] = 1;
 		for (t_graph_node* node = route->graph->adj_list[u]; node != NULL; node = node->link)
 		{
-			//printf("visited:");
-			//print_array(visited, n);
 			int v = node->vertex;
 			//printf("current vertex: %d\n", v);
 			//printf("node's vertex: %d\n", v);
 			if (!visited[v] && capacity[u][v] > 0)
 			{
-				parent[v] = u;
+                //printf("dist[%d]:%d, weights[%d][%d]:%d, dist[%d]:%d\n", u, dist[u], u, v, weights[u][v], v, dist[v]);
+                int new_dist = dist[u] + weights[u][v];
+
+                if (new_dist < dist[v])
+                {
+                    dist[v] = new_dist;
+				    parent[v] = u;
+				    if (v == route->end)
+				    {
+				    	free_queue(&queue);
+				    	return (1);
+				    }
+
+                }
+
 				//printf("parent: ");
-				//print_array(parent, n);
-				visited[v] = 1;
-				if (v == route->end)
-				{
-					free_queue(&queue);
-					return (1);
-				}
+				//print_array(parent, route->num_vertices);
+			//printf("visited:");
+			//print_array(visited, route->num_vertices);
 				enqueue(&queue, v);
 			}
 		}
@@ -71,13 +88,13 @@ void print_path_node(void *data)
 		printf(" <- %d", curr_paths_ptr->vertex);
 }
 
-void print_paths_list(t_paths *paths)
+void print_paths_list(t_route *route)
 {
 	t_vertex_list	*curr_path_ptr;
 	t_list			*curr_list_ptr;
 	int i;
 
-	curr_list_ptr = paths->paths;
+	curr_list_ptr = route->paths->paths;
 	//ft_lstiter(curr_list_ptr, print_path_node);
 	//for (int i = 0; i < paths->num_pahts; ++i)
 	i = 0;
@@ -88,19 +105,19 @@ void print_paths_list(t_paths *paths)
 		printf("path %d - ", i + 1);
 		if (curr_path_ptr != NULL)
 		{
-			printf("%d", curr_path_ptr->vertex);
+			printf("[%d]:%s", curr_path_ptr->vertex, route->node_map[curr_path_ptr->vertex]);
 			curr_path_ptr = curr_path_ptr->next;
 		}
 		while (curr_path_ptr != NULL)
 		{
-			printf(" <- %d", curr_path_ptr->vertex);
+			printf(" <- [%d]:%s", curr_path_ptr->vertex, route->node_map[curr_path_ptr->vertex]);
 			curr_path_ptr = curr_path_ptr->next;
 		}
 		printf("\n");
 		curr_list_ptr = curr_list_ptr->next;
 		i++;
 	}
-	printf("i:%d\n", i);
+	//printf("i:%d\n", i);
 	return ;
 	/*
 	int i;
@@ -193,21 +210,8 @@ void	init_path(t_vertex_list* path)
 void	init_paths(t_paths* paths)
 {
 	//paths->paths = ft_lstnew(NULL);
-	paths->paths = NULL; 
+	paths->paths = NULL;
 	paths->num_paths = 0;
-}
-
-void insert_next_list_node(t_paths *paths, int end)
-{
-	t_vertex_list *path_ptr;
-
- 	path_ptr = (t_vertex_list*)malloc(sizeof(t_vertex_list));
-	path_ptr->vertex= end;
-	path_ptr->next = NULL;
-	path_ptr->prev = NULL;
-	printf("end:%d\n", end);
-
-	ft_lstadd_back(&paths->paths, ft_lstnew(path_ptr));
 }
 
 void insert_next_parent(t_paths *paths, int v)
@@ -231,79 +235,40 @@ void insert_next_parent(t_paths *paths, int v)
 	// adding t_list node
 	if (curr_list_ptr == NULL)
 	{
-		printf("list node for path id:%d not found!\n", paths->num_paths);
-		//insert_next_list_node(paths, v);
+		// printf("list node for path id:%d not found!\n", paths->num_paths);
 		ft_lstadd_back(&paths->paths, ft_lstnew(new_path_ptr));
-		printf("\tinsertion vertex:%d to path id:%d finished\n\n", v, paths->num_paths);
+		// printf("\tinsertion vertex:%d to path id:%d finished\n\n", v, paths->num_paths);
 	}
 	// adding t_vertex_list vertex
 	else// if (curr_list_ptr != NULL)
 	{
 		curr_list_ptr = ft_lstfind_node(paths->paths, paths->num_paths);
-		if (curr_list_ptr)
-			printf("list node for path id:%d FOUND!\n", paths->num_paths);
-		if (curr_list_ptr->content != NULL)
-			printf("currnet vertext:%d, new vertex:%d\n", ((t_vertex_list*)curr_list_ptr->content)->vertex, v);
+		// if (curr_list_ptr)
+		// 	printf("list node for path id:%d FOUND!\n", paths->num_paths);
+		// if (curr_list_ptr->content != NULL)
+		// 	printf("currnet vertext:%d, new vertex:%d\n", ((t_vertex_list*)curr_list_ptr->content)->vertex, v);
 		curr_path_ptr = (t_vertex_list*)curr_list_ptr->content; //paths->paths[paths->num_paths];
-		if (curr_path_ptr == NULL)
-		{
-			printf("path id:%d head not found\n", paths->num_paths);
-			//curr_list_ptr->content = new_path_ptr;
-		}
-		else
-		{
+		// if (curr_path_ptr == NULL)
+		// {
+		// 	printf("path id:%d head not found\n", paths->num_paths);
+		// 	//curr_list_ptr->content = new_path_ptr;
+		// }
+		// else
+		// {
 			while (curr_path_ptr->next != NULL)
 				curr_path_ptr = curr_path_ptr->next;
 			curr_path_ptr->next = new_path_ptr;
 			new_path_ptr->prev = curr_path_ptr;
-		}
-		printf("\tinsertion vertex:%d to path id:%d finished\n\n", v, paths->num_paths);
-	}
-	/*
-	if (ft_lstfind_node(paths->paths, paths->num_paths))
-	{
-		printf("creating a list node for path id:%d...\n", paths->num_paths);
-		ft_lstadd_back(&paths->paths, ft_lstnew(path_ptr));
-	}
-	else
-		printf("list node for path id:%d not found.\n", paths->num_paths);
-		*/
-}
-
-/*
-void insert_next_parent(t_paths *paths, int v)
-{
-	// create a new node
-	t_vertex_list *node_ptr = malloc(sizeof(t_vertex_list));
-	//t_vertex_list *curr_ptr;
-
-	node_ptr->vertex= v;
-	node_ptr->next = NULL;
-	node_ptr->prev = NULL;
-
-	// add new node to the end of the adjacency list for current path id
-	if (ft_lstfind_node(paths->paths, paths->num_paths))
-		printf("yes\n");
-	if (paths->paths[paths->num_paths] == NULL)
-	{
-		paths->paths[paths->num_paths] = node_ptr;
-	}
-	else
-	{
-		curr_ptr = paths->paths[paths->num_paths];
-		while (curr_ptr->next != NULL)
-			curr_ptr = curr_ptr->next;
-		curr_ptr->next = node_ptr;
-		node_ptr->prev = curr_ptr;
+		// }
+		// printf("\tinsertion vertex:%d to path id:%d finished\n\n", v, paths->num_paths);
 	}
 }
-	*/
 
-void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int **capacity)
+void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int **capacity, int **weights)
 {
 	// int	path_id = 0;
 
-	while (bfs(route, parent, capacity) != -1)
+	while (bfs(route, parent, capacity, weights) != -1)
 	{
 		for (int v = route->end; v != route->start; v = parent[v])
 		{
@@ -333,6 +298,16 @@ void	init_route(t_route* route, t_parse* parse)
 	// 	i++;
 	// }
 	route->graph = parse_to_graph(parse, route);
+	if (route->graph == NULL)
+	{
+		ft_lstclear(&parse->nodes_head, free_node_xy);
+		ft_lstclear(&parse->edge_info_head, free_edge);
+		free(route->node_map);
+		// free_graph(route->graph);
+		free(parse);
+		printf("leaks\n");
+		exit(1);
+	}
 	route->start = 0;
 	route->end = route->num_vertices - 1;
 

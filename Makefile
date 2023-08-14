@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+         #
+#    By: sucho <sucho@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/05 02:01:35 by sucho             #+#    #+#              #
-#    Updated: 2023/08/14 02:04:40 by cjung-mo         ###   ########.fr        #
+#    Updated: 2023/08/14 16:36:33 by sucho            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,8 +35,11 @@ SRCS					=	./includes/get_next_line/get_next_line_bonus.c \
 							./srcs/algo/graph_list.c \
 							./srcs/algo/graph_util.c \
 							./srcs/algo/queue.c \
-							./srcs/main.c \
-							./srcs/utils.c
+							./srcs/ants/ants_dist.c \
+							./srcs/ants/ants_quicksort.c \
+							./srcs/ants/ants_print_frame.c \
+							./srcs/free.c \
+							./srcs/main.c
 
 OBJS					=	${SRCS:.c=.o}
 
