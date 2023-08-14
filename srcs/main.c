@@ -121,22 +121,22 @@
 
 // }
 
-void    init_paths_ants(t_paths_ants* paths_ants, int num_paths)
-{
-    printf("num_paths:%d\n", num_paths);
-    paths_ants->paths_ants = (t_ants**)malloc(sizeof(t_ants*) * (num_paths + 1));
-    //for (int i = 0; i < num_paths; ++i)
-    //	paths_ants->paths_ants[i] = (t_ants*)malloc(sizeof(t_ants) * (elements[i].num_ants + 1));
-}
+// void    init_paths_ants(t_paths_ants* paths_ants, int num_paths)
+// {
+//     printf("num_paths:%d\n", num_paths);
+//     paths_ants->paths_ants = (t_ants**)malloc(sizeof(t_ants*) * (num_paths + 1));
+//     //for (int i = 0; i < num_paths; ++i)
+//     //	paths_ants->paths_ants[i] = (t_ants*)malloc(sizeof(t_ants) * (elements[i].num_ants + 1));
+// }
 
-void    init_ants(t_ants* ants, t_path_len **elements, int num_paths)
-{
-	(void)elements;
-    printf("num_paths:%d\n", num_paths);
-    ants->movements_list = (t_vertex_list**)malloc(sizeof(t_vertex_list*) * (num_paths + 1));
-    for (int i = 0; i < num_paths; ++i)
-    	ants->movements_list[i] = (t_vertex_list*)malloc(sizeof(t_vertex_list) * (elements[i]->num_ants + 1));
-}
+// void    init_ants(t_ants* ants, t_path_len **elements, int num_paths)
+// {
+// 	(void)elements;
+//     printf("num_paths:%d\n", num_paths);
+//     ants->movements_list = (t_vertex_list**)malloc(sizeof(t_vertex_list*) * (num_paths + 1));
+//     for (int i = 0; i < num_paths; ++i)
+//     	ants->movements_list[i] = (t_vertex_list*)malloc(sizeof(t_vertex_list) * (elements[i]->num_ants + 1));
+// }
 
 /*
 void	print_ant_movement(t_route *route, int num_ants)
