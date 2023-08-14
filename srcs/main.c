@@ -50,7 +50,7 @@ void print_frames(t_route route, t_path_len **elements)
 			total_used_path++;
 		}
 	}
-	// printf("longest_path:%d total_used_path:%d\n", longest_path, total_used_path);
+	printf("longest_path:%d total_used_path:%d\n", longest_path, total_used_path);
 
 	t_ant_print **test;
 	test = (t_ant_print **)malloc(sizeof(t_ant_print *) * (total_used_path +1));
@@ -65,12 +65,11 @@ void print_frames(t_route route, t_path_len **elements)
 	test[i] = NULL;
 
 
-/*
 	i = 0;
 	while (i < total_used_path)
 	{
 		// printf("[%d]", (route.paths->num_paths - total_used_path) + i);
-		t_vertex_list *one_path = route.paths->paths[elements[(route.paths->num_paths - total_used_path) + i]->index];
+		t_vertex_list *one_path = ft_lstfind_node(route.paths->paths, elements[(route.paths->num_paths - total_used_path) + i]->index)->content;
 		while (one_path != NULL)
 		{
 			if (one_path->next == NULL)
@@ -94,7 +93,6 @@ void print_frames(t_route route, t_path_len **elements)
 		// printf("\n");
 		i++;
 	}
-	*/
 
 	// printf("================================\n");
 	// i = 0;
@@ -287,35 +285,35 @@ int	main(void)
 	printf("disjoin paths:\n");
 	// print_paths_list(route.paths);
 
-	// // /*
-	// // **	create new temp capacity based on the updated capacity
-	// // */
-	// temp = (int **)malloc(sizeof(int*) * (route.num_vertices + 1));
-	// i = 0;
-	// while (i < route.num_vertices)
-	// {
-	// 	temp[i] = (int *)malloc(sizeof(int) * (route.num_vertices + 1));
-	// 	temp[i][route.num_vertices] = '\0';
-	// 	i++;
-	// }
-	// temp[i] = NULL;
+	// /*
+	// **	create new temp capacity based on the updated capacity
+	// */
+	temp = (int **)malloc(sizeof(int*) * (route.num_vertices + 1));
+	i = 0;
+	while (i < route.num_vertices)
+	{
+		temp[i] = (int *)malloc(sizeof(int) * (route.num_vertices + 1));
+		temp[i][route.num_vertices] = '\0';
+		i++;
+	}
+	temp[i] = NULL;
 
-	// fill_capacity(route.graph, temp);
-	// for (int u = 0; u < route.num_vertices; ++u)
-	// {
-	// 	for (int v = 0; v < route.num_vertices; ++v)
-	// 	{
-	// 		if (capacity[u][v] == 1)
-	// 			temp[u][v] = 0;
-	// 	}
-	// }
-	// // print_capacity(temp, route.num_vertices);
+	fill_capacity(route.graph, temp);
+	for (int u = 0; u < route.num_vertices; ++u)
+	{
+		for (int v = 0; v < route.num_vertices; ++v)
+		{
+			if (capacity[u][v] == 1)
+				temp[u][v] = 0;
+		}
+	}
+	// print_capacity(temp, route.num_vertices);
 
-	// // /*
-	// // ** run edmonds-karp with new temp capacity
-	// // */
-	// // init_paths(route.paths);
-	// edmonds_karp(&route, route.paths, parent, temp);
+	// /*
+	// ** run edmonds-karp with new temp capacity
+	// */
+	// init_paths(route.paths);
+	edmonds_karp(&route, route.paths, parent, temp);
 
 	// // printf("\n\ndisjoin paths:\n");
 	// // print_paths(&route, route.paths);
