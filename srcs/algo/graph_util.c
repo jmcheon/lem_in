@@ -58,17 +58,18 @@ char	**node_map_to_array(t_list *nodes_head)
 	return (ret);
 }
 
-int	node_find_index(char **node_array, char *node_name)
+int	node_find_index(char **node_array, char *node_name, int num_vertices)
 {
 	int i;
 
 	i = 0;
-	(void) node_name;
 	while (node_array[i] != NULL)
 	{
 		if (ft_strncmp(node_array[i], node_name, ft_strlen(node_name)) == 0)
 			break ;
 		i++;
+		if (num_vertices <=i)
+			return -1;
 	}
 	return i;
 }

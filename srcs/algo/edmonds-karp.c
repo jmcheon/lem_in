@@ -298,6 +298,16 @@ void	init_route(t_route* route, t_parse* parse)
 	// 	i++;
 	// }
 	route->graph = parse_to_graph(parse, route);
+	if (route->graph == NULL)
+	{
+		ft_lstclear(&parse->nodes_head, free_node_xy);
+		ft_lstclear(&parse->edge_info_head, free_edge);
+		free(route->node_map);
+		// free_graph(route->graph);
+		free(parse);
+		printf("leaks\n");
+		exit(1);
+	}
 	route->start = 0;
 	route->end = route->num_vertices - 1;
 

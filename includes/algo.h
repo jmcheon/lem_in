@@ -27,16 +27,6 @@ typedef struct s_vertex_list
 	struct s_vertex_list	*prev;
 }	t_vertex_list;
 
-typedef struct s_ants
-{
-    t_vertex_list **movements_list;
-} t_ants;
-
-typedef struct s_paths_ants
-{
-	t_ants **paths_ants;
-} t_paths_ants;
-
 typedef struct s_paths
 {
 	t_list *paths;
@@ -86,7 +76,7 @@ t_graph	*parse_to_graph(t_parse *parse, t_route *route);
 **	graph_util.c
 */
 char **node_map_to_array(t_list *nodes_head);
-int	node_find_index(char **node_array, char *node_name);
+int	node_find_index(char **node_array, char *node_name, int node_array_len);
 void	print_graph_mapping(int list_size, char **node_map);
 char **init_nodes_mapping(int list_size);
 void	free_graph(t_graph *g);
