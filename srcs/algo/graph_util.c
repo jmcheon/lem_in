@@ -106,7 +106,7 @@ void	free_graph(t_graph *g)
 
 	i = 0;
 	t_graph_node *tmp;
-	printf("n:%d\n", g->n);
+	// printf("n:%d\n", g->n);
 	while (i < g->n)
 	{
 		while(g->adj_list[i] != NULL)

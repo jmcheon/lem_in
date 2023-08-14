@@ -6,7 +6,7 @@
 #    By: sucho <sucho@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/05 02:01:35 by sucho             #+#    #+#              #
-#    Updated: 2023/08/14 02:26:08 by sucho            ###   ########.fr        #
+#    Updated: 2023/08/14 04:02:26 by sucho            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ SRCS					=	./includes/get_next_line/get_next_line_bonus.c \
 							./srcs/algo/queue.c \
 							./srcs/main.c \
 							./srcs/ant_dist.c \
-							./srcs/utils.c
+							./srcs/free.c
 
 OBJS					=	${SRCS:.c=.o}
 

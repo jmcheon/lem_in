@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 07:19:48 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/14 03:03:20 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/14 04:04:11 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,5 +186,4 @@ t_path_len **distribute_ant(t_route route)
 	for(int i = 0; i < route.paths->num_paths; i++)
 		elements[i]->num_ants = ant_dist[i];
 	return (elements);
-
 }

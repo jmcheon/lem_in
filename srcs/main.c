@@ -50,19 +50,22 @@ void print_frames(t_route route, t_path_len **elements)
 			total_used_path++;
 		}
 	}
-	printf("longest_path:%d total_used_path:%d\n", longest_path, total_used_path);
+	// printf("longest_path:%d total_used_path:%d\n", longest_path, total_used_path);
 
 	t_ant_print **test;
 	test = (t_ant_print **)malloc(sizeof(t_ant_print *) * (total_used_path +1));
-
+	if (!test)
+		return ;
 	int i = 0;
 	while (i < total_used_path)
 	{
 		test[i] = (t_ant_print *)malloc(sizeof(t_ant_print) * (longest_path + 1));
+		for (int j = 0; j <= longest_path; j++)
+			test[i][j].node_name = NULL;
 		ft_memset(test[i], '\0', sizeof(test[i]));
 		i++;
 	}
-	test[i] = NULL;
+	// test[i] = NULL;
 
 
 	i = 0;
@@ -83,7 +86,7 @@ void print_frames(t_route route, t_path_len **elements)
 		while (one_path != NULL)
 		{
 			// needs to change
-			test[i][begin].node_name = ft_strdup(route.node_map[one_path->vertex]);
+			test[i][begin].node_name = route.node_map[one_path->vertex];
 			test[i][begin].ant_max = elements[(route.paths->num_paths - total_used_path) + i]->num_ants;
 			test[i][begin].ant_current = 0;
 			// printf("%d ",one_path->vertex);
@@ -143,6 +146,14 @@ void print_frames(t_route route, t_path_len **elements)
 		print_one_frame(test, total_used_path, longest_path);
 		printf("\n");
 	}
+
+	i = 0;
+	while (i < total_used_path)
+	{
+		free(test[i]);
+		i++;
+	}
+	free(test);
 
 }
 
@@ -257,16 +268,17 @@ int	main(void)
 	while (i < route.num_vertices)
 	{
 		capacity[i] = (int *)malloc(sizeof(int) * (route.num_vertices + 1));
-		ft_memset(capacity[i], 0, route.num_vertices);
-		capacity[i][route.num_vertices] = '\0';
+		for (int j = 0; j <= route.num_vertices; j++)
+			capacity[i][j] = '\0';
+		// capacity[i][route.num_vertices] = '\0';
 		i++;
 	}
 	capacity[i] = NULL;
 
 
-	printf("number of vertices: %d\n", route.num_vertices);
-	printf("start: (%d)\n", route.start);
-	printf("end: (%d)\n", route.end);
+	// printf("number of vertices: %d\n", route.num_vertices);
+	// printf("start: (%d)\n", route.start);
+	// printf("end: (%d)\n", route.end);
 	fill_capacity(route.graph, capacity);
 	// print_capacity(capacity, route.num_vertices);
 
@@ -282,7 +294,7 @@ int	main(void)
 	// // 	i++;
 	// // }
 	// // print_capacity(capacity, route.num_vertices);
-	printf("disjoin paths:\n");
+	// printf("disjoin paths:\n");
 	// print_paths_list(route.paths);
 
 	// /*
@@ -312,17 +324,23 @@ int	main(void)
 	// /*
 	// ** run edmonds-karp with new temp capacity
 	// */
-	// init_paths(route.paths);
+	free_paths(route.paths->paths);
+	init_paths(route.paths);
 	edmonds_karp(&route, route.paths, parent, temp);
 
 	// // printf("\n\ndisjoin paths:\n");
 	// // print_paths(&route, route.paths);
 	// // print_paths_list(route.paths);
 	t_path_len **elements = distribute_ant(route);
-	for(int i = 0; i < route.paths->num_paths; i++)
-		printf("elements - value: %d\t index:%d\tnum_ants:%d\n",
-			elements[i]->value, elements[i]->index, elements[i]->num_ants);
     print_frames(route, elements);
+
+	for (int u = 0; u < route.num_vertices; ++u)
+		free(temp[u]);
+	free(temp);
+
+	for(int i = 0; i < route.paths->num_paths; i++)
+		free(elements[i]);
+	free(elements);
 
 	// // free(route.paths);
 	ft_lstclear(&parse->nodes_head, free_node_xy);
@@ -332,7 +350,7 @@ int	main(void)
 	free(route.graph);
 
 	//free paths
-	ft_lstclear(&route.paths->paths, free);
+	free_paths(route.paths->paths);
 	//free_paths_list(route.paths);
 	free(route.paths);
 

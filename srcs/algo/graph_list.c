@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:39:43 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/13 20:11:34 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/14 03:49:55 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ t_graph* parse_to_graph(t_parse *parse, t_route *route)
 
 	g = (t_graph*)malloc(sizeof(t_graph));
 	init(g, route->num_vertices);
-	printf("num_vertices:%d, edge_info_head: %d\n", route->num_vertices, ft_lstsize(parse->edge_info_head));
 
 	t_list *edge_head;
 	edge_head = parse->edge_info_head;

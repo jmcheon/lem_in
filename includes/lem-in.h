@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:07:32 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/13 22:32:56 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/14 04:01:47 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,10 @@ t_path_len **distribute_ant(t_route route);
 **	utils.c
 */
 void	free_linked_list(t_list **list_head);
+
+/*
+**	free.c
+*/
+void	free_paths(t_list *paths);
 
 #endif
