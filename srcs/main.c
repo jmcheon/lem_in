@@ -171,7 +171,7 @@ void    init_ants(t_ants* ants, t_path_len **elements, int num_paths)
     printf("num_paths:%d\n", num_paths);
     ants->movements_list = (t_vertex_list**)malloc(sizeof(t_vertex_list*) * (num_paths + 1));
     for (int i = 0; i < num_paths; ++i)
-    	ants->movements_list[i] = (t_vertex_list*)malloc(sizeof(t_vertex_list) * (elements[i].num_ants + 1));
+    	ants->movements_list[i] = (t_vertex_list*)malloc(sizeof(t_vertex_list) * (elements[i]->num_ants + 1));
 }
 
 /*
