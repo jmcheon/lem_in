@@ -20,7 +20,7 @@ t_list	*ft_lstfind_node(t_list *lst, int index)
 			//printf("current index for path has found...\n");
 			return (lst->next);
 		}
-		printf("(i, index) = (%d, %d)\n",i , index);
+		// printf("(i, index) = (%d, %d)\n",i , index);
 		i++;
 		lst = lst->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 07:19:48 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/13 02:21:49 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/14 03:03:20 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,9 @@ t_path_len **distribute_ant(t_route route)
 
 	t_path_len **elements;
 
+	t_list *paths_head;
+	t_vertex_list *onepath_head;
+
 	elements = (t_path_len**)malloc(sizeof(t_path_len*) * (route.paths->num_paths + 1));
 
 	int i = 0;
@@ -93,12 +96,26 @@ t_path_len **distribute_ant(t_route route)
 	elements[i] = NULL;
 
 	i =0;
-	while (i < route.paths->num_paths)
+	paths_head = route.paths->paths;
+
+	onepath_head = (t_vertex_list*)paths_head->content;
+
+	int j;
+	i = 0;
+	while (paths_head != NULL)
 	{
 		elements[i]->index = i;
-		elements[i]->value = ft_intlen(route.paths->paths[i]); // start and end
+		j = 0;
+		onepath_head = (t_vertex_list*)paths_head->content;
+		while(onepath_head != NULL)
+		{
+			j++;
+			onepath_head = onepath_head->next;
+		}
+		elements[i]->value = j; // start and end
 		elements[i]->num_ants = 0;
 		i++;
+		paths_head = paths_head->next;
 	}
 
 
@@ -125,7 +142,7 @@ t_path_len **distribute_ant(t_route route)
 			tmp += (elements[i]->value - elements[j]->value);
 		// printf("tmp:%d\n", tmp);
 		// printf("tmp2:%d \n", tmp + (route.paths->num_paths - i));
-		if (tmp + (route.paths->num_paths - i) < route.num_ants)
+		if (tmp + (route.paths->num_paths - i) <= route.num_ants)
 		{
 			dist_begin = i;
 			break;
@@ -164,7 +181,7 @@ t_path_len **distribute_ant(t_route route)
 		}
 	}
 
-	// printf("=========================\n");
+	// // printf("=========================\n");
 
 	for(int i = 0; i < route.paths->num_paths; i++)
 		elements[i]->num_ants = ant_dist[i];

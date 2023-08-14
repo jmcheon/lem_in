@@ -285,7 +285,7 @@ int	main(void)
 	// // }
 	// // print_capacity(capacity, route.num_vertices);
 	printf("disjoin paths:\n");
-	print_paths_list(route.paths);
+	// print_paths_list(route.paths);
 
 	// // /*
 	// // **	create new temp capacity based on the updated capacity
@@ -320,10 +320,11 @@ int	main(void)
 	// // printf("\n\ndisjoin paths:\n");
 	// // print_paths(&route, route.paths);
 	// // print_paths_list(route.paths);
-	// // t_path_len **elements = distribute_ant(route);
-	// // for(int i = 0; i < route.paths->num_paths; i++)
-	// // 	printf("elements - value: %d\t index:%d\tnum_ants:%d\n",
-	// // 		elements[i]->value, elements[i]->index, elements[i]->num_ants);
+	t_path_len **elements = distribute_ant(route);
+	for(int i = 0; i < route.paths->num_paths; i++)
+		printf("elements - value: %d\t index:%d\tnum_ants:%d\n",
+			elements[i]->value, elements[i]->index, elements[i]->num_ants);
+    print_frames(route, elements);
 
 	// // free(route.paths);
 	ft_lstclear(&parse->nodes_head, free_node_xy);

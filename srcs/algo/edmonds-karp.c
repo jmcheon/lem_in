@@ -193,7 +193,7 @@ void	init_path(t_vertex_list* path)
 void	init_paths(t_paths* paths)
 {
 	//paths->paths = ft_lstnew(NULL);
-	paths->paths = NULL; 
+	paths->paths = NULL;
 	paths->num_paths = 0;
 }
 
@@ -231,33 +231,33 @@ void insert_next_parent(t_paths *paths, int v)
 	// adding t_list node
 	if (curr_list_ptr == NULL)
 	{
-		printf("list node for path id:%d not found!\n", paths->num_paths);
+		// printf("list node for path id:%d not found!\n", paths->num_paths);
 		//insert_next_list_node(paths, v);
 		ft_lstadd_back(&paths->paths, ft_lstnew(new_path_ptr));
-		printf("\tinsertion vertex:%d to path id:%d finished\n\n", v, paths->num_paths);
+		// printf("\tinsertion vertex:%d to path id:%d finished\n\n", v, paths->num_paths);
 	}
 	// adding t_vertex_list vertex
 	else// if (curr_list_ptr != NULL)
 	{
 		curr_list_ptr = ft_lstfind_node(paths->paths, paths->num_paths);
-		if (curr_list_ptr)
-			printf("list node for path id:%d FOUND!\n", paths->num_paths);
-		if (curr_list_ptr->content != NULL)
-			printf("currnet vertext:%d, new vertex:%d\n", ((t_vertex_list*)curr_list_ptr->content)->vertex, v);
+		// if (curr_list_ptr)
+		// 	printf("list node for path id:%d FOUND!\n", paths->num_paths);
+		// if (curr_list_ptr->content != NULL)
+		// 	printf("currnet vertext:%d, new vertex:%d\n", ((t_vertex_list*)curr_list_ptr->content)->vertex, v);
 		curr_path_ptr = (t_vertex_list*)curr_list_ptr->content; //paths->paths[paths->num_paths];
-		if (curr_path_ptr == NULL)
-		{
-			printf("path id:%d head not found\n", paths->num_paths);
-			//curr_list_ptr->content = new_path_ptr;
-		}
-		else
-		{
+		// if (curr_path_ptr == NULL)
+		// {
+		// 	printf("path id:%d head not found\n", paths->num_paths);
+		// 	//curr_list_ptr->content = new_path_ptr;
+		// }
+		// else
+		// {
 			while (curr_path_ptr->next != NULL)
 				curr_path_ptr = curr_path_ptr->next;
 			curr_path_ptr->next = new_path_ptr;
 			new_path_ptr->prev = curr_path_ptr;
-		}
-		printf("\tinsertion vertex:%d to path id:%d finished\n\n", v, paths->num_paths);
+		// }
+		// printf("\tinsertion vertex:%d to path id:%d finished\n\n", v, paths->num_paths);
 	}
 	/*
 	if (ft_lstfind_node(paths->paths, paths->num_paths))
