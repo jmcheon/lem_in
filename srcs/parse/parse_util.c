@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_util.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:52:20 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/11 19:07:40 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/13 23:13:30 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,27 +50,5 @@ void parse_result_print(t_parse *parse)
 
 		printf("key:[%s], val:[%s]\n", node_tmp->key, node_tmp->val);
 		tmp = tmp->next;
-	}
-}
-
-void		free_2d(char **ptr)
-{
-	int		i;
-
-	i = 0;
-	while (*(ptr + i))
-		free(*(ptr + i++));
-	free(ptr);
-}
-
-void	free_list(t_list *head)
-{
-	t_list* tmp;
-	while (head != NULL)
-	{
-		tmp = head;
-		head = head->next;
-		free(tmp->content);
-		free(tmp);
 	}
 }
