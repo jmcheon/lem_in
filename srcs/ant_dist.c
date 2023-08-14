@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 07:19:48 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/12 10:32:20 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/13 02:21:49 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	ft_intlen(int *s)
 
 t_path_len **distribute_ant(t_route route)
 {
-	printf("num_paths:%d\tant_num:%d\n", route.paths->num_paths, route.num_ants);
+	// printf("num_paths:%d\tant_num:%d\n", route.paths->num_paths, route.num_ants);
 
 	t_path_len **elements;
 
@@ -103,19 +103,19 @@ t_path_len **distribute_ant(t_route route)
 
 
 
-    printf("Original array:\n");
-    for (int i = 0; i < route.paths->num_paths; i++) {
-        printf("%d ", elements[i]->value);
-    }
-    printf("\n");
+    // printf("Original array:\n");
+    // for (int i = 0; i < route.paths->num_paths; i++) {
+    //     printf("%d ", elements[i]->value);
+    // }
+    // printf("\n");
 
 	quicksort(elements, 0, route.paths->num_paths - 1);
 
-    printf("Sorted array in descending order:\n");
-    for (int i = 0; i < route.paths->num_paths; i++) {
-        printf("%d (Index: %d) ", elements[i]->value, elements[i]->index);
-    }
-	printf("\n");
+    // printf("Sorted array in descending order:\n");
+    // for (int i = 0; i < route.paths->num_paths; i++) {
+    //     printf("%d (Index: %d) ", elements[i]->value, elements[i]->index);
+    // }
+	// printf("\n");
 
 	int dist_begin = 0;
 	for (int i = 0; i < route.paths->num_paths; i++)
@@ -131,7 +131,7 @@ t_path_len **distribute_ant(t_route route)
 			break;
 		}
 	}
-	printf("distribution begins from here: [%d]\n", dist_begin);
+	// printf("distribution begins from here: [%d]\n", dist_begin);
 
 	int ant_num_temp = route.num_ants;
 	int dist_len = route.paths->num_paths - dist_begin;
@@ -140,7 +140,7 @@ t_path_len **distribute_ant(t_route route)
 
 	ft_memset(&ant_dist, 0, sizeof(ant_dist));
 
-	printf("%d\n", dist_len);
+	// printf("%d\n", dist_len);
 
 	for (int i = route.paths->num_paths - 1; i > dist_begin; i--)
 	{
@@ -149,14 +149,14 @@ t_path_len **distribute_ant(t_route route)
 		ant_num_temp -= dist;
 	}
 
-	printf("ant_num_temp:[%d]\n",ant_num_temp);
+	// printf("ant_num_temp:[%d]\n",ant_num_temp);
 
 	int ant_remainder = ant_num_temp % dist_len;
-	printf("ant_num_temp:%d\tdist_len:%d\ttmp:%d\n", ant_num_temp, dist_len, ant_remainder);
+	// printf("ant_num_temp:%d\tdist_len:%d\ttmp:%d\n", ant_num_temp, dist_len, ant_remainder);
 	for(int i= route.paths->num_paths - 1; i >= dist_begin; i--)
 	{
 		ant_dist[i] += ant_num_temp / dist_len;
-		printf("ant_dist[%d]:%d\t%d\n",i, ant_dist[i], ant_num_temp / route.paths->num_paths);
+		// printf("ant_dist[%d]:%d\t%d\n",i, ant_dist[i], ant_num_temp / route.paths->num_paths);
 		if (ant_remainder != 0)
 		{
 			ant_dist[i] += 1;
@@ -164,7 +164,7 @@ t_path_len **distribute_ant(t_route route)
 		}
 	}
 
-	printf("=========================\n");
+	// printf("=========================\n");
 
 	for(int i = 0; i < route.paths->num_paths; i++)
 		elements[i]->num_ants = ant_dist[i];

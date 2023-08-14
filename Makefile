@@ -6,7 +6,7 @@
 #    By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/05 02:01:35 by sucho             #+#    #+#              #
-#    Updated: 2023/08/11 19:01:36 by cjung-mo         ###   ########.fr        #
+#    Updated: 2023/08/14 02:04:40 by cjung-mo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,12 +30,13 @@ SRCS					=	./includes/get_next_line/get_next_line_bonus.c \
 							./srcs/parse/parse_reading.c \
 							./srcs/parse/parse_check.c \
 							./srcs/parse/parse_util.c \
+							./srcs/parse/parse_free.c \
 							./srcs/algo/edmonds-karp.c \
 							./srcs/algo/graph_list.c \
 							./srcs/algo/graph_util.c \
 							./srcs/algo/queue.c \
 							./srcs/main.c \
-							./srcs/ant_dist.c
+							./srcs/utils.c
 
 OBJS					=	${SRCS:.c=.o}
 

@@ -51,16 +51,17 @@ int		compare_nodename(void *content1, void *content2);
 int		compare_edge(void *content1, void *content2);
 int		check_duplicate_nodes(t_list *nodes_head, int (*f)(void*, void*));
 bool	parse_node_xy_check(char *line);
+int		check_start_and_end(t_list *nodes);
+
 
 /*
 **	parse_reading.c
 */
 int		edgeline_to_struct(char *line, t_list **node);
-void	parse_check_edgeline(t_list **line_head, t_parse **parse);
+int		parse_check_edgeline(t_list **line_head, t_parse **parse);
 int		nodeline_to_struct(char *line, int parse_status, t_list **node);
 int		check_nodeline_status(char *line, int parse_status, t_list **node);
-void	parse_check_nodeline(t_list **line_head, t_parse **parse);
-void	parse_check_antnum(t_list **line_head, t_parse **parse);
+int		parse_check_nodeline(t_list **line_head, t_parse **parse);
 
 /*
 **	parse.c
@@ -71,13 +72,22 @@ t_parse	*init_parse_struct(void);
 t_parse	*parsing();
 
 
+
 /*
 **	parse_util.c
 */
 int		check_split_count(char *line, char delim);
 // for debugging
 void	parse_result_print(t_parse *parse);
+
+/*
+**	parse_free.c
+*/
 void	free_2d(char **ptr);
 void	free_list(t_list *head);
+void	free_node_xy(void *node);
+void	free_edge(void *node);
+void 	free_ongoing_parse(t_list *lines_head, t_parse *parse);
+
 
 #endif
