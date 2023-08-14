@@ -331,7 +331,7 @@ int	main(void)
 	// // printf("\n\ndisjoin paths:\n");
 	// // print_paths(&route, route.paths);
 	// // print_paths_list(route.paths);
-	t_path_len **elements = distribute_ant(route);
+	t_path_len **elements = ants_distribute(route);
     print_frames(route, elements);
 
 	for (int u = 0; u < route.num_vertices; ++u)

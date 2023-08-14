@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:07:32 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/14 04:01:47 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/14 16:03:02 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "./queue.h"
 # include "./algo.h"
 # include "./parse.h"
+# include "./ants.h"
 
 // for perror
 # include <stdio.h>
@@ -28,21 +29,6 @@
 # define PARSE_XY_END 3
 # define PARSE_EDGE 4
 # define PARSE_COMMENT 5
-
-/*
-** for ant
-*/
-
-typedef struct s_path_len
-{
-	int value;
-	int index;
-	int	num_ants;
-} t_path_len;
-
-/*
-** for ant
-*/
 
 
 /*
