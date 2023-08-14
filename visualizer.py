@@ -75,14 +75,15 @@ def parse_input(input_string):
     end_node = 0
 
     for line in lines:
-        if '-' in line:
+        if '-' in line and '#' not in line:
             edge = tuple(line.split('-'))
             edges.append(edge)
         elif line == '##start':
             start_flag = 1
         elif line == '##end':
             end_flag = 1
-        elif '##' and '#' not in line and len(line) > 1:
+        elif ('##' and '#') not in line and line is not lines[0]:
+            #print('line:', line)
             node_info = line.split()
             node = node_info[0]
             nodes.append(node)

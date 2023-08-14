@@ -259,6 +259,19 @@ void    print_test(t_route *route, t_path_len *elements)
 }
 	*/
 
+void	reset_parent_array(t_route *route, int **parent)
+{
+	for (int i = 0; i < route->num_vertices; i++)
+		(*parent)[i] = -1;
+}
+
+void	init_parent_array(t_route *route, int **parent)
+{
+	*parent = (int *)malloc(sizeof(int) * (route->num_vertices));
+	reset_parent_array(route, parent);
+}
+
+
 int	main(void)
 {
 	t_parse	*parse;
@@ -267,6 +280,7 @@ int	main(void)
 
 	int **capacity;
 	int	**temp;
+	int	**weights;
 	int	*parent;
 
 	(void)temp;
@@ -292,27 +306,43 @@ int	main(void)
 	}
 	capacity[i] = NULL;
 
+	weights = (int **)malloc(sizeof(int *) * (route.num_vertices));
+	for (int i = 0; i < route.num_vertices; i++)
+	{
+		weights[i] = (int *)malloc(sizeof(int) * (route.num_vertices));
+		for (int j = 0; j < route.num_vertices; j++)
+			weights[i][j] = 0;
+	}
+
 
 	// printf("number of vertices: %d\n", route.num_vertices);
 	// printf("start: (%d)\n", route.start);
 	// printf("end: (%d)\n", route.end);
 	fill_capacity(route.graph, capacity);
-	// print_capacity(capacity, route.num_vertices);
+	//printf("\ncapacity");
+	//print_capacity(capacity, route.num_vertices);
+	printf("\nweights");
+	fill_capacity(route.graph, weights);
+	print_capacity(weights, route.num_vertices);
 
 	// /*
 	// **	edmonds-karp
 	// */
-	parent = (int *)malloc(sizeof(int) * (route.num_vertices));
-	edmonds_karp(&route, route.paths, parent, capacity);
+	//parent = (int *)malloc(sizeof(int) * (route.num_vertices));
+	init_parent_array(&route, &parent);
+	edmonds_karp(&route, route.paths, parent, capacity, capacity);
 	// // int i = 0;
 	// // while (i < (route.list_size))
 	// // {
 	// // 	printf("index: %d, str:[%s]\n", i, route.node_map[i]);
 	// // 	i++;
 	// // }
-	// // print_capacity(capacity, route.num_vertices);
+	/*
+	printf("\naf ek capacity");
+	print_capacity(capacity, route.num_vertices);
 	printf("disjoin paths:\n");
 	print_paths_list(&route);
+	*/
 
 	// /*
 	// **	create new temp capacity based on the updated capacity
@@ -336,18 +366,24 @@ int	main(void)
 				temp[u][v] = 0;
 		}
 	}
-	// print_capacity(temp, route.num_vertices);
+	/*
+	printf("\ntemp");
+	print_capacity(temp, route.num_vertices);
+	*/
 
 	// /*
 	// ** run edmonds-karp with new temp capacity
 	// */
 	free_paths(route.paths->paths);
 	init_paths(route.paths);
-	edmonds_karp(&route, route.paths, parent, temp);
+	edmonds_karp(&route, route.paths, parent, temp, temp);
+	printf("disjoin paths:\n");
+	print_paths_list(&route);
+	/*
+	printf("\naf ek temp");
+	print_capacity(temp, route.num_vertices);
+	*/
 
-	// // printf("\n\ndisjoin paths:\n");
-	// // print_paths(&route, route.paths);
-	// // print_paths_list(route.paths);
 	t_path_len **elements = distribute_ant(route);
     print_frames(route, elements);
 

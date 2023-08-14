@@ -1,40 +1,57 @@
-#include "../../includes/queue.h"
 #include "../../includes/lem-in.h"
 
-int bfs(t_route* route, int* parent, int **capacity)
+int bfs(t_route* route, int* parent, int **capacity, int **weights)
 {
-	int	n = route->graph->n;
-	int	visited[n];
+	int	visited[route->num_vertices];
+    int dist[route->num_vertices];
 	t_queue	queue;
 
-	ft_memset(visited, 0, sizeof(visited));
+	//ft_memset(visited, 0, sizeof(visited));
+
+    for (int i = 0; i < route->num_vertices; i++) {
+        visited[i] = 0;
+        dist[i] = INT_MAX;
+        parent[i] = -1;
+    }
+    //print_array(parent, route->num_vertices);
+    //reset_parent_array(route, &parent);
+
 	visited[route->start] = 1;
+    dist[route->start] = 0;
 	init_queue(&queue);
 	enqueue(&queue, route->start);
-
 
 	while (!is_empty(&queue))
 	{
 		int u = dequeue(&queue);
 
+		visited[u] = 1;
 		for (t_graph_node* node = route->graph->adj_list[u]; node != NULL; node = node->link)
 		{
-			//printf("visited:");
-			//print_array(visited, n);
 			int v = node->vertex;
 			//printf("current vertex: %d\n", v);
 			//printf("node's vertex: %d\n", v);
 			if (!visited[v] && capacity[u][v] > 0)
 			{
-				parent[v] = u;
+                //printf("dist[%d]:%d, weights[%d][%d]:%d, dist[%d]:%d\n", u, dist[u], u, v, weights[u][v], v, dist[v]);
+                int new_dist = dist[u] + weights[u][v];
+
+                if (new_dist < dist[v])
+                {
+                    dist[v] = new_dist;
+				    parent[v] = u;
+				    if (v == route->end)
+				    {
+				    	free_queue(&queue);
+				    	return (1);
+				    }
+
+                }
+
 				//printf("parent: ");
-				//print_array(parent, n);
-				visited[v] = 1;
-				if (v == route->end)
-				{
-					free_queue(&queue);
-					return (1);
-				}
+				//print_array(parent, route->num_vertices);
+			//printf("visited:");
+			//print_array(visited, route->num_vertices);
 				enqueue(&queue, v);
 			}
 		}
@@ -197,19 +214,6 @@ void	init_paths(t_paths* paths)
 	paths->num_paths = 0;
 }
 
-void insert_next_list_node(t_paths *paths, int end)
-{
-	t_vertex_list *path_ptr;
-
- 	path_ptr = (t_vertex_list*)malloc(sizeof(t_vertex_list));
-	path_ptr->vertex= end;
-	path_ptr->next = NULL;
-	path_ptr->prev = NULL;
-	printf("end:%d\n", end);
-
-	ft_lstadd_back(&paths->paths, ft_lstnew(path_ptr));
-}
-
 void insert_next_parent(t_paths *paths, int v)
 {
 	t_vertex_list	*new_path_ptr;
@@ -232,7 +236,6 @@ void insert_next_parent(t_paths *paths, int v)
 	if (curr_list_ptr == NULL)
 	{
 		// printf("list node for path id:%d not found!\n", paths->num_paths);
-		//insert_next_list_node(paths, v);
 		ft_lstadd_back(&paths->paths, ft_lstnew(new_path_ptr));
 		// printf("\tinsertion vertex:%d to path id:%d finished\n\n", v, paths->num_paths);
 	}
@@ -259,52 +262,13 @@ void insert_next_parent(t_paths *paths, int v)
 		// }
 		// printf("\tinsertion vertex:%d to path id:%d finished\n\n", v, paths->num_paths);
 	}
-	/*
-	if (ft_lstfind_node(paths->paths, paths->num_paths))
-	{
-		printf("creating a list node for path id:%d...\n", paths->num_paths);
-		ft_lstadd_back(&paths->paths, ft_lstnew(path_ptr));
-	}
-	else
-		printf("list node for path id:%d not found.\n", paths->num_paths);
-		*/
 }
 
-/*
-void insert_next_parent(t_paths *paths, int v)
-{
-	// create a new node
-	t_vertex_list *node_ptr = malloc(sizeof(t_vertex_list));
-	//t_vertex_list *curr_ptr;
-
-	node_ptr->vertex= v;
-	node_ptr->count_ants = 0;
-	node_ptr->next = NULL;
-	node_ptr->prev = NULL;
-
-	// add new node to the end of the adjacency list for current path id
-	if (ft_lstfind_node(paths->paths, paths->num_paths))
-		printf("yes\n");
-	if (paths->paths[paths->num_paths] == NULL)
-	{
-		paths->paths[paths->num_paths] = node_ptr;
-	}
-	else
-	{
-		curr_ptr = paths->paths[paths->num_paths];
-		while (curr_ptr->next != NULL)
-			curr_ptr = curr_ptr->next;
-		curr_ptr->next = node_ptr;
-		node_ptr->prev = curr_ptr;
-	}
-}
-	*/
-
-void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int **capacity)
+void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int **capacity, int **weights)
 {
 	// int	path_id = 0;
 
-	while (bfs(route, parent, capacity) != -1)
+	while (bfs(route, parent, capacity, weights) != -1)
 	{
 		for (int v = route->end; v != route->start; v = parent[v])
 		{

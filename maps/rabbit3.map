@@ -1,5 +1,6 @@
 15
-# found paths total length: 5 + 9 = 14
+# 5 + 11 = 16
+# found paths total length: 6 + 6 = 12
 # optimized paths total length: 6 + 6 = 12
 ##start
 start 6 4
@@ -11,8 +12,10 @@ c3 5 1
 c4 5 2
 b1 8 2
 b2 9 3
-a1 9 4
-a2 7 4
+b3 10 3
+b4 11 4
+a1 9 5
+a2 7 5
 a3 5 3
 a4 4 3
 a5 3 3
@@ -47,7 +50,9 @@ c2-c3
 c3-c4
 a3-c4
 b1-b2
-b2-a1
+b4-a1
 a1-a2
 a2-start
+b2-b3
+b3-b4
 c4-b1
