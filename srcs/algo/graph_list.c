@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:39:43 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/14 17:53:47 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/14 18:08:43 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,9 @@ t_graph* parse_to_graph(t_parse *parse, t_route *route)
 	{
 		tmp = edge_head->content;
 		if (!insert_edge(g, node_find_index(route->node_map, tmp->key), node_find_index(route->node_map, tmp->val)))
-			printf("free everything here");
+			return (NULL);
 		if (!insert_edge(g, node_find_index(route->node_map, tmp->val), node_find_index(route->node_map, tmp->key)))
-			printf("free everything here");
+			return (NULL);
 		edge_head = edge_head->next;
 	}
 	(void)print_adjlist_list;

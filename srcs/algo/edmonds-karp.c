@@ -333,6 +333,10 @@ void	init_route(t_route* route, t_parse* parse)
 	// 	i++;
 	// }
 	route->graph = parse_to_graph(parse, route);
+	if (route->graph == NULL)
+	{
+		;
+	}
 	route->start = 0;
 	route->end = route->num_vertices - 1;
 
