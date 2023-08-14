@@ -107,7 +107,7 @@ def visualize_ants(input_string, ant_movements_string, node_colors=None,
     # Plot ant paths
     for i, path in enumerate(ant_paths):
         edge_list = [(path[i], path[i + 1]) for i in range(len(path) - 1)]
-        edge_colors = [plt.get_cmap('viridis')(i / len(ant_paths)) for j in range(len(edge_list))]
+        edge_colors = [plt.get_cmap('Oranges')(i / len(ant_paths)) for j in range(len(edge_list))]
         nx.draw_networkx_edges(G, pos, edgelist=edge_list, edge_color=edge_colors, width=2)
 
     plt.show()
