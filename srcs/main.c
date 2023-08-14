@@ -92,22 +92,22 @@
 // 		if (i < longest_path)
 // 		{
 // 			// printf("begin:%d end:%d\n", 0, i);
-// 			pass_ants_to_nodes(test, total_used_path, 0, i);
+// 			ants_pass_to_matrix(test, total_used_path, 0, i);
 // 		}
 // 		// else if (loop - i < longest_path)
 // 		// {
 // 		// 	// printf("begin:%d end:%d\n", i - (loop - longest_path), longest_path);
 // 		// 	// for checking
 // 		// 	// printf("another condition:%d\n", i - (loop - longest_path));
-// 		// 	pass_ants_to_nodes(test, route, i - (loop - longest_path), longest_path, false);
+// 		// 	ants_pass_to_matrix(test, route, i - (loop - longest_path), longest_path, false);
 // 		// }
 // 		else
 // 		{
 // 			// printf("begin:%d end:%d\n", 0, longest_path);
-// 			pass_ants_to_nodes(test, total_used_path, 0, longest_path);
+// 			ants_pass_to_matrix(test, total_used_path, 0, longest_path);
 // 		}
 
-// 		print_one_frame(test, total_used_path, longest_path);
+// 		ants_print_oneframe(test, total_used_path, longest_path);
 // 		printf("\n");
 // 	}
 
@@ -300,7 +300,7 @@ int	main(void)
 	// 	printf("elements - value: %d\t index:%d\tnum_ants:%d\n",
 	// 		elements[i]->value, elements[i]->index, elements[i]->num_ants);
 
-    print_frames(route, elements);
+    ants_print_frames(route, elements);
 
 	for (int u = 0; u < route.num_vertices; ++u)
 		free(temp[u]);
