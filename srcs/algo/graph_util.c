@@ -13,8 +13,8 @@ static void	swap_start_end(char **node_map, char *start, char *end, int array_le
 			str_tmp = node_map[0];
 			node_map[0] = start;
 			node_map[i] = str_tmp;
+			break;
 		}
-
 		i++;
 	}
 	i = 0;
@@ -25,33 +25,37 @@ static void	swap_start_end(char **node_map, char *start, char *end, int array_le
 			str_tmp = node_map[array_len - 1];
 			node_map[array_len - 1] = end;
 			node_map[i] = str_tmp;
+			break;
 		}
 		i++;
 	}
 }
 
-void node_map_to_array(t_list *nodes_head, char **node_map)
+char	**node_map_to_array(t_list *nodes_head)
 {
+	char **ret;
 	int i;
 	t_node_xy *tmp;
 	char *start;
 	char *end;
 
+	ret = (char**)malloc(sizeof(char*) * (ft_lstsize(nodes_head) + 1));
 	start = NULL;
 	end = NULL;
 	i = 0;
 	while (nodes_head != 0)
 	{
 		tmp = nodes_head->content;
-		node_map[i] = tmp->name;
+		ret[i] = tmp->name;
 		if (tmp->node_type == PARSE_XY_START)
 			start = tmp->name;
 		else if (tmp->node_type == PARSE_XY_END)
 			end = tmp->name;
-		i++;
 		nodes_head = nodes_head->next;
+		i++;
 	}
-	swap_start_end(node_map, start, end, i);
+	swap_start_end(ret, start, end, i);
+	return (ret);
 }
 
 int	node_find_index(char **node_array, char *node_name)
@@ -94,3 +98,61 @@ char **init_nodes_mapping(int list_size)
 	nodes_map[i] = NULL;
 	return (nodes_map);
 }
+
+
+void	free_graph(t_graph *g)
+{
+	int i;
+
+	i = 0;
+	t_graph_node *tmp;
+	printf("n:%d\n", g->n);
+	while (i < g->n)
+	{
+		while(g->adj_list[i] != NULL)
+		{
+			tmp = g->adj_list[i];
+			g->adj_list[i] = g->adj_list[i]->link;
+			free(tmp);
+			tmp = NULL;
+		}
+		i++;
+	}
+	free(g->adj_list);
+}
+
+void	free_paths_list(t_paths *paths)
+{
+	ft_lstclear(&paths->paths, free);
+}
+/*
+void	free_paths_list(t_paths *paths)
+{
+	int i;
+
+	i = 0;
+	t_vertex_list *tmp;
+	printf("n:%d\n", paths->num_paths);
+	while (i < paths->num_paths)
+	{
+		while(paths->paths[i] != NULL)
+		{
+			tmp = paths->paths[i];
+			paths->paths[i] = paths->paths[i]->next;
+			free(tmp);
+			tmp = NULL;
+		}
+		i++;
+	}
+	free(paths->paths);
+
+	i = 0;
+	while (i < paths->num_paths)
+	{
+		free(paths->paths[i]);
+		i++;
+	}
+	free(paths->paths[i]);
+	free(paths->paths);
+}
+*/

@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/27 15:04:46 by sucho             #+#    #+#             */
-/*   Updated: 2020/04/27 16:01:23 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/14 01:09:25 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	ft_lstadd_back(t_list **lst, t_list *new)
 {
-	if (lst == 0 || new == 0)
+	if (lst == NULL || new == NULL)
 		return ;
-	if (*lst == 0)
+	if (*lst == NULL)
 		*lst = new;
 	else
 		(ft_lstlast(*lst))->next = new;

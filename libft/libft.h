@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 16:47:22 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/04 22:35:30 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/13 22:47:34 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,6 @@ void				ft_lstclear(t_list **lst, void (*del)(void *));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
 t_list				*ft_lstmap(t_list *lst, void *(*f)(void *), \
 								void (*del)(void *));
+t_list				*ft_lstfind_node(t_list *lst, int index);
 
 #endif

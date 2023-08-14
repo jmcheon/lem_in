@@ -16,20 +16,20 @@ typedef struct s_graph_node {
 
 typedef struct s_graph{
 	int	n;
-	t_graph_node *adj_list[MAX_VERTICES];
+	t_graph_node **adj_list;
 }	t_graph;
 
-typedef struct s_path_list
+typedef struct s_vertex_list
 {
 	int	    vertex;
     int     count_ants;
-	struct s_path_list	*next;
-	struct s_path_list	*prev;
-}	t_path_list;
+	struct s_vertex_list	*next;
+	struct s_vertex_list	*prev;
+}	t_vertex_list;
 
 typedef struct s_ants
 {
-    t_path_list **movements_list;
+    t_vertex_list **movements_list;
 } t_ants;
 
 typedef struct s_paths_ants
@@ -39,8 +39,7 @@ typedef struct s_paths_ants
 
 typedef struct s_paths
 {
-	t_path_list *paths_list[MAX_VERTICES];
-	int	paths[MAX_VERTICES][MAX_VERTICES];
+	t_list *paths;
 	int	num_paths;
 } t_paths;
 
@@ -53,41 +52,43 @@ typedef struct s_route
     int num_vertices;
 	int	num_ants;
 
-    int list_size;
     char	**node_map;
 } t_route;
 
-int bfs(t_route* route, int* parent, int capacity[][MAX_VERTICES]);
+int bfs(t_route* route, int* parent, int **capacity);
 void	print_path(t_route* route, int* parent, int path_id);
 void	print_array(int *parent, int n);
 /*
 **	edmonds-karp.c
 */
 void	print_path(t_route* route, int* parent, int path_id);
-int		bfs(t_route* route, int* parent, int capacity[][MAX_VERTICES]);
-void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int capacity[][MAX_VERTICES]);
-void	fill_capacity(t_graph*paths, int capacity[][MAX_VERTICES]);
-void	print_capacity(int capacity[][MAX_VERTICES], int n);
+int		bfs(t_route* route, int* parent, int **capacity);
+void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int **capacity);
+void	fill_capacity(t_graph*paths, int **capacity);
+void	print_capacity(int **capacity, int n);
 void	print_paths(t_route* route, t_paths* paths);
 void	init_route(t_route* route, t_parse* parse);
 void	init_paths(t_paths* paths);
-void print_paths_list(t_paths *paths);
+void	print_paths_list(t_paths *paths);
 
 /*
 **	graph_list.c
 */
 
-t_graph	*parse_to_graph(t_parse *parse);
+t_graph	*parse_to_graph(t_parse *parse, t_route *route);
 
 
 
 /*
 **	graph_util.c
 */
-void node_map_to_array(t_list *nodes_head, char **node_map);
+char **node_map_to_array(t_list *nodes_head);
 int	node_find_index(char **node_array, char *node_name);
 void	print_graph_mapping(int list_size, char **node_map);
 char **init_nodes_mapping(int list_size);
+void	free_graph(t_graph *g);
+void	free_paths_list(t_paths *paths);
+
 
 
 

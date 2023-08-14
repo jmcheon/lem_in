@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 14:25:42 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/11 19:07:22 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/13 23:12:32 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,4 +111,25 @@ bool	parse_node_xy_check(char *line)
 	}
 	free_2d(node_tmp);
 	return ret;
+}
+
+int		check_start_and_end(t_list *nodes)
+{
+	int check;
+
+	check = 0;
+	while(nodes != NULL)
+	{
+		t_node_xy *tmp;
+		tmp = (t_node_xy*) nodes->content;
+		if (tmp->node_type == PARSE_XY_START || tmp->node_type == PARSE_XY_END)
+			check += tmp->node_type;
+		nodes = nodes->next;
+	}
+	if (check != (PARSE_XY_START + PARSE_XY_END))
+	{
+		printf("error with start and end of nodes\n");
+		return (0);
+	}
+	return (1);
 }

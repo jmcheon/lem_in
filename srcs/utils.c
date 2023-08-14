@@ -1,25 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/04/27 14:38:44 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/13 23:22:12 by cjung-mo         ###   ########.fr       */
+/*   Created: 2023/08/13 16:58:03 by sucho             #+#    #+#             */
+/*   Updated: 2023/08/13 22:31:59 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/lem-in.h"
 
-t_list	*ft_lstnew(void *content)
-{
-	t_list	*new;
-
-	new = (t_list*)malloc(sizeof(t_list));
-	if (new == NULL)
-		return (NULL);
-	new->content = content;
-	new->next = NULL;
-	return (new);
-}

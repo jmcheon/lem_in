@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 16:23:39 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/11 19:07:16 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/13 23:16:37 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,19 @@ bool	duplicates_check(t_parse *parse)
 	}
 	return result;
 }
+
+void	parse_check_antnum(t_list **line_head, t_parse **parse)
+{
+	if (!(0 < ft_atoi((*line_head)->content) && \
+			ft_atoi((*line_head)->content) <= INT_MAX))
+	{
+		ft_putstr_fd("Error in first line: ant number is wrong \n", STDOUT_FILENO);
+		exit(1);
+	}
+	(*parse)->num_ants = ft_atoi((*line_head)->content);
+	(*line_head) = (*line_head)->next;
+}
+
 
 void parse_readlines(t_list *lines)
 {
@@ -74,10 +87,14 @@ t_parse	*parsing()
 	parse_readlines(lines);
 	lines_head = lines;
 	parse_check_antnum(&lines, &ret);
-	parse_check_nodeline(&lines, &ret);
-	parse_check_edgeline(&lines, &ret);
-	free_list(lines_head);
+	if (!parse_check_nodeline(&lines, &ret))
+		free_ongoing_parse(lines_head, ret);
+	if (!check_start_and_end(ret->nodes_head))
+		free_ongoing_parse(lines_head, ret);
+	if (!parse_check_edgeline(&lines, &ret))
+		free_ongoing_parse(lines_head, ret);
 	if(!duplicates_check(ret))
-		exit(1);
+		free_ongoing_parse(lines_head, ret);
+	free_list(lines_head);
 	return ret;
 }
