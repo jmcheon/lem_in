@@ -244,8 +244,10 @@ int	main(void)
 
 	int **capacity;
 	int	**temp;
-	int	**weights;
 	int	*parent;
+	int **weights;
+	
+	
 
 	(void)temp;
 	parse = parsing();
@@ -257,6 +259,22 @@ int	main(void)
 	*/
 	init_route(&route, parse);
 	// init_paths(&paths);
+
+	weights = (int **)malloc(sizeof(int *) * route.num_vertices);
+    for (int i = 0; i < route.num_vertices; i++)
+	{
+        weights[i] = (int *)malloc(sizeof(int) * route.num_vertices);
+        for (int j = 0; j < route.num_vertices; j++)
+            weights[i][j] = 1;
+    }
+
+    disjoint_path(&route, weights);
+	printf("disjoin paths:\n");
+	print_paths_list(&route);
+
+	free_paths(route.paths->paths);
+	init_route(&route, parse);
+	//init_paths(route.paths);
 
 	capacity = (int **)malloc(sizeof(int*) * (route.num_vertices + 1));
 	int i = 0;
@@ -270,14 +288,6 @@ int	main(void)
 	}
 	capacity[i] = NULL;
 
-	weights = (int **)malloc(sizeof(int *) * (route.num_vertices));
-	for (int i = 0; i < route.num_vertices; i++)
-	{
-		weights[i] = (int *)malloc(sizeof(int) * (route.num_vertices));
-		for (int j = 0; j < route.num_vertices; j++)
-			weights[i][j] = 0;
-	}
-
 
 	// printf("number of vertices: %d\n", route.num_vertices);
 	// printf("start: (%d)\n", route.start);
@@ -285,16 +295,13 @@ int	main(void)
 	fill_capacity(route.graph, capacity);
 	//printf("\ncapacity");
 	//print_capacity(capacity, route.num_vertices);
-	// printf("\nweights");
-	fill_capacity(route.graph, weights);
-	// print_capacity(weights, route.num_vertices);
 
 	// /*
 	// **	edmonds-karp
 	// */
-	//parent = (int *)malloc(sizeof(int) * (route.num_vertices));
+	parent = (int *)malloc(sizeof(int) * (route.num_vertices));
 	init_parent_array(&route, &parent);
-	edmonds_karp(&route, route.paths, parent, capacity, capacity);
+	edmonds_karp(&route, route.paths, parent, capacity);
 	// // int i = 0;
 	// // while (i < (route.list_size))
 	// // {
@@ -340,14 +347,16 @@ int	main(void)
 	// */
 	free_paths(route.paths->paths);
 	init_paths(route.paths);
-	edmonds_karp(&route, route.paths, parent, temp, temp);
-	// printf("disjoin paths:\n");
-	// print_paths_list(&route);
+	edmonds_karp(&route, route.paths, parent, temp);
+	printf("ek disjoin paths:\n");
+	print_paths_list(&route);
 	/*
 	printf("\naf ek temp");
 	print_capacity(temp, route.num_vertices);
 	*/
 
+	//t_path_len **elements = ants_distribute(route);
+    //ants_print_frames(route, elements);
 	t_path_len **elements = ants_distribute(route);
 	// for(int i = 0; elements[i] != NULL; i++)
 	// 	printf("value:%d\tindex:%d\tnum_ants%d\n",elements[i]->value, elements[i]->index, elements[i]->num_ants);
@@ -359,9 +368,11 @@ int	main(void)
 		free(temp[u]);
 	free(temp);
 
+/*
 	for(int i = 0; i < route.paths->num_paths; i++)
 		free(elements[i]);
 	free(elements);
+	*/
 
 	// // free(route.paths);
 	ft_lstclear(&parse->nodes_head, free_node_xy);

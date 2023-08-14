@@ -60,9 +60,18 @@ void	print_array(int *parent, int n);
 void	print_paths(t_route* route, t_paths* paths);
 void	print_paths_list(t_route *route);
 
-int bfs(t_route* route, int* parent, int **capacity, int **weights);
-void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int **capacity, int **weights);
+int bfs(t_route* route, int* parent, int **capacity);
+void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int **capacity);
 void	fill_capacity(t_graph*paths, int **capacity);
+void	insert_next_parent(t_paths *paths, int v);
+
+/*
+** disjoin_path.c
+*/
+void	dijkstra(t_route *route, int **weights, int *parent, int *dist);
+void	remove_path(t_route *route, int *parent);
+void	append_path(t_paths *paths, int *parent, int end);
+void	disjoint_path(t_route *route, int **weights);
 
 /*
 **	graph_list.c

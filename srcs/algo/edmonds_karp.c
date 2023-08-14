@@ -1,23 +1,20 @@
 #include "../../includes/lem-in.h"
 
-int bfs(t_route* route, int* parent, int **capacity, int **weights)
+int bfs(t_route* route, int* parent, int **capacity)
 {
 	int	visited[route->num_vertices];
-    int dist[route->num_vertices];
 	t_queue	queue;
 
 	//ft_memset(visited, 0, sizeof(visited));
 
     for (int i = 0; i < route->num_vertices; i++) {
         visited[i] = 0;
-        dist[i] = INT_MAX;
         parent[i] = -1;
     }
     //print_array(parent, route->num_vertices);
     //reset_parent_array(route, &parent);
 
 	visited[route->start] = 1;
-    dist[route->start] = 0;
 	init_queue(&queue);
 	enqueue(&queue, route->start);
 
@@ -33,20 +30,12 @@ int bfs(t_route* route, int* parent, int **capacity, int **weights)
 			//printf("node's vertex: %d\n", v);
 			if (!visited[v] && capacity[u][v] > 0)
 			{
-                //printf("dist[%d]:%d, weights[%d][%d]:%d, dist[%d]:%d\n", u, dist[u], u, v, weights[u][v], v, dist[v]);
-                int new_dist = dist[u] + weights[u][v];
-
-                if (new_dist < dist[v])
-                {
-                    dist[v] = new_dist;
-				    parent[v] = u;
-				    if (v == route->end)
-				    {
-				    	free_queue(&queue);
-				    	return (1);
-				    }
-
-                }
+			    parent[v] = u;
+			    if (v == route->end)
+			    {
+			    	free_queue(&queue);
+			    	return (1);
+			    }
 
 				//printf("parent: ");
 				//print_array(parent, route->num_vertices);
@@ -264,11 +253,11 @@ void insert_next_parent(t_paths *paths, int v)
 	}
 }
 
-void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int **capacity, int **weights)
+void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int **capacity)
 {
 	// int	path_id = 0;
 
-	while (bfs(route, parent, capacity, weights) != -1)
+	while (bfs(route, parent, capacity) != -1)
 	{
 		for (int v = route->end; v != route->start; v = parent[v])
 		{
