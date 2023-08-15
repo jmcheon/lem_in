@@ -31,6 +31,8 @@ SRCS					=	./includes/get_next_line/get_next_line_bonus.c \
 							./srcs/parse/parse_check.c \
 							./srcs/parse/parse_util.c \
 							./srcs/parse/parse_free.c \
+							./srcs/algo/init_funcs.c \
+							./srcs/algo/print_funcs.c \
 							./srcs/algo/edmonds_karp.c \
 							./srcs/algo/disjoint_path.c \
 							./srcs/algo/graph_list.c \

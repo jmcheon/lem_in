@@ -22,7 +22,6 @@ typedef struct s_graph{
 typedef struct s_vertex_list
 {
 	int	    vertex;
-    int     count_ants;
 	struct s_vertex_list	*next;
 	struct s_vertex_list	*prev;
 }	t_vertex_list;
@@ -30,6 +29,7 @@ typedef struct s_vertex_list
 typedef struct s_paths
 {
 	t_list *paths;
+	int	*distances;
 	int	num_paths;
 } t_paths;
 
@@ -46,19 +46,10 @@ typedef struct s_route
 } t_route;
 
 /*
-**	edmonds-karp.c
+**	edmonds_karp.c
 */
 void	reset_parent_array(t_route *route, int **parent);
 void	init_parent_array(t_route *route, int **parent);
-
-void	init_route(t_route* route, t_parse* parse);
-void	init_paths(t_paths* paths);
-
-void	print_path(t_route* route, int* parent, int path_id);
-void	print_capacity(int **capacity, int n);
-void	print_array(int *parent, int n);
-void	print_paths(t_route* route, t_paths* paths);
-void	print_paths_list(t_route *route);
 
 int bfs(t_route* route, int* parent, int **capacity);
 void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int **capacity);
@@ -66,9 +57,33 @@ void	fill_capacity(t_graph*paths, int **capacity);
 void	insert_next_parent(t_paths *paths, int v);
 
 /*
+**	init_funcs.c
+*/
+void	init_route(t_route* route, t_parse* parse);
+void	init_vertex_list(t_vertex_list* path, int v);
+void	init_paths(t_paths* paths);
+
+
+/*
+**	print_funcs.c
+*/
+void	print_path(t_route* route, int* parent, int path_id);
+void	print_paths(t_route* route, t_paths* paths);
+void	print_paths_list(t_route *route);
+void	print_2d_array(int **array, int size);
+void	print_array(int *array, int size);
+
+
+/*
 ** disjoin_path.c
 */
-void	dijkstra(t_route *route, int **weights, int *parent, int *dist);
+
+t_vertex_list *modified_dijkstra(t_route *route, int source, int destination);
+void	modified_dijkstra1(t_route* route);
+void	remove_edges_in_path(t_graph *graph, t_vertex_list *path);
+
+void	dijkstra(t_route *route);
+void	dijkstra1(t_route *route, int **weights, int *parent, int *dist);
 void	remove_path(t_route *route, int *parent);
 void	append_path(t_paths *paths, int *parent, int end);
 void	disjoint_path(t_route *route, int **weights);

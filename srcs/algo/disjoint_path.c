@@ -1,6 +1,246 @@
 #include "../../includes/lem-in.h"
 
-void	dijkstra(t_route *route, int **weights, int *parent, int *dist)
+int min_distance_vertex(bool visited[], int distances[], int size)
+{
+    int min_distance = INT_MAX;
+    int min_index = -1;
+
+    for (int v = 0; v < size; v++)
+	{
+        if (!visited[v] && distances[v] <= min_distance)
+		{
+            min_distance = distances[v];
+            min_index = v;
+        }
+    }
+
+    return min_index;
+}
+
+void construct_path(int prev[], int vertex, t_vertex_list** path)
+{
+    if (vertex == -1)
+        return;
+
+    construct_path(prev, prev[vertex], path);
+
+    t_vertex_list *new_vertex = (t_vertex_list *)malloc(sizeof(t_vertex_list));
+    new_vertex->vertex = vertex;
+    new_vertex->next = NULL;
+    new_vertex->prev = *path;
+
+    if (*path != NULL)
+    {
+        (*path)->next = new_vertex;
+    }
+    *path = new_vertex;
+}
+
+
+void construct_path1(t_route *route, int prev[], int vertex, t_vertex_list** path)
+{
+	printf("constructing path\n");
+    if (prev[vertex] == -1)
+    {
+        t_vertex_list *new_vertex = (t_vertex_list *)malloc(sizeof(t_vertex_list));
+        new_vertex->vertex = vertex;
+        new_vertex->next = NULL;
+        new_vertex->prev = *path;
+
+        if (*path != NULL)
+        {
+            (*path)->next = new_vertex;
+        }
+        *path = new_vertex;
+        return;
+    }
+
+    construct_path1(route, prev, prev[vertex], path);
+    construct_path1(route, prev, vertex, path);
+}
+
+t_vertex_list *modified_dijkstra(t_route *route, int source, int destination)
+{
+    t_graph *graph = route->graph;
+    int size = graph->n;
+    int *distances = (int *)malloc(size * sizeof(int));
+    int *prev = (int *)malloc(size * sizeof(int));
+    bool *visited = (bool *)malloc(size * sizeof(bool));
+
+    for (int i = 0; i < size; i++)
+    {
+        distances[i] = INT_MAX;
+        prev[i] = -1;
+        visited[i] = false;
+    }
+
+    distances[source] = 0;
+
+    for (int count = 0; count < size - 1; count++)
+    {
+        int u = min_distance_vertex(visited, distances, size);
+        visited[u] = true;
+        t_graph_node *temp_node = graph->adj_list[u];
+
+        while (temp_node != NULL)
+        {
+            int v = temp_node->vertex;
+			printf("temp node vertex:%d\n", v);
+            if (!visited[v] && distances[u] != INT_MAX && distances[u] + 1 < distances[v])
+            {
+                distances[v] = distances[u] + 1;
+                prev[v] = u;
+            }
+            temp_node = temp_node->link;
+        }
+    }
+    t_vertex_list *shortest_path = NULL;
+    construct_path(prev, destination, &shortest_path);
+
+    free(distances);
+    free(prev);
+    free(visited);
+
+    return shortest_path;
+
+}
+
+void remove_edge(t_graph *graph, int start, int end)
+{
+    t_graph_node* temp = graph->adj_list[start];
+    t_graph_node* prev = NULL;
+    while (temp != NULL)
+	{
+        if (temp->vertex == end)
+		{
+            if (prev == NULL)
+                graph->adj_list[start] = temp->link;
+            else
+                prev->link = temp->link;
+            free(temp);
+            break;
+        }
+        prev = temp;
+        temp = temp->link;
+    }
+}
+
+// 그래프에서 주어진 경로를 따르는 엣지를 제거한다.
+void remove_edges_in_path(t_graph *graph, t_vertex_list *path)
+{
+    t_vertex_list *current = path;
+    while(current->next != NULL)
+    {
+        remove_edge(graph, current->vertex, current->next->vertex);
+        current = current->next;
+    }
+}
+
+
+
+void print_path2(t_route * route, int prev[], int vertex)
+{
+	// base case: start vertex
+    if (prev[vertex] == -1) 
+    {
+        printf("%d ", vertex);
+        return;
+    }
+
+    print_path2(route, prev, prev[vertex]);
+    printf("%d ", vertex);
+}
+
+void modified_dijkstra1(t_route* route)
+{
+    t_graph* graph = route->graph;
+    int size = graph->n;
+    int distances[size];
+    int prev[size];
+    bool visited[size];
+
+    // Initialize distance and visited arrays, and prev array for reconstruction
+    for (int i = 0; i < size; i++)
+    {
+        distances[i] = INT_MAX;
+        prev[i] = -1;
+        visited[i] = false;
+    }
+
+    distances[route->start] = 0;
+
+    for (int count = 0; count < size - 1; count++)
+    {
+        int u = min_distance_vertex(visited, distances, size);
+        visited[u] = true;
+        t_graph_node* temp_node = graph->adj_list[u];
+
+        while (temp_node != NULL)
+        {
+            int v = temp_node->vertex;
+            if (!visited[v] && distances[u] != INT_MAX && distances[u] + 1 < distances[v])
+			{
+                distances[v] = distances[u] + 1;
+                prev[v] = u; // update prev array to store the path
+            }
+            temp_node = temp_node->link;
+        }
+    }
+
+    printf("Starting vertex: %d\n", route->start);
+    for (int i = 0; i < size; i++)
+    {
+        if (i != route->start)
+        {
+            printf("Shortest path to vertex %d: ", i);
+            print_path2(route, prev, i);
+            printf("\n");
+            remove_edge(graph, prev[i], i); // remove the edges after printing the path
+        }
+    }
+    printf("\n");
+}
+
+
+void	dijkstra(t_route* route)
+{
+    int size = route->graph->n;
+	int *distances = route->paths->distances;
+    bool visited[size];
+
+	//printf("size:%d\n", size);
+    for (int i = 0; i < size; i++)
+	{
+        distances[i] = INT_MAX;
+        visited[i] = false;
+    }
+    distances[route->start] = 0;
+
+    for (int count = 0; count < size - 1; count++)
+	{
+        int u = min_distance_vertex(visited, distances, size);
+        visited[u] = true;
+        t_graph_node* temp_node = route->graph->adj_list[u];
+
+        while (temp_node != NULL)
+		{
+            int v = temp_node->vertex;
+            if (!visited[v] && distances[u] != INT_MAX && distances[u] + 1 < distances[v])
+			{
+                distances[v] = distances[u] + 1;
+            }
+            temp_node = temp_node->link;
+        }
+    }
+
+    printf("Vertex\t Distance from start\n");
+    for (int i = 0; i < size; i++) {
+        printf("%d\t\t%d\n", i, distances[i]);
+    }
+}
+
+
+void	dijkstra1(t_route *route, int **weights, int *parent, int *dist)
 {
 	int visited[route->num_vertices];
 
@@ -77,7 +317,7 @@ void	append_path(t_paths *paths, int *parent, int end)
 	}
 	paths->num_paths++;
 }
-
+/*
 void	disjoint_path(t_route *route, int **weights)
 {
 	int parent[route->num_vertices];
@@ -110,3 +350,4 @@ void	disjoint_path(t_route *route, int **weights)
 		}
 	}
 }
+*/

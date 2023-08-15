@@ -234,8 +234,6 @@ void	init_parent_array(t_route *route, int **parent)
 	*parent = (int *)malloc(sizeof(int) * (route->num_vertices));
 	reset_parent_array(route, parent);
 }
-
-
 int	main(void)
 {
 	t_parse	*parse;
@@ -268,12 +266,16 @@ int	main(void)
             weights[i][j] = 1;
     }
 
+	dijkstra(&route);
+/*
+	modified_dijkstra1(&route);
     disjoint_path(&route, weights);
 	printf("disjoin paths:\n");
 	print_paths_list(&route);
 
 	free_paths(route.paths->paths);
 	init_route(&route, parse);
+	*/
 	//init_paths(route.paths);
 
 	capacity = (int **)malloc(sizeof(int*) * (route.num_vertices + 1));
@@ -294,7 +296,7 @@ int	main(void)
 	// printf("end: (%d)\n", route.end);
 	fill_capacity(route.graph, capacity);
 	//printf("\ncapacity");
-	//print_capacity(capacity, route.num_vertices);
+	//print_2d_array(capacity, route.num_vertices);
 
 	// /*
 	// **	edmonds-karp
@@ -310,7 +312,7 @@ int	main(void)
 	// // }
 	/*
 	printf("\naf ek capacity");
-	print_capacity(capacity, route.num_vertices);
+	print_2d_array(capacity, route.num_vertices);
 	printf("disjoin paths:\n");
 	print_paths_list(&route);
 	*/
@@ -339,7 +341,7 @@ int	main(void)
 	}
 	/*
 	printf("\ntemp");
-	print_capacity(temp, route.num_vertices);
+	print_2d_array(temp, route.num_vertices);
 	*/
 
 	// /*
@@ -352,7 +354,7 @@ int	main(void)
 	print_paths_list(&route);
 	/*
 	printf("\naf ek temp");
-	print_capacity(temp, route.num_vertices);
+	print_2d_array(temp, route.num_vertices);
 	*/
 
 	//t_path_len **elements = ants_distribute(route);
@@ -368,11 +370,9 @@ int	main(void)
 		free(temp[u]);
 	free(temp);
 
-/*
 	for(int i = 0; i < route.paths->num_paths; i++)
 		free(elements[i]);
 	free(elements);
-	*/
 
 	// // free(route.paths);
 	ft_lstclear(&parse->nodes_head, free_node_xy);
@@ -396,9 +396,11 @@ int	main(void)
 	while (i < route.num_vertices)
 	{
 		free(capacity[i]);
+		free(weights[i]);
 		i++;
 	}
 	free(capacity);
+	free(weights);
 
 	// free(route.node_map);
     // print_frames(route, elements);

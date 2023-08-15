@@ -48,113 +48,6 @@ int bfs(t_route* route, int* parent, int **capacity)
 	return (-1);
 }
 
-void	print_path(t_route* route, int* parent, int path_id)
-{
-	int	v;
-
-	if (parent[route->end] == -1)
-	{
-		printf("path %d: not found.\n", path_id);
-		return ;
-	}
-
-	printf("path %d - [%d]:%s", path_id, route->end, route->node_map[route->end]);
-	v = route->end;
-	while (v != route->start)
-	{
-		v = parent[v];
-		printf("<- [%d]:%s", v, route->node_map[v]);
-	}
-	printf("\n");
-}
-
-void print_path_node(void *data)
-{
-	t_vertex_list *curr_paths_ptr;
-
-	curr_paths_ptr = (t_vertex_list*)data;
-	if (curr_paths_ptr != NULL)
-		printf(" <- %d", curr_paths_ptr->vertex);
-}
-
-void print_paths_list(t_route *route)
-{
-	t_vertex_list	*curr_path_ptr;
-	t_list			*curr_list_ptr;
-	int i;
-
-	curr_list_ptr = route->paths->paths;
-	//ft_lstiter(curr_list_ptr, print_path_node);
-	//for (int i = 0; i < paths->num_pahts; ++i)
-	i = 0;
-	while (curr_list_ptr != NULL)
-	{
-		//ft_lstiter(curr_list_ptr, print_path_node);
-		curr_path_ptr = (t_vertex_list*)curr_list_ptr->content;
-		printf("path %d - ", i + 1);
-		if (curr_path_ptr != NULL)
-		{
-			printf("[%d]:%s", curr_path_ptr->vertex, route->node_map[curr_path_ptr->vertex]);
-			curr_path_ptr = curr_path_ptr->next;
-		}
-		while (curr_path_ptr != NULL)
-		{
-			printf(" <- [%d]:%s", curr_path_ptr->vertex, route->node_map[curr_path_ptr->vertex]);
-			curr_path_ptr = curr_path_ptr->next;
-		}
-		printf("\n");
-		curr_list_ptr = curr_list_ptr->next;
-		i++;
-	}
-	//printf("i:%d\n", i);
-	return ;
-	/*
-	int i;
-
-	i = 0;
-	while (i < paths->num_paths)
-	{
-		curr_ptr = paths->paths[i];
-		printf("path %d - ", i + 1);
-		if (curr_ptr != NULL)
-		{
-			printf("%d", curr_ptr->vertex);
-			curr_ptr = curr_ptr->next;
-		}
-		while (curr_ptr != NULL)
-		{
-			printf(" <- %d", curr_ptr->vertex);
-			curr_ptr = curr_ptr->next;
-		}
-		printf("\n");
-		i++;
-	}
-	i = 0;
-	while (i < paths->num_paths)
-	{
-		curr_ptr = paths->paths[i];
-		while (curr_ptr->next != NULL)
-			curr_ptr = curr_ptr->next;
-		//printf("last vertex:%d\n", curr_ptr->vertex);
-
-
-		printf("path %d - ", i + 1);
-		if (curr_ptr != NULL)
-		{
-			printf("%d", curr_ptr->vertex);
-			curr_ptr = curr_ptr->prev;
-		}
-		while (curr_ptr != NULL)
-		{
-			printf(" -> %d", curr_ptr->vertex);
-			curr_ptr = curr_ptr->prev;
-		}
-		printf("\n");
-		i++;
-	}
-	*/
-}
-
 void	fill_capacity(t_graph* graph, int **capacity)
 {
 	for (int u = 0; u < graph->n; ++u)
@@ -164,43 +57,10 @@ void	fill_capacity(t_graph* graph, int **capacity)
 		{
 			int v = node->vertex;
 			capacity[u][v] = 1;
-			capacity[v][u] = 1;
+			//capacity[v][u] = 1;
 			node = node->link;
 		}
 	}
-}
-
-void	print_capacity(int **capacity, int n)
-{
-	printf("\nprint capacity:\n\n");
-	for (int u = 0; u < n; ++u)
-	{
-		for (int v = 0; v < n; ++v)
-			printf("%d ", capacity[u][v]);
-		printf("\n");
-	}
-}
-
-void	print_array(int *parent, int n)
-{
-	for (int u = 0; u < n; ++u)
-		printf("%d ", parent[u]);
-	printf("\n\n");
-}
-
-void	init_path(t_vertex_list* path)
-{
-	path->vertex = -1;
-	path->count_ants = 0;
-	path->next = NULL;
-	path->prev = NULL;
-}
-
-void	init_paths(t_paths* paths)
-{
-	//paths->paths = ft_lstnew(NULL);
-	paths->paths = NULL;
-	paths->num_paths = 0;
 }
 
 void insert_next_parent(t_paths *paths, int v)
@@ -216,9 +76,7 @@ void insert_next_parent(t_paths *paths, int v)
 		return ;
 	}
 
-	new_path_ptr->vertex= v;
-	new_path_ptr->next = NULL;
-	new_path_ptr->prev = NULL;
+	init_vertex_list(new_path_ptr, v);
 
 	curr_list_ptr = ft_lstfind_node(paths->paths, paths->num_paths);
 	// adding t_list node
@@ -275,37 +133,27 @@ void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int **capacity)
 	}
 }
 
-void	init_route(t_route* route, t_parse* parse)
+/*
+void	optimize(t_route *route)
 {
-	route->num_ants = parse->num_ants;
-	route->num_vertices = ft_lstsize(parse->nodes_head);
-	route->node_map = node_map_to_array(parse->nodes_head);
-	// int	i = 0;
-	// while (i < route->num_vertices)
-	// {
-	// 	// printf("[%s]\n", route->node_map[i]);
-	// 	i++;
-	// }
-	route->graph = parse_to_graph(parse, route);
-	if (route->graph == NULL)
+	t_list			*curr_list_ptr;
+	t_vertex_list	*curr_path_ptr;
+	int				weights;
+
+	curr_list_ptr = route->paths->paths;
+
+	while (curr_list_ptr != NULL)
 	{
-		ft_lstclear(&parse->nodes_head, free_node_xy);
-		ft_lstclear(&parse->edge_info_head, free_edge);
-		free(route->node_map);
-		// free_graph(route->graph);
-		free(parse);
-		exit(1);
+		curr_path_ptr = (t_vertex_list)curr_list_ptr->content;
+		weights = 0;
+		while (curr_path_ptr != NULL)
+		{
+			if (route->graph->adj_list[])
+			weights++;
+			curr_path_ptr->vertex
+			curr_path_ptr = curr_path_ptr->next;
+		}
+		curr_list_ptr = curr_list_ptr->next;
 	}
-	route->start = 0;
-	route->end = route->num_vertices - 1;
-
-	route->paths = (t_paths*)malloc(sizeof(t_paths));
-	init_paths(route->paths);
-
 }
-
-void	destroy_route(t_route* route)
-{
-	(void)route;
-}
-
+*/
