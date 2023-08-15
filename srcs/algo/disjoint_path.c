@@ -125,7 +125,6 @@ void remove_edge(t_graph *graph, int start, int end)
     }
 }
 
-// 그래프에서 주어진 경로를 따르는 엣지를 제거한다.
 void remove_edges_in_path(t_graph *graph, t_vertex_list *path)
 {
     t_vertex_list *current = path;
@@ -140,7 +139,6 @@ void remove_edges_in_path(t_graph *graph, t_vertex_list *path)
 
 void print_path2(t_route * route, int prev[], int vertex)
 {
-	// base case: start vertex
     if (prev[vertex] == -1) 
     {
         printf("%d ", vertex);

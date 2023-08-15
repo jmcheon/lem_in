@@ -234,6 +234,7 @@ void	init_parent_array(t_route *route, int **parent)
 	*parent = (int *)malloc(sizeof(int) * (route->num_vertices));
 	reset_parent_array(route, parent);
 }
+
 int	main(void)
 {
 	t_parse	*parse;

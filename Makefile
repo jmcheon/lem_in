@@ -38,6 +38,7 @@ SRCS					=	./includes/get_next_line/get_next_line_bonus.c \
 							./srcs/algo/graph_list.c \
 							./srcs/algo/graph_util.c \
 							./srcs/algo/queue.c \
+							./srcs/algo/priority_queue.c \
 							./srcs/ants/ants_dist.c \
 							./srcs/ants/ants_quicksort.c \
 							./srcs/ants/ants_print_frame.c \
