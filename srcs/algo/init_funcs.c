@@ -3,6 +3,7 @@
 void	init_vertex_list(t_vertex_list *path, int v)
 {
 	path->vertex = v;
+	path->length = 0;
 	path->next = NULL;
 	path->prev = NULL;
 }
@@ -10,7 +11,6 @@ void	init_vertex_list(t_vertex_list *path, int v)
 void	init_paths(t_paths* paths)
 {
 	//paths->paths = ft_lstnew(NULL);
-	paths->distances = NULL;
 	paths->paths = NULL;
 	paths->num_paths = 0;
 }
@@ -37,10 +37,10 @@ void	init_route(t_route* route, t_parse* parse)
 		free(parse);
 		exit(1);
 	}
+	route->distances = (int*)malloc(sizeof(int) * (route->num_vertices + 1));
 	route->start = 0;
 	route->end = route->num_vertices - 1;
 
 	route->paths = (t_paths*)malloc(sizeof(t_paths));
 	init_paths(route->paths);
-	route->paths->distances = (int*)malloc(sizeof(int) * (route->num_vertices));
 }

@@ -31,7 +31,7 @@ void print_path_node(void *data)
 
 void print_paths_list(t_route *route)
 {
-	t_vertex_list	*curr_path_ptr;
+	t_vertex_list	*curr_vertex_ptr;
 	t_list			*curr_list_ptr;
 	int i;
 
@@ -42,17 +42,18 @@ void print_paths_list(t_route *route)
 	while (curr_list_ptr != NULL)
 	{
 		//ft_lstiter(curr_list_ptr, print_path_node);
-		curr_path_ptr = (t_vertex_list*)curr_list_ptr->content;
+		curr_vertex_ptr = (t_vertex_list*)curr_list_ptr->content;
 		printf("path %d - ", i + 1);
-		if (curr_path_ptr != NULL)
+		if (curr_vertex_ptr != NULL)
 		{
-			printf("[%d]:%s", curr_path_ptr->vertex, route->node_map[curr_path_ptr->vertex]);
-			curr_path_ptr = curr_path_ptr->next;
+			printf("[%d](%d):%s", curr_vertex_ptr->vertex, curr_vertex_ptr->length, route->node_map[curr_vertex_ptr->vertex]);
+			curr_vertex_ptr = curr_vertex_ptr->next;
 		}
-		while (curr_path_ptr != NULL)
+		while (curr_vertex_ptr != NULL)
 		{
-			printf(" <- [%d]:%s", curr_path_ptr->vertex, route->node_map[curr_path_ptr->vertex]);
-			curr_path_ptr = curr_path_ptr->next;
+			printf(" <- [%d](%d):%s", curr_vertex_ptr->vertex, curr_vertex_ptr->length, route->node_map[curr_vertex_ptr->vertex]);
+			//printf(" <- [%d]:%s", curr_vertex_ptr->vertex, route->node_map[curr_vertex_ptr->vertex]);
+			curr_vertex_ptr = curr_vertex_ptr->next;
 		}
 		printf("\n");
 		curr_list_ptr = curr_list_ptr->next;

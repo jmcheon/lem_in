@@ -22,6 +22,7 @@ typedef struct s_graph{
 typedef struct s_vertex_list
 {
 	int	    vertex;
+	int		length;
 	struct s_vertex_list	*next;
 	struct s_vertex_list	*prev;
 }	t_vertex_list;
@@ -29,7 +30,6 @@ typedef struct s_vertex_list
 typedef struct s_paths
 {
 	t_list *paths;
-	int	*distances;
 	int	num_paths;
 } t_paths;
 
@@ -37,9 +37,11 @@ typedef struct s_route
 {
 	t_graph	*graph;
 	t_paths	*paths;
+	int	*distances;
     int start;
     int end;
     int num_vertices;
+	//int	num_edges;
 	int	num_ants;
 
     char	**node_map;
@@ -55,6 +57,7 @@ int bfs(t_route* route, int* parent, int **capacity);
 void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int **capacity);
 void	fill_capacity(t_graph*paths, int **capacity);
 void	insert_next_parent(t_paths *paths, int v);
+void	optimize(t_route *route);
 
 /*
 **	init_funcs.c
@@ -93,6 +96,7 @@ void	disjoint_path(t_route *route, int **weights);
 */
 
 t_graph	*parse_to_graph(t_parse *parse, t_route *route);
+int	lstsize(t_graph_node *lst);
 
 
 

@@ -305,12 +305,12 @@ int	main(void)
 	parent = (int *)malloc(sizeof(int) * (route.num_vertices));
 	init_parent_array(&route, &parent);
 	edmonds_karp(&route, route.paths, parent, capacity);
-	// // int i = 0;
-	// // while (i < (route.list_size))
-	// // {
-	// // 	printf("index: %d, str:[%s]\n", i, route.node_map[i]);
-	// // 	i++;
-	// // }
+	i = 0;
+	while (i < (route.num_vertices))
+	{
+		printf("index: %d, str:[%s]\n", i, route.node_map[i]);
+		i++;
+	}
 	/*
 	printf("\naf ek capacity");
 	print_2d_array(capacity, route.num_vertices);
@@ -350,6 +350,7 @@ int	main(void)
 	// */
 	free_paths(route.paths->paths);
 	init_paths(route.paths);
+	init_parent_array(&route, &parent);
 	edmonds_karp(&route, route.paths, parent, temp);
 	printf("ek disjoin paths:\n");
 	print_paths_list(&route);
@@ -357,6 +358,7 @@ int	main(void)
 	printf("\naf ek temp");
 	print_2d_array(temp, route.num_vertices);
 	*/
+	optimize(&route);
 
 	//t_path_len **elements = ants_distribute(route);
     //ants_print_frames(route, elements);

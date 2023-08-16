@@ -10,7 +10,7 @@ bool	priority_queue_empty(t_priority_queue* queue)
 	return (queue->front == NULL);
 }
 
-void	en_priority_queue(t_priority_queue* queue, int content, int distance)
+void	enqueue_with_priority(t_priority_queue* queue, int content, int distance)
 {
 	t_int_list*	new_node = (t_int_list*)malloc(sizeof(t_int_list));
 
@@ -40,7 +40,7 @@ void	en_priority_queue(t_priority_queue* queue, int content, int distance)
 	// printf("enqueued: %d\n", content);
 }
 
-int	de_priority_queue(t_priority_queue* queue)
+int	dequeue_with_priority(t_priority_queue* queue)
 {
 	if (priority_queue_empty(queue))
 	{
@@ -60,5 +60,5 @@ int	de_priority_queue(t_priority_queue* queue)
 void	free_priority_queue(t_priority_queue* queue)
 {
 	while(!priority_queue_empty(queue))
-		de_priority_queue(queue);
+		dequeue_with_priority(queue);
 }

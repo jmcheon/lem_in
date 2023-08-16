@@ -12,6 +12,19 @@
 
 #include "../../includes/lem-in.h"
 
+int	lstsize(t_graph_node *lst)
+{
+	size_t	size;
+
+	size = 0;
+	while (lst)
+	{
+		lst = lst->link;
+		size++;
+	}
+	return (size);
+}
+
 static void init(t_graph *graph, int num_vertices)
 {
 	int v;

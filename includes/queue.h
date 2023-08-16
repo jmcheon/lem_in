@@ -38,7 +38,7 @@ void	free_queue(t_queue *queue);
 */
 void	init_priority_queue(t_priority_queue *queue);
 bool	priority_queue_empty(t_priority_queue* queue);
-void	en_priority_queue(t_priority_queue* queue, int content, int distance);
-int	de_priority_queue(t_priority_queue* queue);
+void	enqueue_with_priority(t_priority_queue* queue, int content, int distance);
+int	dequeue_with_priority(t_priority_queue* queue);
 void	free_priority_queue(t_priority_queue *queue);
 #endif

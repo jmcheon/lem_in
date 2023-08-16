@@ -203,7 +203,7 @@ void modified_dijkstra1(t_route* route)
 void	dijkstra(t_route* route)
 {
     int size = route->graph->n;
-	int *distances = route->paths->distances;
+	int *distances = route->distances;
     bool visited[size];
 
 	//printf("size:%d\n", size);
