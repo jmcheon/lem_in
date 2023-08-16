@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 07:19:48 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/14 17:20:04 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/17 00:40:22 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ants_dist_fillin(int *ant_dist, t_path_len **elements, t_route route, int d
 
 	for (int i = route.paths->num_paths - 1; i > dist_begin; i--)
 	{
-		int dist = elements[i - 1]->value - elements[i]->value;
+		int dist = elements[dist_begin]->value -  elements[i]->value;
 		ant_dist[i] += dist;
 		ants_to_dist -= dist;
 	}
