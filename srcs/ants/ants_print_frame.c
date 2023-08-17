@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 16:36:46 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/17 04:48:18 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/17 04:51:26 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,21 +166,21 @@ void ants_print_frames(t_route route, t_path_len **elements)
 	// }
 
 	// printf("================================\n");
-	int i = 0;
-	while (i < total_used_path)
-	{
-		int j = 0;
-		while (j < longest_path)
-		{
-			if (ants_print_matrix[i][j].node_name == NULL)
-				printf("[null] ");
-			else
-				printf("[%s] ",ants_print_matrix[i][j].node_name);
-			j++;
-		}
-		printf("\n");
-		i++;
-	}
+	// int i = 0;
+	// while (i < total_used_path)
+	// {
+	// 	int j = 0;
+	// 	while (j < longest_path)
+	// 	{
+	// 		if (ants_print_matrix[i][j].node_name == NULL)
+	// 			printf("[null] ");
+	// 		else
+	// 			printf("[%s] ",ants_print_matrix[i][j].node_name);
+	// 		j++;
+	// 	}
+	// 	printf("\n");
+	// 	i++;
+	// }
 	// printf("================================\n");
 
 	int loop = 0;
@@ -216,7 +216,7 @@ void ants_print_frames(t_route route, t_path_len **elements)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 	}
 
-	i = 0;
+	int i = 0;
 	while (i < total_used_path)
 	{
 		free(ants_print_matrix[i]);

@@ -285,9 +285,9 @@ int	main(void)
 	fill_capacity(route.graph, capacity);
 	//printf("\ncapacity");
 	//print_capacity(capacity, route.num_vertices);
-	printf("\nweights");
+	// printf("\nweights");
 	fill_capacity(route.graph, weights);
-	print_capacity(weights, route.num_vertices);
+	// print_capacity(weights, route.num_vertices);
 
 	// /*
 	// **	edmonds-karp
@@ -341,16 +341,16 @@ int	main(void)
 	free_paths(route.paths->paths);
 	init_paths(route.paths);
 	edmonds_karp(&route, route.paths, parent, temp, temp);
-	printf("disjoin paths:\n");
-	print_paths_list(&route);
+	// printf("disjoin paths:\n");
+	// print_paths_list(&route);
 	/*
 	printf("\naf ek temp");
 	print_capacity(temp, route.num_vertices);
 	*/
 
 	t_path_len **elements = ants_distribute(route);
-	for(int i = 0; elements[i] != NULL; i++)
-		printf("value:%d\tindex:%d\tnum_ants%d\n",elements[i]->value, elements[i]->index, elements[i]->num_ants);
+	// for(int i = 0; elements[i] != NULL; i++)
+	// 	printf("value:%d\tindex:%d\tnum_ants%d\n",elements[i]->value, elements[i]->index, elements[i]->num_ants);
 
 
     ants_print_frames(route, elements);

@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 07:19:48 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/17 01:27:40 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/17 04:50:58 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ t_path_len	**ants_distribute(t_route route)
 	int dist_begin;
 	dist_begin = ants_find_dist_begin(elements, \
 								route.paths->num_paths, route.num_ants);
-	printf("distribution begins from here: [%d]\n", dist_begin);
+	// printf("distribution begins from here: [%d]\n", dist_begin);
 
 	// int ant_num_temp = route.num_ants;
 	// int dist_len = route.paths->num_paths - dist_begin;
