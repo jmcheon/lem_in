@@ -231,10 +231,12 @@ void	dijkstra(t_route* route)
         }
     }
 
+/*
     printf("Vertex\t Distance from start\n");
     for (int i = 0; i < size; i++) {
         printf("%d\t\t%d\n", i, distances[i]);
     }
+	*/
 }
 
 

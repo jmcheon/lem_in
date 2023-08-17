@@ -1,0 +1,14 @@
+L1-a3 L2-a2 
+L1-a4 L3-a3 L2-a1 L4-a2 
+L1-a5 L3-a4 L5-a3 L2-b2 L4-a1 L6-a2 
+L1-a6 L3-a5 L5-a4 L7-a3 L2-b1 L4-b2 L6-a1 L8-a2 
+L1-end L3-a6 L5-a5 L7-a4 L9-a3 L2-c4 L4-b1 L6-b2 L8-a1 L10-a2 
+L3-end L5-a6 L7-a5 L9-a4 L11-a3 L2-c3 L4-c4 L6-b1 L8-b2 L10-a1 
+L5-end L7-a6 L9-a5 L11-a4 L12-a3 L2-c2 L4-c3 L6-c4 L8-b1 L10-b2 
+L7-end L9-a6 L11-a5 L12-a4 L13-a3 L2-c1 L4-c2 L6-c3 L8-c4 L10-b1 
+L9-end L11-a6 L12-a5 L13-a4 L14-a3 L2-end L4-c1 L6-c2 L8-c3 L10-c4 
+L11-end L12-a6 L13-a5 L14-a4 L15-a3 L4-end L6-c1 L8-c2 L10-c3 
+L12-end L13-a6 L14-a5 L15-a4 L6-end L8-c1 L10-c2 
+L13-end L14-a6 L15-a5 L8-end L10-c1 
+L14-end L15-a6 L10-end 
+L15-end 

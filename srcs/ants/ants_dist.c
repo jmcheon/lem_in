@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ants_dist.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 07:19:48 by sucho             #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/08/17 04:50:58 by sucho            ###   ########.fr       */
+=======
+/*   Updated: 2023/08/16 23:50:27 by cjung-mo         ###   ########.fr       */
+>>>>>>> feat: visualizer for ant movements
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +35,11 @@ void	ants_dist_fillin(int *ant_dist, t_path_len **elements, t_route route, int d
 	for (int i = route.paths->num_paths - 1; i > dist_begin; i--)
 	{
 		int dist = elements[dist_begin]->value - elements[i]->value;
+<<<<<<< HEAD
 		ant_dist[i] = dist;
+=======
+		ant_dist[i] += dist;
+>>>>>>> feat: visualizer for ant movements
 		ants_to_dist -= dist;
 	}
 	ant_remainder = ants_to_dist % dist_len;
@@ -59,7 +67,7 @@ int		ants_find_dist_begin(t_path_len **elements, int num_paths, int num_ants)
 			tmp += (elements[i]->value - elements[j]->value);
 		// printf("tmp:%d\n", tmp);
 		// printf("tmp2:%d \n", tmp + (route.paths->num_paths - i));
-		if (tmp + (num_paths- i) <= num_ants)
+		if (tmp + (num_paths - i) <= num_ants)
 		{
 			ret = i;
 			break;
@@ -76,18 +84,21 @@ void	ants_setup_elements(t_path_len **elements, t_route route)
 	int j;
 
 	paths_head = route.paths->paths;
-	onepath_head = (t_vertex_list*)paths_head->content;
+	// onepath_head = (t_vertex_list*)paths_head->content;
 	i = 0;
 	while (paths_head != NULL)
 	{
 		elements[i]->index = i;
 		j = 0;
 		onepath_head = (t_vertex_list*)paths_head->content;
+		
 		while(onepath_head != NULL)
 		{
 			j++;
+			// printf("vertex:%d\n", onepath_head->vertex);
 			onepath_head = onepath_head->next;
 		}
+		// printf("j:%d\n",j);
 		elements[i]->value = j; // start and end
 		elements[i]->num_ants = 0;
 		i++;
@@ -181,7 +192,11 @@ t_path_len	**ants_distribute(t_route route)
 	int dist_begin;
 	dist_begin = ants_find_dist_begin(elements, \
 								route.paths->num_paths, route.num_ants);
+<<<<<<< HEAD
 	// printf("distribution begins from here: [%d]\n", dist_begin);
+=======
+	//printf("distribution begins from here: [%d]\n", dist_begin);
+>>>>>>> feat: visualizer for ant movements
 
 	// int ant_num_temp = route.num_ants;
 	// int dist_len = route.paths->num_paths - dist_begin;

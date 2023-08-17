@@ -12,24 +12,27 @@ int bfs_with_priority(t_route* route, int* parent, int **capacity)
 
 	visited[route->start] = 1;
 	init_priority_queue(&queue);
-	enqueue_with_priority(&queue, route->start, 0);
+	enqueue_with_priority(&queue, route->start, route->distances[route->start]);
 
 	while (!priority_queue_empty(&queue))
 	{
 		int u = dequeue_with_priority(&queue);
 
 		visited[u] = 1;
-		//t_graph_node *neighbor = route->graph->adj_list[u];
+
 		for (t_graph_node* node = route->graph->adj_list[u]; node != NULL; node = node->link)
 		{
 			int v = node->vertex;
-			int potential_distance = route->distances[u] + 1;
+			//int potential_distance = route->distances[u] + 1;
+			/*
 			if (potential_distance < route->distances[v])
 			{
 				route->distances[v] = potential_distance;
 				enqueue_with_priority(&queue, v, potential_distance);
 			}
-
+			*/
+        	// Check if v is at a distance of one edge from u and capacity is available
+			//if (!visited[v] && capacity[u][v] > 0 && route->distances[v] == route->distances[u] + 1)
 			if (!visited[v] && capacity[u][v] > 0)
 			{
 			    parent[v] = u;
@@ -38,7 +41,7 @@ int bfs_with_priority(t_route* route, int* parent, int **capacity)
 			    	free_priority_queue(&queue);
 			    	return (1);
 			    }
-				enqueue_with_priority(&queue, v, 0);
+				enqueue_with_priority(&queue, v, route->distances[v]);
 			}
 		}
 	}
@@ -165,6 +168,7 @@ void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int **capacity)
 	// int	path_id = 0;
 
 	while (bfs(route, parent, capacity) != -1)
+	//while (bfs_with_priority(route, parent, capacity) != -1)
 	{
 		for (int v = route->end; v != route->start; v = parent[v])
 		{
@@ -182,6 +186,7 @@ void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int **capacity)
 	}
 }
 
+// 한 경로를 재탐색할 때 분기되는 정점에서 시작점까지의 거리가 가장 짧은 정점 포이터를 반환
 t_graph_node	*find_next_shortest_vertex(t_route *route, t_graph_node *curr_graph_ptr)
 {
 	int	curr_distance = 0;
@@ -238,56 +243,47 @@ int	find_shortest_path(t_route *route, t_vertex_list *curr_vertex_ptr, int passe
 	return shortest_path_node->vertex;
 }
 
-void	find_path(t_route *route)
+int	find_path(t_route *route, t_list *curr_path_ptr, int *passed_vertices)
 {
-	//t_graph_node	*curr_graph_ptr;
-	t_list			*curr_list_ptr;
 	t_vertex_list	*curr_vertex_ptr;
 	int		num_edges;
 	int		curr_vertex;
-	int		curr_path = 0;
-	int		passed_vertices;
+	int		shortest_vertex;
 	int		curr_path_length;
 	int		shortest_path_length;
-	int visited[route->num_vertices];
 
-	ft_memset(visited, 0, sizeof(visited));
-	curr_list_ptr = route->paths->paths;
-	//while (curr_graph_ptr->link != NULL)
-	//	curr_graph_ptr = find_next_shortest_vertex(route, curr_graph_ptr);
-	while (curr_list_ptr != NULL)
+	curr_path_length = 0;
+	shortest_path_length = INT_MAX;
+	curr_vertex_ptr = ((t_vertex_list*)curr_path_ptr->content)->next;
+	while (curr_vertex_ptr && curr_vertex_ptr->next != NULL)
 	{
-		curr_vertex_ptr = ((t_vertex_list*)curr_list_ptr->content)->next;
-		curr_path_length = 0;
-		passed_vertices = 1;
-		shortest_path_length = INT_MAX;
-		while (curr_vertex_ptr && curr_vertex_ptr->next != NULL)
+		curr_vertex = curr_vertex_ptr->vertex;
+		num_edges = lstsize(route->graph->adj_list[curr_vertex_ptr->vertex]);
+		if (num_edges > 2 && curr_vertex_ptr->next->next)
 		{
-			curr_vertex = curr_vertex_ptr->vertex;
-			visited[curr_vertex] = 1;
-			num_edges = lstsize(route->graph->adj_list[curr_vertex_ptr->vertex]);
-			if (num_edges > 2 && curr_vertex_ptr->next->next)
-			{
-				curr_path_length = route->distances[find_shortest_path(route, curr_vertex_ptr, passed_vertices + 1)] + passed_vertices + 1;
-				if (shortest_path_length > curr_path_length)
-					shortest_path_length = curr_path_length;
-				printf("num of edges at curr vertex-%d : %d\n", curr_vertex, num_edges);
-			}
-			//printf("%d-", curr_vertex_ptr->vertex);
-			curr_vertex_ptr = curr_vertex_ptr->next;
-			passed_vertices++;
+			shortest_vertex = find_shortest_path(route, curr_vertex_ptr, *passed_vertices + 1);
+			curr_path_length = route->distances[shortest_vertex] + *passed_vertices + 1;
+			if (shortest_path_length > curr_path_length)
+				shortest_path_length = curr_path_length;
+			printf("num of edges at curr vertex-%d : %d\n", curr_vertex, num_edges);
+			return shortest_vertex;
 		}
+		(*passed_vertices)++;
 		printf("\n");
-		curr_list_ptr = curr_list_ptr->next;
-		curr_path++;
-		printf("\tshortest_path_length:%d for path id:%d\n", shortest_path_length, curr_path);
+		curr_vertex_ptr = curr_vertex_ptr->next;
 	}
+	//printf("\tshortest_path_length:%d for path id:%d\n", shortest_path_length, curr_path);
+	return -1;
 }
 
-void	optimize(t_route *route)
+int	optimize1(t_route *route)
 {
 	t_list			*curr_list_ptr;
 	int		curr_path = 0;
+	int		total_length = 0;
+	int		shortest_vertex;
+	int		curr_path_length = 0;
+	int		passed_vertices;
 	int		visited[route->num_vertices];
 
 	ft_memset(visited, 0, sizeof(visited));
@@ -296,8 +292,31 @@ void	optimize(t_route *route)
 
 	while (curr_list_ptr != NULL)
 	{
-		find_path(route);
+		passed_vertices = 1;
+		shortest_vertex = find_path(route, curr_list_ptr, &passed_vertices);
+		if (shortest_vertex == -1)
+			return -1;
+		curr_path_length = route->distances[shortest_vertex] + passed_vertices + 1;
+		total_length += curr_path_length;
+		printf("loop curr path length:%d, total_length:%d\n", curr_path_length, total_length);
 		curr_list_ptr = curr_list_ptr->next;
 		curr_path++;
+	}
+	return total_length;
+}
+
+void	optimize(t_route *route)
+{
+	int	curr_total_length = 0;
+	int	minimum_total_length = INT_MAX;
+
+	while (1)
+	{
+		curr_total_length = optimize1(route);
+		if (curr_total_length == -1)
+			break;
+		if (curr_total_length < minimum_total_length)
+			minimum_total_length = curr_total_length;
+		printf("\tcurr total length:%d\n", curr_total_length);
 	}
 }

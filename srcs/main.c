@@ -244,7 +244,6 @@ int	main(void)
 	int **capacity;
 	int	**temp;
 	int	*parent;
-	int **weights;
 	
 	
 
@@ -258,14 +257,6 @@ int	main(void)
 	*/
 	init_route(&route, parse);
 	// init_paths(&paths);
-
-	weights = (int **)malloc(sizeof(int *) * route.num_vertices);
-    for (int i = 0; i < route.num_vertices; i++)
-	{
-        weights[i] = (int *)malloc(sizeof(int) * route.num_vertices);
-        for (int j = 0; j < route.num_vertices; j++)
-            weights[i][j] = 1;
-    }
 
 	dijkstra(&route);
 /*
@@ -305,12 +296,14 @@ int	main(void)
 	parent = (int *)malloc(sizeof(int) * (route.num_vertices));
 	init_parent_array(&route, &parent);
 	edmonds_karp(&route, route.paths, parent, capacity);
+	/*
 	i = 0;
 	while (i < (route.num_vertices))
 	{
 		printf("index: %d, str:[%s]\n", i, route.node_map[i]);
 		i++;
 	}
+	*/
 	/*
 	printf("\naf ek capacity");
 	print_2d_array(capacity, route.num_vertices);
@@ -352,13 +345,27 @@ int	main(void)
 	init_paths(route.paths);
 	init_parent_array(&route, &parent);
 	edmonds_karp(&route, route.paths, parent, temp);
-	printf("ek disjoin paths:\n");
-	print_paths_list(&route);
+	//printf("ek disjoin paths:\n");
+	//print_paths_list(&route);
 	/*
 	printf("\naf ek temp");
 	print_2d_array(temp, route.num_vertices);
 	*/
-	optimize(&route);
+	//optimize(&route);
+	fill_capacity(route.graph, capacity);
+	for (int u = 0; u < route.num_vertices; ++u)
+	{
+		for (int v = 0; v < route.num_vertices; ++v)
+		{
+			if (temp[u][v] == 1)
+				capacity[u][v] = 0;
+		}
+	}
+	free_paths(route.paths->paths);
+	init_paths(route.paths);
+	init_parent_array(&route, &parent);
+	edmonds_karp(&route, route.paths, parent, capacity);
+	//print_paths_list(&route);
 
 	//t_path_len **elements = ants_distribute(route);
     //ants_print_frames(route, elements);
@@ -368,6 +375,16 @@ int	main(void)
 
 
     ants_print_frames(route, elements);
+    /*
+	int total_length = 0;
+	for(int i = 0; i < route.paths->num_paths; i++)
+	{
+	 	printf("elements - value: %d\t index:%d\tnum_ants:%d\n",
+	 		elements[i]->value, elements[i]->index, elements[i]->num_ants);
+		total_length += elements[i]->value;
+	}
+	printf("total_length:%d\n", total_length);
+    */
 
 	for (int u = 0; u < route.num_vertices; ++u)
 		free(temp[u]);
@@ -399,11 +416,9 @@ int	main(void)
 	while (i < route.num_vertices)
 	{
 		free(capacity[i]);
-		free(weights[i]);
 		i++;
 	}
 	free(capacity);
-	free(weights);
 
 	// free(route.node_map);
     // print_frames(route, elements);
