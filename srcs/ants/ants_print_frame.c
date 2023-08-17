@@ -6,21 +6,31 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 16:36:46 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/14 22:06:23 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/17 04:48:18 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/lem-in.h"
-void	ants_pass_to_matrix(t_ants_print **test, int total_used_path, int start, int end)
+void	ants_pass_to_matrix(t_ants_print **test, int total_used_path, int start, int end, int *ant_index, int total_ants)
 {
-	for (int i = 0; i < total_used_path; i++)
+	for (int i = total_used_path - 1; i >= 0; i--)
 	{
-		for(int j = start; j <= end; j++)
+		for(int j = end; j >= start; j--)
 		{
 			if (test[i][j].node_name != NULL)
 			{
-				// printf("[%s] ", test[i][j].node_name);
-				test[i][j].ant_current++;
+				if (j == 0)
+				{
+					if ((*ant_index) <= total_ants)
+					{
+						test[i][j].ant_current = *ant_index;
+						(*ant_index)++;
+					}
+					else
+						test[i][j].ant_current = 0;
+				}
+				else
+					test[i][j].ant_current = test[i][j - 1].ant_current;
 			}
 		}
 	}
@@ -28,12 +38,11 @@ void	ants_pass_to_matrix(t_ants_print **test, int total_used_path, int start, in
 
 void	ants_print_oneframe(t_ants_print **test, int total_used_path, int longest_path)
 {
-	for (int i = 0; i < total_used_path; i++)
+	for (int i = total_used_path - 1; i >= 0; i--)
 	{
 		for(int j = 0; j <= longest_path; j++)
 		{
 			if (test[i][j].node_name != NULL && \
-				test[i][j].ant_current <= test[i][j].ant_max &&\
 				test[i][j].ant_current != 0)
 			{
 				ft_putchar_fd('L', STDOUT_FILENO);
@@ -157,21 +166,21 @@ void ants_print_frames(t_route route, t_path_len **elements)
 	// }
 
 	// printf("================================\n");
-	// i = 0;
-	// while (i < total_used_path)
-	// {
-	// 	int j = 0;
-	// 	while (j < longest_path)
-	// 	{
-	// 		if (test[i][j].node_name == NULL)
-	// 			printf("[null] ");
-	// 		else
-	// 			printf("[%s] ",test[i][j].node_name);
-	// 		j++;
-	// 	}
-	// 	printf("\n");
-	// 	i++;
-	// }
+	int i = 0;
+	while (i < total_used_path)
+	{
+		int j = 0;
+		while (j < longest_path)
+		{
+			if (ants_print_matrix[i][j].node_name == NULL)
+				printf("[null] ");
+			else
+				printf("[%s] ",ants_print_matrix[i][j].node_name);
+			j++;
+		}
+		printf("\n");
+		i++;
+	}
 	// printf("================================\n");
 
 	int loop = 0;
@@ -182,12 +191,13 @@ void ants_print_frames(t_route route, t_path_len **elements)
 	}
 	// printf("loop:%d\n", loop);
 
-	for(int i = 0; i < (loop - 1); i++)
+	int ant_index = 1;
+	for(int i = 0; i < (loop - 2); i++)
 	{
 		if (i < longest_path)
 		{
 			// printf("begin:%d end:%d\n", 0, i);
-			ants_pass_to_matrix(ants_print_matrix, total_used_path, 0, i);
+			ants_pass_to_matrix(ants_print_matrix, total_used_path, 0, i, &ant_index, route.num_ants);
 		}
 		// else if (loop - i < longest_path)
 		// {
@@ -199,14 +209,14 @@ void ants_print_frames(t_route route, t_path_len **elements)
 		else
 		{
 			// printf("begin:%d end:%d\n", 0, longest_path);
-			ants_pass_to_matrix(ants_print_matrix, total_used_path, 0, longest_path);
+			ants_pass_to_matrix(ants_print_matrix, total_used_path, 0, longest_path, &ant_index, route.num_ants);
 		}
 
 		ants_print_oneframe(ants_print_matrix, total_used_path, longest_path);
 		ft_putchar_fd('\n', STDOUT_FILENO);
 	}
 
-	int i = 0;
+	i = 0;
 	while (i < total_used_path)
 	{
 		free(ants_print_matrix[i]);
