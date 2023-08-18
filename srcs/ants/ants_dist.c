@@ -6,11 +6,7 @@
 /*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 07:19:48 by sucho             #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/08/17 04:50:58 by sucho            ###   ########.fr       */
-=======
-/*   Updated: 2023/08/16 23:50:27 by cjung-mo         ###   ########.fr       */
->>>>>>> feat: visualizer for ant movements
+/*   Updated: 2023/08/18 01:15:26 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +31,7 @@ void	ants_dist_fillin(int *ant_dist, t_path_len **elements, t_route route, int d
 	for (int i = route.paths->num_paths - 1; i > dist_begin; i--)
 	{
 		int dist = elements[dist_begin]->value - elements[i]->value;
-<<<<<<< HEAD
 		ant_dist[i] = dist;
-=======
-		ant_dist[i] += dist;
->>>>>>> feat: visualizer for ant movements
 		ants_to_dist -= dist;
 	}
 	ant_remainder = ants_to_dist % dist_len;
@@ -192,11 +184,7 @@ t_path_len	**ants_distribute(t_route route)
 	int dist_begin;
 	dist_begin = ants_find_dist_begin(elements, \
 								route.paths->num_paths, route.num_ants);
-<<<<<<< HEAD
-	// printf("distribution begins from here: [%d]\n", dist_begin);
-=======
 	//printf("distribution begins from here: [%d]\n", dist_begin);
->>>>>>> feat: visualizer for ant movements
 
 	// int ant_num_temp = route.num_ants;
 	// int dist_len = route.paths->num_paths - dist_begin;

@@ -54,7 +54,9 @@ void	reset_parent_array(t_route *route, int **parent);
 void	init_parent_array(t_route *route, int **parent);
 
 int bfs(t_route* route, int* parent, int **capacity);
+int bfs_with_weights(t_route* route, int* parent, int **capacity);
 void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int **capacity);
+void	edmonds_karp_with_weights(t_route* route, t_paths* paths, int* parent, int **capacity);
 void	fill_capacity(t_graph*paths, int **capacity);
 void	insert_next_parent(t_paths *paths, int v);
 void	optimize(t_route *route);
@@ -81,15 +83,7 @@ void	print_array(int *array, int size);
 ** disjoin_path.c
 */
 
-t_vertex_list *modified_dijkstra(t_route *route, int source, int destination);
-void	modified_dijkstra1(t_route* route);
-void	remove_edges_in_path(t_graph *graph, t_vertex_list *path);
-
 void	dijkstra(t_route *route);
-void	dijkstra1(t_route *route, int **weights, int *parent, int *dist);
-void	remove_path(t_route *route, int *parent);
-void	append_path(t_paths *paths, int *parent, int end);
-void	disjoint_path(t_route *route, int **weights);
 
 /*
 **	graph_list.c

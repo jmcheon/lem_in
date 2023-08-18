@@ -1,5 +1,64 @@
 #include "../../includes/lem-in.h"
 
+int bfs_with_weights(t_route* route, int* parent, int **capacity)
+{
+	int	visited[route->num_vertices];
+    int dist[route->num_vertices];
+	t_queue	queue;
+
+	//ft_memset(visited, 0, sizeof(visited));
+
+    for (int i = 0; i < route->num_vertices; i++) {
+        visited[i] = 0;
+        dist[i] = INT_MAX;
+        parent[i] = -1;
+    }
+    //print_array(parent, route->num_vertices);
+    //reset_parent_array(route, &parent);
+
+	visited[route->start] = 1;
+    dist[route->start] = 0;
+	init_queue(&queue);
+	enqueue(&queue, route->start);
+
+	while (!is_empty(&queue))
+	{
+		int u = dequeue(&queue);
+
+		visited[u] = 1;
+		for (t_graph_node* node = route->graph->adj_list[u]; node != NULL; node = node->link)
+		{
+			int v = node->vertex;
+			//printf("current vertex: %d\n", v);
+			//printf("node's vertex: %d\n", v);
+			if (!visited[v] && capacity[u][v] > 0)
+			{
+                //printf("dist[%d]:%d, weights[%d][%d]:%d, dist[%d]:%d\n", u, dist[u], u, v, weights[u][v], v, dist[v]);
+                int new_dist = dist[u] + capacity[u][v];
+
+                if (new_dist < dist[v])
+                {
+                    dist[v] = new_dist;
+				    parent[v] = u;
+				    if (v == route->end)
+				    {
+				    	free_queue(&queue);
+				    	return (1);
+				    }
+
+                }
+
+				//printf("parent: ");
+				//print_array(parent, route->num_vertices);
+			//printf("visited:");
+			//print_array(visited, route->num_vertices);
+				enqueue(&queue, v);
+			}
+		}
+	}
+	return (-1);
+}
+
 int bfs_with_priority(t_route* route, int* parent, int **capacity)
 {
 	int	visited[route->num_vertices];
@@ -162,6 +221,25 @@ void insert_next_parent(t_paths *paths, int v)
 		// printf("\tinsertion vertex:%d to path id:%d finished\n\n", v, paths->num_paths);
 	}
 }
+
+void	edmonds_karp_with_weights(t_route* route, t_paths* paths, int* parent, int **capacity)
+{
+	while (bfs_with_weights(route, parent, capacity) != -1)
+	{
+		for (int v = route->end; v != route->start; v = parent[v])
+		{
+			int u = parent[v];
+			//printf("u, v = %d, %d\n", u, v);
+			if (v == route->end)
+				insert_next_parent(paths, v);
+			insert_next_parent(paths, u);
+			capacity[u][v] -= 1;
+			capacity[v][u] += 1;
+		}
+		paths->num_paths++;
+	}
+}
+
 
 void	edmonds_karp(t_route* route, t_paths* paths, int* parent, int **capacity)
 {

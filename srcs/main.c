@@ -245,9 +245,6 @@ int	main(void)
 	int	**temp;
 	int	*parent;
 	
-	
-
-	(void)temp;
 	parse = parsing();
 	// printf("parse result:\n");
 	// parse_result_print(parse);
@@ -293,7 +290,7 @@ int	main(void)
 	// /*
 	// **	edmonds-karp
 	// */
-	parent = (int *)malloc(sizeof(int) * (route.num_vertices));
+	// parent = (int *)malloc(sizeof(int) * (route.num_vertices));
 	init_parent_array(&route, &parent);
 	edmonds_karp(&route, route.paths, parent, capacity);
 	/*
@@ -343,8 +340,9 @@ int	main(void)
 	// */
 	free_paths(route.paths->paths);
 	init_paths(route.paths);
+	free(parent);
 	init_parent_array(&route, &parent);
-	edmonds_karp(&route, route.paths, parent, temp);
+	edmonds_karp_with_weights(&route, route.paths, parent, temp);
 	//printf("ek disjoin paths:\n");
 	//print_paths_list(&route);
 	/*
@@ -352,20 +350,6 @@ int	main(void)
 	print_2d_array(temp, route.num_vertices);
 	*/
 	//optimize(&route);
-	fill_capacity(route.graph, capacity);
-	for (int u = 0; u < route.num_vertices; ++u)
-	{
-		for (int v = 0; v < route.num_vertices; ++v)
-		{
-			if (temp[u][v] == 1)
-				capacity[u][v] = 0;
-		}
-	}
-	free_paths(route.paths->paths);
-	init_paths(route.paths);
-	init_parent_array(&route, &parent);
-	edmonds_karp(&route, route.paths, parent, capacity);
-	//print_paths_list(&route);
 
 	//t_path_len **elements = ants_distribute(route);
     //ants_print_frames(route, elements);
@@ -405,6 +389,7 @@ int	main(void)
 	free_paths(route.paths->paths);
 	//free_paths_list(route.paths);
 	free(route.paths);
+	free(route.distances);
 
 
 
