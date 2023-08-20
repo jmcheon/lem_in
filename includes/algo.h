@@ -9,12 +9,56 @@
 
 #define MAX_VERTICES 50
 
-typedef struct s_graph_node {
+typedef struct s_parray
+{
+	//void	**data;
+	t_list	*data_list;
+	int		len;
+}	t_parray;
+
+typedef struct s_graph_vertex
+{
+	int vertex;
+	t_parray	in;
+	t_parray	out;
+	bool		valid;
+	void		*attr;
+}	t_graph_vertex;
+
+typedef struct s_graph_edge
+{
+	t_graph_vertex	*u;
+	t_graph_vertex	*v;
+	bool			valid;
+	void			*attr;
+}	t_graph_edge;
+
+typedef struct s_vertex_attr
+{
+	char			*name;
+	int				value;
+	bool			valid;
+	t_graph_vertex	*org;
+}	t_vertex_attr;
+
+typedef struct s_edge_attr
+{
+	int	flow;
+	int	capacity;
+	bool			valid;
+	t_graph_edge	*reverse_edge;
+}	t_edge_attr;
+
+///////////////////////////////
+
+typedef struct s_graph_node 
+{
 	int vertex;
 	struct s_graph_node *link;
 }	t_graph_node;
 
-typedef struct s_graph{
+typedef struct s_graph
+{
 	int	n;
 	t_graph_node **adj_list;
 }	t_graph;
@@ -46,6 +90,35 @@ typedef struct s_route
 
     char	**node_map;
 } t_route;
+
+/*
+**	graph_bfs.c
+*/
+int			graph_iter_edges(t_parray *arr, t_parray *queue, t_graph_vertex *t, int queue_index);
+void		graph_bfs_loop(t_parray *arr, t_graph_vertex *s, t_graph_vertex *t);
+t_parray 	*graph_bfs(t_graph *g, t_graph_vertex *s, t_graph_vertex *t);
+/*
+**	graph_edge.c
+*/
+int				parr_add_back(t_parray *arr, void *data);
+int				graph_add_edge(t_graph *g, int u, int v, void *attr);
+int				add_edges(t_graph *g, int u, int v);
+int				update_edge_flow(t_parray *edge_list, int v);
+int				update_edge(t_graph_edge *edge);
+void			split_edge(t_graph *g, t_graph_vertex *vertex, int v);
+t_graph_edge	*graph_find_edge(t_graph *g, int u, int v);
+t_edge_attr		*init_edge_attr(int capacity);
+t_graph_edge 	*get_edge(t_graph_vertex *src, t_graph_vertex *des);
+t_parray		*save_max_flow_paths(t_graph_vertex *start, t_graph_vertex *end, int max_flow);
+t_parray 		*graph_edge_backtrack(t_parray *edges, int v);
+
+/*
+**	graph_vertex.c
+*/
+int				graph_add_vertex(t_graph *g, int v, void *attr);
+void			parr_init(t_parray *arr);
+void			split_vertex(t_graph *g, void *data, int v);
+t_graph_vertex 	*graph_find_vertex(t_graph *g, int v);
 
 /*
 **	edmonds_karp.c

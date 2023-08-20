@@ -35,6 +35,9 @@ SRCS					=	./includes/get_next_line/get_next_line_bonus.c \
 							./srcs/algo/print_funcs.c \
 							./srcs/algo/edmonds_karp.c \
 							./srcs/algo/disjoint_path.c \
+							./srcs/algo/graph_edge.c \
+							./srcs/algo/graph_vertex.c \
+							./srcs/algo/graph_bfs.c \
 							./srcs/algo/graph_list.c \
 							./srcs/algo/graph_util.c \
 							./srcs/algo/queue.c \

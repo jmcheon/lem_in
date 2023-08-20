@@ -235,7 +235,7 @@ void	init_parent_array(t_route *route, int **parent)
 	reset_parent_array(route, parent);
 }
 
-int	main(void)
+int	main2(void)
 {
 	t_parse	*parse;
 	// t_paths	paths;
@@ -338,16 +338,35 @@ int	main(void)
 	// /*
 	// ** run edmonds-karp with new temp capacity
 	// */
+	/*
 	free_paths(route.paths->paths);
 	init_paths(route.paths);
 	free(parent);
 	init_parent_array(&route, &parent);
 	edmonds_karp_with_weights(&route, route.paths, parent, temp);
+	*/
 	//printf("ek disjoin paths:\n");
 	//print_paths_list(&route);
 	/*
 	printf("\naf ek temp");
 	print_2d_array(temp, route.num_vertices);
+	*/
+
+	fill_capacity(route.graph, capacity);
+	for (int u = 0; u < route.num_vertices; ++u)
+	{
+		for (int v = 0; v < route.num_vertices; ++v)
+		{
+			if (temp[u][v] == 1)
+				capacity[u][v] = 0;
+		}
+	}
+	/*
+	free_paths(route.paths->paths);
+	init_paths(route.paths);
+	free(parent);
+	init_parent_array(&route, &parent);
+	edmonds_karp(&route, route.paths, parent, capacity);
 	*/
 	//optimize(&route);
 
@@ -359,7 +378,7 @@ int	main(void)
 
 
     ants_print_frames(route, elements);
-    /*
+    
 	int total_length = 0;
 	for(int i = 0; i < route.paths->num_paths; i++)
 	{
@@ -368,7 +387,7 @@ int	main(void)
 		total_length += elements[i]->value;
 	}
 	printf("total_length:%d\n", total_length);
-    */
+    
 
 	for (int u = 0; u < route.num_vertices; ++u)
 		free(temp[u]);
@@ -409,4 +428,86 @@ int	main(void)
     // print_frames(route, elements);
 
 	return (0);
+}
+
+int	max_flow_edmonds_karp(t_route *g, int start, int end)
+{
+	int	flow = 0;
+	t_parray *edge_list;
+	t_parray *paths;
+	t_graph_vertex *s;
+	t_graph_vertex *t;
+
+	(void)paths;
+	s = graph_find_vertex(g, start);
+	t = graph_find_vertex(g, end);
+	while (1)
+	{
+		edge_list = graph_bfs(g, s, t);
+		//printf("test0\n");
+		//printf("edge_list->len:%d\n", edge_list->len);
+		if (edge_list->len != 0)
+			printf("test1\n");
+		if (edge_list->len == 0 || !update_edge_flow(edge_list, end))
+			break ;
+		printf("test2\n");
+		flow++;
+		paths = save_max_flow_paths(s, t, flow);
+	}
+	return flow;
+}
+
+int main(void)
+{
+	t_parse	*parse;
+	t_route	route;
+	
+	parse = parsing();
+	init_route(&route, parse);
+	/*
+	i = 0;
+	while (i < (route.num_vertices))
+	{
+		printf("index: %d, str:[%s]\n", i, route.node_map[i]);
+		i++;
+	}
+	*/
+	max_flow_edmonds_karp(route.graph, route.start, route.end);
+
+	t_path_len **elements = ants_distribute(route);
+	// for(int i = 0; elements[i] != NULL; i++)
+	// 	printf("value:%d\tindex:%d\tnum_ants%d\n",elements[i]->value, elements[i]->index, elements[i]->num_ants);
+
+
+    ants_print_frames(route, elements);
+    
+	int total_length = 0;
+	for(int i = 0; i < route.paths->num_paths; i++)
+	{
+	 	printf("elements - value: %d\t index:%d\tnum_ants:%d\n",
+	 		elements[i]->value, elements[i]->index, elements[i]->num_ants);
+		total_length += elements[i]->value;
+	}
+	printf("total_length:%d\n", total_length);
+    
+
+	for(int i = 0; i < route.paths->num_paths; i++)
+		free(elements[i]);
+	free(elements);
+
+	ft_lstclear(&parse->nodes_head, free_node_xy);
+	ft_lstclear(&parse->edge_info_head, free_edge);
+	// free_graph
+	free_graph(route.graph);
+	free(route.graph);
+
+	//free paths
+	free_paths(route.paths->paths);
+	free(route.paths);
+	free(route.distances);
+
+	free(route.node_map);
+	free(parse);
+
+	return 0;
 }
