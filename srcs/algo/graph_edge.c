@@ -1,5 +1,6 @@
 #include "../../includes/lem-in.h"
 
+/*
 int	parr_add_back(t_parray *arr, void *data)
 {
 	if (!arr)
@@ -10,15 +11,18 @@ int	parr_add_back(t_parray *arr, void *data)
 	arr->len++;
 	return 1;
 }
-
+*/
 t_graph_edge *graph_find_edge(t_graph *g, int u, int v, int u_in)
 {
 	t_graph_vertex *vertex;
 	t_graph_edge *out;
 	int	i = 0;
+	int	size;
 
 	vertex = graph_find_vertex(g, u, u_in);
-	while (i < vertex->out.len)
+	//while (i < vertex->out.len)
+	size = ft_lstsize(vertex->out_list);
+	while (i < size)
 	{
 		//out = (t_graph_edge*)ft_lstfind_node(vertex->out.data_list, i)->content;
 		out = (t_graph_edge*)ft_lstfind_node(vertex->out_list, i)->content;
@@ -55,9 +59,9 @@ int	graph_add_edge(t_graph *g, int u_vertex, int v_vertex, int u_in, int v_in, v
 	//printf("adding edge->v->vertex:%d, valid:%d\n", edge->v->vertex, edge->v->valid);
 	edge->valid = true;
 	edge->attr = attr;
-	parr_add_back(&u->out, edge);
+	//parr_add_back(&u->out, edge);
 	//printf("parr add back\n");
-	parr_add_back(&v->in, edge);
+	//parr_add_back(&v->in, edge);
 	//printf("v->in.len:%d\n", v->in.len);
 	ft_lstadd_back(&u->out_list, ft_lstnew(edge));
 	ft_lstadd_back(&v->in_list, ft_lstnew(edge));
@@ -128,10 +132,14 @@ t_graph_edge *get_edge(t_graph_vertex *src, t_graph_vertex *des)
 {
 	t_graph_edge *edge;
 	int	i = 0;
+	int	size;
 
-	while (i < src->out.len)
+	size = ft_lstsize(src->out_list);
+	//while (i < src->out.len)
+	while (i < size)
 	{
-		edge = (t_graph_edge*)ft_lstfind_node(src->out.data_list, i)->content;
+		//edge = (t_graph_edge*)ft_lstfind_node(src->out.data_list, i)->content;
+		edge = (t_graph_edge*)ft_lstfind_node(src->out_list, i)->content;
 		if (edge->v->vertex == des->vertex)
 			return edge;
 		i++;
@@ -144,21 +152,25 @@ void	split_edge(t_graph *g, t_graph_vertex *vertex, int v)
 	(void)v;
 	t_graph_edge *edge;
 	int i = 0;
+	int	size;
 
 	(void)edge;
 	(void)g;
-	while (i < vertex->in.len)
+	size = ft_lstsize(vertex->in_list);
+	//while (i < vertex->in.len)
+	while (i < size)
 	{
 
 		i++;
-		edge = (t_graph_edge*)ft_lstfind_node(vertex->in.data_list, i)->content;
+		//edge = (t_graph_edge*)ft_lstfind_node(vertex->in.data_list, i)->content;
+		edge = (t_graph_edge*)ft_lstfind_node(vertex->in_list, i)->content;
 		//add_edges(g, edge->u->vertex, edge->v->vertex);
 	}
 }
 
-int	update_edge_flow(t_parray *edge_list, int v)
+int	update_edge_flow(t_list *edge_list, int v)
 {
-	t_parray *path;
+	t_list *path;
 
 	path = graph_edge_backtrack(edge_list, v);
 	if (!path)
@@ -185,22 +197,26 @@ int	update_edge(t_graph_edge *edge)
 	return 1;
 }
 
-t_parray	*save_max_flow_paths(t_graph_vertex *start, t_graph_vertex *end, int max_flow)
+t_list	*save_max_flow_paths(t_graph_vertex *start, t_graph_vertex *end, int max_flow)
 {
 	(void)start;
 	(void)end;
 	(void)max_flow;
-	t_parray *paths;
-	t_parray *path;
+	t_list	*paths;
+	t_list	*path;
 	t_graph_edge *adj_edge;
 	int	i = 0;
+	int	size;
 
 	(void)paths;
 	(void)path;
+	size = ft_lstsize(end->in_list);
 	//parr_init(path);
-	while (i < end->in.len)
+	//while (i < end->in.len)
+	while (i < size)
 	{
-		adj_edge = (t_graph_edge*)ft_lstfind_node(end->in.data_list, i)->content;
+		//adj_edge = (t_graph_edge*)ft_lstfind_node(end->in.data_list, i)->content;
+		adj_edge = (t_graph_edge*)ft_lstfind_node(end->in_list, i)->content;
 		if (((t_edge_attr*)adj_edge->attr)->flow > 0)
 		{
 			//ft_lstadd_back(&path->data_list, ft_lstnew(((t_vertex_attr*)end->attr)->org));
@@ -211,29 +227,35 @@ t_parray	*save_max_flow_paths(t_graph_vertex *start, t_graph_vertex *end, int ma
 	//return paths;
 }
 
-t_parray *graph_edge_backtrack(t_parray *edges, int v)
+t_list *graph_edge_backtrack(t_list *edges, int v)
 {
-	t_parray *path;
+	t_list *path;
 	t_graph_vertex *vertex;
 	t_graph_edge *edge;
 	int	i;
 
-	edge = (t_graph_edge*)ft_lstlast(edges->data_list)->content;
+	//edge = (t_graph_edge*)ft_lstlast(edges->data_list)->content;
+	edge = (t_graph_edge*)ft_lstlast(edges)->content;
 	if (v != edge->v->vertex || !update_edge(edge))
 		return NULL;
-	path = (t_parray*)malloc(sizeof(t_parray) * edges->len);
+	//path = (t_parray*)malloc(sizeof(t_parray) * edges->len);
 	vertex = edge->u;
-	ft_lstadd_back(&path->data_list, ft_lstnew(edge->u));
-	ft_lstadd_back(&path->data_list, ft_lstnew(edge->v));
-	i = edges->len;
+	//ft_lstadd_back(&path->data_list, ft_lstnew(edge->u));
+	//ft_lstadd_back(&path->data_list, ft_lstnew(edge->v));
+	ft_lstadd_back(&path, ft_lstnew(edge->u));
+	ft_lstadd_back(&path, ft_lstnew(edge->v));
+	//i = edges->len;
+	i = ft_lstsize(edges);
 	while (i--)
 	{
-		edge = (t_graph_edge*)ft_lstfind_node(edges->data_list, i)->content;
+		//edge = (t_graph_edge*)ft_lstfind_node(edges->data_list, i)->content;
+		edge = (t_graph_edge*)ft_lstfind_node(edges, i)->content;
 		if (edge->v->vertex == vertex->vertex)
 		{
 			if (update_edge(edge) < 0)
 				return path;
-			ft_lstadd_front(&path->data_list, ft_lstnew(edge->u));
+			//ft_lstadd_front(&path->data_list, ft_lstnew(edge->u));
+			ft_lstadd_front(&path, ft_lstnew(edge->u));
 			vertex = edge->u;
 		}
 	}

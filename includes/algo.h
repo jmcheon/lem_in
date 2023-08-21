@@ -7,15 +7,6 @@
 # include "./queue.h"
 # include "./parse.h"
 
-#define MAX_VERTICES 50
-
-typedef struct s_parray
-{
-	//void	**data;
-	t_list	*data_list;
-	int		len;
-}	t_parray;
-
 typedef struct s_graph_vertex
 {
 	int vertex;
@@ -23,8 +14,6 @@ typedef struct s_graph_vertex
 	t_list	*out_list;
 	//int		in_list_length;
 	//int		out_list_length;
-	t_parray	in;
-	t_parray	out;
 	bool		valid;
 	//void		*attr;
 }	t_graph_vertex;
@@ -101,31 +90,30 @@ typedef struct s_route
 /*
 **	graph_bfs.c
 */
-int			graph_iter_edges(t_parray *arr, t_list *queue, t_graph_vertex *t, int queue_index);
-//int			graph_iter_edges(t_parray *arr, t_parray *queue, t_graph_vertex *t, int queue_index);
-void		graph_bfs_loop(t_parray *arr, t_graph_vertex *s, t_graph_vertex *t);
-t_parray 	*graph_bfs(t_graph *g, t_graph_vertex *s, t_graph_vertex *t);
+int			graph_iter_edges(t_list *arr, t_list *queue, t_graph_vertex *t, int queue_index);
+void		graph_bfs_loop(t_list *arr, t_graph_vertex *s, t_graph_vertex *t);
+t_list		*graph_bfs(t_graph *g, t_graph_vertex *s, t_graph_vertex *t);
 /*
 **	graph_edge.c
 */
-int				parr_add_back(t_parray *arr, void *data);
+//int				parr_add_back(t_parray *arr, void *data);
 int				graph_add_edge(t_graph *g, int u_vertex, int v_vertex, int u_in, int v_in, void *attr);
 int				add_edges(t_graph *g, int u, int v, int u_in, int v_in);
-int				update_edge_flow(t_parray *edge_list, int v);
+int				update_edge_flow(t_list *edge_list, int v);
 int				update_edge(t_graph_edge *edge);
 void			split_edge(t_graph *g, t_graph_vertex *vertex, int v);
 t_graph_edge	*graph_find_edge(t_graph *g, int u, int v, int u_in);
 t_edge_attr		*init_edge_attr(int capacity);
 t_graph_edge 	*get_edge(t_graph_vertex *src, t_graph_vertex *des);
-t_parray		*save_max_flow_paths(t_graph_vertex *start, t_graph_vertex *end, int max_flow);
-t_parray 		*graph_edge_backtrack(t_parray *edges, int v);
+t_list			*save_max_flow_paths(t_graph_vertex *start, t_graph_vertex *end, int max_flow);
+t_list 			*graph_edge_backtrack(t_list *edges, int v);
 
 /*
 **	graph_vertex.c
 */
 t_graph_vertex	*graph_add_vertex(int v);
-void			parr_init(t_parray *arr);
-void			add_vertices(t_graph *g);
+//void			parr_init(t_parray *arr);
+void			add_vertices(t_route *route);
 t_graph_vertex 	*graph_find_vertex(t_graph *g, int v, int in);
 void			graph_vertex_valid(void *content);
 
