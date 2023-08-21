@@ -37,6 +37,8 @@ void	init_route(t_route* route, t_parse* parse)
 		free(parse);
 		exit(1);
 	}
+	route->graph->v_in_list = NULL;
+	route->graph->v_out_list = NULL;
 	route->distances = (int*)malloc(sizeof(int) * (route->num_vertices + 1));
 	route->start = 0;
 	route->end = route->num_vertices - 1;

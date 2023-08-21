@@ -430,7 +430,7 @@ int	main2(void)
 	return (0);
 }
 
-int	max_flow_edmonds_karp(t_route *g, int start, int end)
+int	max_flow_edmonds_karp(t_graph *g, int start, int end)
 {
 	int	flow = 0;
 	t_parray *edge_list;
@@ -439,15 +439,13 @@ int	max_flow_edmonds_karp(t_route *g, int start, int end)
 	t_graph_vertex *t;
 
 	(void)paths;
-	s = graph_find_vertex(g, start);
-	t = graph_find_vertex(g, end);
+	s = graph_find_vertex(g, start, 0);
+	t = graph_find_vertex(g, end, 1);
 	while (1)
 	{
 		edge_list = graph_bfs(g, s, t);
 		//printf("test0\n");
-		//printf("edge_list->len:%d\n", edge_list->len);
-		if (edge_list->len != 0)
-			printf("test1\n");
+		printf("edge_list->len:%d\n", edge_list->len);
 		if (edge_list->len == 0 || !update_edge_flow(edge_list, end))
 			break ;
 		printf("test2\n");
@@ -464,14 +462,14 @@ int main(void)
 	
 	parse = parsing();
 	init_route(&route, parse);
-	/*
-	i = 0;
+	int i = 0;
 	while (i < (route.num_vertices))
 	{
 		printf("index: %d, str:[%s]\n", i, route.node_map[i]);
 		i++;
 	}
-	*/
+	
+	add_vertices(route.graph);
 	max_flow_edmonds_karp(route.graph, route.start, route.end);
 
 	t_path_len **elements = ants_distribute(route);

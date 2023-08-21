@@ -19,10 +19,14 @@ typedef struct s_parray
 typedef struct s_graph_vertex
 {
 	int vertex;
+	t_list	*in_list;
+	t_list	*out_list;
+	//int		in_list_length;
+	//int		out_list_length;
 	t_parray	in;
 	t_parray	out;
 	bool		valid;
-	void		*attr;
+	//void		*attr;
 }	t_graph_vertex;
 
 typedef struct s_graph_edge
@@ -30,6 +34,9 @@ typedef struct s_graph_edge
 	t_graph_vertex	*u;
 	t_graph_vertex	*v;
 	bool			valid;
+	int				flow;
+	int				capacity;
+	struct s_graph_edge	*reverse_edge;
 	void			*attr;
 }	t_graph_edge;
 
@@ -37,7 +44,6 @@ typedef struct s_vertex_attr
 {
 	char			*name;
 	int				value;
-	bool			valid;
 	t_graph_vertex	*org;
 }	t_vertex_attr;
 
@@ -45,7 +51,6 @@ typedef struct s_edge_attr
 {
 	int	flow;
 	int	capacity;
-	bool			valid;
 	t_graph_edge	*reverse_edge;
 }	t_edge_attr;
 
@@ -61,6 +66,8 @@ typedef struct s_graph
 {
 	int	n;
 	t_graph_node **adj_list;
+	t_list	*v_in_list;
+	t_list	*v_out_list;
 }	t_graph;
 
 typedef struct s_vertex_list
@@ -94,19 +101,20 @@ typedef struct s_route
 /*
 **	graph_bfs.c
 */
-int			graph_iter_edges(t_parray *arr, t_parray *queue, t_graph_vertex *t, int queue_index);
+int			graph_iter_edges(t_parray *arr, t_list *queue, t_graph_vertex *t, int queue_index);
+//int			graph_iter_edges(t_parray *arr, t_parray *queue, t_graph_vertex *t, int queue_index);
 void		graph_bfs_loop(t_parray *arr, t_graph_vertex *s, t_graph_vertex *t);
 t_parray 	*graph_bfs(t_graph *g, t_graph_vertex *s, t_graph_vertex *t);
 /*
 **	graph_edge.c
 */
 int				parr_add_back(t_parray *arr, void *data);
-int				graph_add_edge(t_graph *g, int u, int v, void *attr);
-int				add_edges(t_graph *g, int u, int v);
+int				graph_add_edge(t_graph *g, int u_vertex, int v_vertex, int u_in, int v_in, void *attr);
+int				add_edges(t_graph *g, int u, int v, int u_in, int v_in);
 int				update_edge_flow(t_parray *edge_list, int v);
 int				update_edge(t_graph_edge *edge);
 void			split_edge(t_graph *g, t_graph_vertex *vertex, int v);
-t_graph_edge	*graph_find_edge(t_graph *g, int u, int v);
+t_graph_edge	*graph_find_edge(t_graph *g, int u, int v, int u_in);
 t_edge_attr		*init_edge_attr(int capacity);
 t_graph_edge 	*get_edge(t_graph_vertex *src, t_graph_vertex *des);
 t_parray		*save_max_flow_paths(t_graph_vertex *start, t_graph_vertex *end, int max_flow);
@@ -115,10 +123,11 @@ t_parray 		*graph_edge_backtrack(t_parray *edges, int v);
 /*
 **	graph_vertex.c
 */
-int				graph_add_vertex(t_graph *g, int v, void *attr);
+t_graph_vertex	*graph_add_vertex(int v);
 void			parr_init(t_parray *arr);
-void			split_vertex(t_graph *g, void *data, int v);
-t_graph_vertex 	*graph_find_vertex(t_graph *g, int v);
+void			add_vertices(t_graph *g);
+t_graph_vertex 	*graph_find_vertex(t_graph *g, int v, int in);
+void			graph_vertex_valid(void *content);
 
 /*
 **	edmonds_karp.c

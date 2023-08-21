@@ -142,6 +142,6 @@ t_graph* parse_to_graph(t_parse *parse, t_route *route)
 		edge_head = edge_head->next;
 	}
 	(void)print_adjlist_list;
-	// print_adjlist_list(g);
+	 print_adjlist_list(g);
 	return g;
 }
