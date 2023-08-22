@@ -216,21 +216,25 @@ void	print_cur_path(void *content)
 	printf("%d -> ", curr_vertex_ptr->vertex);
 }
 
-int	max_flow_edmonds_karp(t_route *route, int start, int end)
+t_list	*max_flow_edmonds_karp(t_route *route, int start, int end)
 {
 	int	flow = 0;
 	t_list	*edge_list;
 	t_list	*paths;
+	t_list	*prev_paths;
 	t_graph_vertex *s;
 	t_graph_vertex *t;
 	t_graph_edge	*e;
-	int i = 1;
+	int prev_path_len;
+	int i = 0;
 
 	(void)i;
 	(void)e;
 	paths = NULL;
+	prev_paths = NULL;
 	s = graph_find_vertex(route->graph, start, 1);
 	t = graph_find_vertex(route->graph, end, 0);
+	prev_path_len = 0;
 	while (1)
 	{
 		edge_list = graph_bfs(route, s, t);
@@ -241,24 +245,34 @@ int	max_flow_edmonds_karp(t_route *route, int start, int end)
 		flow++;
 		paths = save_max_flow_paths(route, s, t, flow);
 		printf("-----------\n");
-		ants_distribute_2(route, paths);
+		if (prev_path_len != 0 && prev_path_len < ants_distribute_2(route, paths))
+		{
+			printf("========0000000============\n");
+			printf("path_len:%d\n",prev_path_len - 2);
+			printf("========0000000============\n");
+			break;
+		}
 		print_all_paths(route, paths, 0);
 		printf("-----------\n");
 		if (route->flags.debug)
 		{
 			printf("\t\tmax flow path:%d\n", ft_lstsize(paths));
 		}
+		prev_path_len = ants_distribute_2(route,paths);
+		prev_paths = paths;
+		(void)paths;
 		//e = graph_find_edge(route->graph, 6, 4, 1);
 		//printf("\t\t\t\te->u->vertex:%d\n", e->u->vertex);
-		i--;
+		i++;
 	}
-	return flow;
+	return prev_paths;
 }
 
 int main(void)
 {
 	t_parse	*parse;
 	t_route	route;
+	t_list	*paths;
 
 	parse = parsing();
 	init_route(&route, parse);
@@ -276,7 +290,9 @@ int main(void)
 	add_vertices(&route);
 	//print_edge_forward_travel(&route);
 	//print_vertex_lists(&route);
-	max_flow_edmonds_karp(&route, route.start, route.end);
+	paths = max_flow_edmonds_karp(&route, route.start, route.end);
+	print_all_paths(&route, paths, 0);
+	printf("\t\tmax flow path:%d\n", ft_lstsize(paths));
 
 	t_path_len **elements = ants_distribute(route);
 	// for(int i = 0; elements[i] != NULL; i++)

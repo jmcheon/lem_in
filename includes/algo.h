@@ -113,7 +113,6 @@ t_list			*save_max_flow_paths(t_route *route, t_graph_vertex *start, t_graph_ver
 **	graph_vertex.c
 */
 void			add_vertices(t_route *route);
-void			graph_vertex_valid(void *content);
 t_graph_vertex	*graph_add_vertex(int v, VertexType type);
 t_graph_vertex 	*graph_find_vertex(t_graph *g, int v, int in);
 
