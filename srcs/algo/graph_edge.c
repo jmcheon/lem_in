@@ -227,7 +227,7 @@ t_list	*save_max_flow_paths(t_route *route, t_graph_vertex *start, t_graph_verte
 			if (route->flags.debug)
 			{
 				printf("selected current path:\n");
-				print_one_path(route, path);
+				print_one_path(route, path, 1);
 			}
 			ft_lstadd_back(&paths, ft_lstnew(path));
 			path = NULL;

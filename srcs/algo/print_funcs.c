@@ -4,15 +4,6 @@ void	print_edge_forward_travel(t_route *route)
 {
 	t_graph_edge	*e;
 
-	//e = graph_find_edge(route->graph, route->start, route->graph->adj_list[0]->vertex, 0);
-	//e = graph_find_edge(route->graph, route->start, 0, 1);
-	//printf("%d\n", route->graph->adj_list[0]->vertex);
-	//while (v->vertex != route->end)
-	{
-		//printf("e->v->vertex:%d\n", e->v->vertex);
-		//printf("e->u->vertex:%d\n", e->u->vertex);
-		//v = e->v;
-	}
 	for (int i = 0; i < route->num_vertices; i++)
 	{
 		for (int j = 0; j < route->num_vertices; j++)
@@ -35,16 +26,6 @@ void	print_vertex_lists(t_route *route)
 {
 	t_graph_vertex	*v;
 
-	/*
-	v = graph_find_vertex(route->graph, route->start, 0);
-	printf("v->vertex:%d\n", v->vertex);
-
-	//printf("v->in_list:%d\n", ((t_graph_vertex*)v->in_list->content)->vertex);
-	print_one_path(v->in_list);
-	print_one_path(v->out_list);
-	printf("\n%d_in\n", v->vertex);
-	print_edges(route, v->in_list);
-	*/
 	for (int i = 0; i < route->num_vertices; i++)
 	{
 		v = graph_find_vertex(route->graph, i, 0);
@@ -98,33 +79,36 @@ void	print_edges(t_route *route, t_list *lst, int reverse)
 	printf("\n");
 }
 
-void	print_all_paths(t_route *route, t_list *paths)
+void	print_all_paths(t_route *route, t_list *paths, int print_path)
 {
 	t_list	*path;
 
 	while (paths != NULL)
 	{
 		path = (t_list*)paths->content;
-		print_one_path(route, path);
+		print_one_path(route, path, print_path);
 		paths = paths->next;
 	}
 }
 
-void	print_one_path(t_route *route, t_list *path)
+void	print_one_path(t_route *route, t_list *path, int print_path)
 {
 	int	path_size;
 
 	path_size = ft_lstsize(path);
 	printf("path_size:%d\n", path_size);
-	while (path != NULL)
+	if (print_path)
 	{
-		if (path->next)
-			//printf("%d -> ", ((t_graph_vertex*)path->content)->vertex);
-			printf("%s -> ", route->node_map[((t_graph_vertex*)path->content)->vertex]);
-		else
-			//printf("%d\n", ((t_graph_vertex*)path->content)->vertex);
-			printf("%s\n", route->node_map[((t_graph_vertex*)path->content)->vertex]);
-		path = path->next;
+		while (path != NULL)
+		{
+			if (path->next)
+				//printf("%d -> ", ((t_graph_vertex*)path->content)->vertex);
+				printf("%s -> ", route->node_map[((t_graph_vertex*)path->content)->vertex]);
+			else
+				//printf("%d\n", ((t_graph_vertex*)path->content)->vertex);
+				printf("%s\n", route->node_map[((t_graph_vertex*)path->content)->vertex]);
+			path = path->next;
+		}
 	}
 }
 
