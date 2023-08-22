@@ -13,3 +13,5 @@
 # define FIN "\033[0m"
 
 #endif
+
+void	free_edges(t_list *edges);

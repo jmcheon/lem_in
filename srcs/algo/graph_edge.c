@@ -136,7 +136,7 @@ int	update_edge(t_route *route, t_graph_edge *edge)
 	//print_edge(route, );
 	edge->flow += 1;
 	rev_edge = get_edge(edge->v, edge->u);
-	printf("rev_e->u->vertex:%s_%s-rev_e->v->vertex:%s_%s\n", 
+	printf("rev_e->u->vertex:%s_%s - rev_e->v->vertex:%s_%s\n", 
 		route->node_map[rev_edge->u->vertex], sVertexTypeStrings[rev_edge->u->type], 
 		route->node_map[rev_edge->v->vertex], sVertexTypeStrings[rev_edge->v->type]);
 	rev_edge->flow -= 1;
@@ -243,6 +243,11 @@ t_list *graph_edge_backtrack(t_route *route, t_list *edges, int v)
 
 	//printf("\t\tbacktracking\n");
 	edge = (t_graph_edge*)ft_lstlast(edges)->content;
+	/*
+	printf("backtracking last edge->u->vertex:%s_%s - edge->v->vertex:%s_%s\n", 
+		route->node_map[edge->u->vertex], sVertexTypeStrings[edge->u->type],
+		route->node_map[edge->v->vertex], sVertexTypeStrings[edge->v->type]);
+	*/
 	if (v != edge->v->vertex || !update_edge(route, edge))
 		return NULL;
 	vertex = edge->u;

@@ -45,3 +45,16 @@ void	free_paths(t_list *paths)
 		free(tmp);
 	}
 }
+
+void	free_edges(t_list *edges)
+{
+	t_list *tmp;
+
+	while (edges != NULL)
+	{
+		tmp = edges;
+		free((t_graph_edge*)tmp->content);
+		edges = edges->next;
+		free(tmp);
+	}
+}

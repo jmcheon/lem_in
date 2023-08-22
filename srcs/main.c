@@ -459,7 +459,6 @@ int	max_flow_edmonds_karp(t_route *route, int start, int end)
 		printf("edge_list->size:%d\n", ft_lstsize(edge_list));
 		if (ft_lstsize(edge_list) == 0 || !update_edge_flow(route, edge_list, end))
 			break ;
-		free(edge_list);
 		flow++;
 		paths = save_max_flow_paths(route, s, t, flow);
 		print_all_paths(route, paths);
