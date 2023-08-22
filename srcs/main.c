@@ -295,6 +295,7 @@ int main(void)
 
 
 	//ft_lstclear(&route.graph->v_in_list, free);
+	free_vertices(&route);
     
 
 	for(int i = 0; i < route.paths->num_paths; i++)

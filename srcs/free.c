@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 16:58:03 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/22 21:27:12 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/22 22:20:13 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,55 @@ void	free_graph_edges(t_list *edges)
 		free((t_graph_edge*)tmp->content);
 		edges = edges->next;
 		free(tmp);
+	}
+}
+
+void	free_edges_vertices(t_route *route)
+{
+	t_graph_vertex	*v;
+	t_graph_vertex	*v2;
+	t_list	*temp;
+	int	size;
+
+	for (int m = 0; m < route->num_vertices; m++)
+	{
+		v = graph_find_vertex(route->graph, m, IN);
+		v2 = graph_find_vertex(route->graph, m, OUT);
+		//printf("v->vertex:%d\n", v->vertex);
+
+		size = ft_lstsize(v->in_list);
+		for (int i = 0; i < size; i++)
+		{
+			temp = ft_lstfind_node(v->in_list, i);
+			free(((t_graph_edge*)temp->content)->reverse_edge);
+			free(temp->content);
+			free(temp);
+		}
+		size = ft_lstsize(v->out_list);
+		for (int i = 0; i < size; i++)
+		{
+			temp = ft_lstfind_node(v->out_list, i);
+			free(((t_graph_edge*)temp->content)->reverse_edge);
+			free(temp->content);
+			free(temp);
+		}
+		size = ft_lstsize(v2->in_list);
+		for (int i = 0; i < size; i++)
+		{
+			temp = ft_lstfind_node(v2->in_list, i);
+			free(((t_graph_edge*)temp->content)->reverse_edge);
+			free(temp->content);
+			free(temp);
+		}
+		size = ft_lstsize(v2->out_list);
+		for (int i = 0; i < size; i++)
+		{
+			temp = ft_lstfind_node(v2->out_list, i);
+			free(((t_graph_edge*)temp->content)->reverse_edge);
+			free(temp->content);
+			free(temp);
+		}
+		free(v);
+		free(v2);
 	}
 }

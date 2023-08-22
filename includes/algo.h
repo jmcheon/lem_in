@@ -182,5 +182,6 @@ void	free_paths_list(t_paths *paths);
 
 
 
+void	free_vertices(t_route *route);
 
 #endif

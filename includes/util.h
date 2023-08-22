@@ -1,5 +1,3 @@
-
-
 #ifndef UTIL_H
 #define UTIL_H
 
@@ -12,6 +10,8 @@
 # define ORANGE "\033[38;5;202m"
 # define FIN "\033[0m"
 
-#endif
+# include "./algo.h"
 
 void	free_graph_edges(t_list *edges);
+
+#endif
