@@ -44,8 +44,8 @@ int	graph_add_edge(t_graph *g, int u_vertex, int v_vertex, int u_in, int v_in, v
 	if (!edge)
 		return -1;
 	//printf("graph add edge, u_vertex:%d, v_vertex:%d\n", u_vertex, v_vertex);
-	u = graph_find_vertex(g, u_vertex, u_in);
-	v = graph_find_vertex(g, v_vertex, v_in);
+	v = graph_find_vertex(g, u_vertex, u_in);
+	u = graph_find_vertex(g, v_vertex, v_in);
 
 	if (!u || !v)
 	{
@@ -93,16 +93,16 @@ int	add_edges(t_graph *g, int u, int v, int u_in, int v_in)
 	src = graph_find_vertex(g, u, u_in);
 	des = graph_find_vertex(g, v, v_in);
 
-/*	
-	if (out_vertex == NULL)
-		printf("out == null\n");
+	/*
+	if (src == NULL)
+		printf("src == null\n");
 	else
-		printf("out->vertex:%d\n", out_vertex->vertex);
-	if (in_vertex == NULL)
-		printf("in == null\n");
+		printf("src->vertex:%d\n", src->vertex);
+	if (des== NULL)
+		printf("des == null\n");
 	else
-		printf("in->vertex:%d\n", in_vertex->vertex);
-*/
+		printf("des->vertex:%d\n", des->vertex);
+	*/
 
 	edge_attr = init_edge_attr(1);
 	rev_edge_attr = init_edge_attr(0);
@@ -111,7 +111,7 @@ int	add_edges(t_graph *g, int u, int v, int u_in, int v_in)
 	if (graph_add_edge(g, src->vertex, des->vertex, u_in, v_in, edge_attr) == -1
 		|| graph_add_edge(g, des->vertex, src->vertex, v_in, u_in, rev_edge_attr) == -1)
 		return -1;
-	rev_edge = graph_find_edge(g, v, u, v_in);
+	rev_edge = graph_find_edge(g, u, v, u_in);
 	/*
 	if (!rev_edge)
 		printf("\t rev edge found\n");
@@ -121,9 +121,9 @@ int	add_edges(t_graph *g, int u, int v, int u_in, int v_in)
 	rev_edge->valid = false;
 
 
-	edge_attr->reverse_edge = graph_find_edge(g, v, u, v_in);
+	edge_attr->reverse_edge = graph_find_edge(g, u, v, u_in);
 	edge_attr->reverse_edge->valid = false;
-	rev_edge_attr->reverse_edge = graph_find_edge(g, u, v, u_in);
+	rev_edge_attr->reverse_edge = graph_find_edge(g, v, u, v_in);
 	//printf("fini adding edges\n");
 	return 1;
 }
@@ -173,9 +173,11 @@ int	update_edge_flow(t_list *edge_list, int v)
 	t_list *path;
 
 	path = graph_edge_backtrack(edge_list, v);
+	printf("\t\tbacktracking return\n");
 	if (!path)
 		return 0;
 	free(path);
+
 	return 1;
 }
 
@@ -197,10 +199,51 @@ int	update_edge(t_graph_edge *edge)
 	return 1;
 }
 
+
+void	save_flow_path(t_list **path, t_graph_vertex *src, t_graph_vertex *des)
+{
+	t_graph_vertex	*v;
+	t_graph_edge	*e;
+	int	i;
+	int	every = 1;
+	int	size;
+
+	v = src;
+	e = NULL;
+	ft_lstadd_back(path, ft_lstnew(src));
+	while (v->vertex != des->vertex)
+	{
+		i = 0;
+		size = ft_lstsize(v->in_list);
+		//printf("size:%d, v->vertex:%d, des->vertex:%d\n", size, v->vertex, des->vertex);
+		while (i < size)
+		{
+			//printf("i:%d < size:%d\n", i, size);
+			e  = (t_graph_edge*)ft_lstfind_node(v->in_list, i)->content;
+			//printf("e->flow:%d\n", ((t_edge_attr*)e->attr)->flow);
+			if (((t_edge_attr*)e->attr)->flow > 0)
+			{
+				//printf("break;\n");
+				break;
+			}
+			//printf("ef\n");
+			i++;
+		}
+		if (every++ % 2 == 0)
+		{
+			//printf("adding e->u to path\n");
+			//printf("adding e->u->vertex:%d\n",e->u->vertex);
+			ft_lstadd_back(path, ft_lstnew(e->u));
+		}
+		//printf("e->u->vertex:%d\n",e->u->vertex);
+		//printf("src = e->u\n");
+		v = e->u;
+	}
+}
+
+
 t_list	*save_max_flow_paths(t_graph_vertex *start, t_graph_vertex *end, int max_flow)
 {
-	(void)start;
-	(void)end;
 	(void)max_flow;
 	t_list	*paths;
 	t_list	*path;
@@ -208,23 +251,29 @@ t_list	*save_max_flow_paths(t_graph_vertex *start, t_graph_vertex *end, int max_
 	int	i = 0;
 	int	size;
 
-	(void)paths;
-	(void)path;
+	paths = NULL;
+	path = NULL;
 	size = ft_lstsize(end->in_list);
-	//parr_init(path);
-	//while (i < end->in.len)
+
 	while (i < size)
 	{
-		//adj_edge = (t_graph_edge*)ft_lstfind_node(end->in.data_list, i)->content;
 		adj_edge = (t_graph_edge*)ft_lstfind_node(end->in_list, i)->content;
+		//printf("adj_edge->u->vertex:%d\n", adj_edge->u->vertex);
 		if (((t_edge_attr*)adj_edge->attr)->flow > 0)
 		{
 			//ft_lstadd_back(&path->data_list, ft_lstnew(((t_vertex_attr*)end->attr)->org));
+			ft_lstadd_back(&path, ft_lstnew(end));
+			save_flow_path(&path, adj_edge->u, start);
+			//print_all_paths(paths);
+			//print_one_path(path);
+			ft_lstadd_back(&paths, ft_lstnew(path));
+			path = NULL;
+			printf("\t\t\t\t\t paths size:%d\n", ft_lstsize(paths));
 		}
 		i++;
 	}
-	return NULL;
-	//return paths;
+	//return NULL;
+	return paths;
 }
 
 t_list *graph_edge_backtrack(t_list *edges, int v)
@@ -234,27 +283,23 @@ t_list *graph_edge_backtrack(t_list *edges, int v)
 	t_graph_edge *edge;
 	int	i;
 
-	//edge = (t_graph_edge*)ft_lstlast(edges->data_list)->content;
+	printf("\t\tbacktracking\n");
 	edge = (t_graph_edge*)ft_lstlast(edges)->content;
 	if (v != edge->v->vertex || !update_edge(edge))
 		return NULL;
-	//path = (t_parray*)malloc(sizeof(t_parray) * edges->len);
 	vertex = edge->u;
-	//ft_lstadd_back(&path->data_list, ft_lstnew(edge->u));
-	//ft_lstadd_back(&path->data_list, ft_lstnew(edge->v));
+	path = NULL;
 	ft_lstadd_back(&path, ft_lstnew(edge->u));
 	ft_lstadd_back(&path, ft_lstnew(edge->v));
-	//i = edges->len;
+	printf("\t\tbacktracking test\n");
 	i = ft_lstsize(edges);
 	while (i--)
 	{
-		//edge = (t_graph_edge*)ft_lstfind_node(edges->data_list, i)->content;
 		edge = (t_graph_edge*)ft_lstfind_node(edges, i)->content;
 		if (edge->v->vertex == vertex->vertex)
 		{
 			if (update_edge(edge) < 0)
 				return path;
-			//ft_lstadd_front(&path->data_list, ft_lstnew(edge->u));
 			ft_lstadd_front(&path, ft_lstnew(edge->u));
 			vertex = edge->u;
 		}

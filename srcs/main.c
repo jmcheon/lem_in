@@ -430,27 +430,42 @@ int	main2(void)
 	return (0);
 }
 
-int	max_flow_edmonds_karp(t_graph *g, int start, int end)
+void	print_cur_path(void *content)
+{
+	t_graph_vertex *curr_vertex_ptr;
+
+	curr_vertex_ptr = (t_graph_vertex*)content;
+	printf("%d -> ", curr_vertex_ptr->vertex);
+}
+
+int	max_flow_edmonds_karp(t_route *route, int start, int end)
 {
 	int	flow = 0;
 	t_list	*edge_list;
 	t_list	*paths;
 	t_graph_vertex *s;
 	t_graph_vertex *t;
+	t_graph_edge	*e;
+	int i = 1;
 
-	(void)paths;
-	s = graph_find_vertex(g, start, 0);
-	t = graph_find_vertex(g, end, 1);
+	(void)i;
+	(void)e;
+	s = graph_find_vertex(route->graph, start, 0);
+	t = graph_find_vertex(route->graph, end, 1);
 	while (1)
 	{
-		edge_list = graph_bfs(g, s, t);
+		edge_list = graph_bfs(route, s, t);
 		//printf("test0\n");
-		printf("edge_list->size:%d\n", ft_lstsize(edge_list));
+		//printf("edge_list->size:%d\n", ft_lstsize(edge_list));
 		if (ft_lstsize(edge_list) == 0 || !update_edge_flow(edge_list, end))
 			break ;
-		printf("test2\n");
 		flow++;
 		paths = save_max_flow_paths(s, t, flow);
+		print_all_paths(paths);
+		printf("\t\tmax flow path:%d\n", ft_lstsize(paths));
+		//e = graph_find_edge(route->graph, 6, 4, 1);
+		//printf("\t\t\t\te->u->vertex:%d\n", e->u->vertex);
+		i--;
 	}
 	return flow;
 }
@@ -470,7 +485,9 @@ int main(void)
 	}
 	
 	add_vertices(&route);
-	max_flow_edmonds_karp(route.graph, route.start, route.end);
+	//print_edge_forward_travel(&route);
+	//print_vertex_lists(&route);
+	max_flow_edmonds_karp(&route, route.start, route.end);
 
 	t_path_len **elements = ants_distribute(route);
 	// for(int i = 0; elements[i] != NULL; i++)

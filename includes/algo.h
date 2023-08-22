@@ -12,10 +12,7 @@ typedef struct s_graph_vertex
 	int vertex;
 	t_list	*in_list;
 	t_list	*out_list;
-	//int		in_list_length;
-	//int		out_list_length;
 	bool		valid;
-	//void		*attr;
 }	t_graph_vertex;
 
 typedef struct s_graph_edge
@@ -23,18 +20,11 @@ typedef struct s_graph_edge
 	t_graph_vertex	*u;
 	t_graph_vertex	*v;
 	bool			valid;
-	int				flow;
-	int				capacity;
-	struct s_graph_edge	*reverse_edge;
+	//int				flow;
+	//int				capacity;
+	//struct s_graph_edge	*reverse_edge;
 	void			*attr;
 }	t_graph_edge;
-
-typedef struct s_vertex_attr
-{
-	char			*name;
-	int				value;
-	t_graph_vertex	*org;
-}	t_vertex_attr;
 
 typedef struct s_edge_attr
 {
@@ -90,9 +80,9 @@ typedef struct s_route
 /*
 **	graph_bfs.c
 */
-int			graph_iter_edges(t_list *arr, t_list *queue, t_graph_vertex *t, int queue_index);
-void		graph_bfs_loop(t_list *arr, t_graph_vertex *s, t_graph_vertex *t);
-t_list		*graph_bfs(t_graph *g, t_graph_vertex *s, t_graph_vertex *t);
+int			graph_iter_edges(t_route *route, t_list **ret, t_list *queue, t_graph_vertex *t, int queue_index);
+void		graph_bfs_loop(t_route *route, t_list **ret, t_graph_vertex *s, t_graph_vertex *t);
+t_list		*graph_bfs(t_route *route, t_graph_vertex *s, t_graph_vertex *t);
 /*
 **	graph_edge.c
 */
@@ -142,6 +132,13 @@ void	init_paths(t_paths* paths);
 /*
 **	print_funcs.c
 */
+void	print_vertex_lists(t_route *route);
+void	print_edge_forward_travel(t_route *route);
+void	print_edge(t_route *route, void *data, int i);
+void	print_edges(t_route *route, t_list *lst);
+void	print_all_paths(t_list *paths);
+void	print_one_path(t_list *path);
+
 void	print_path(t_route* route, int* parent, int path_id);
 void	print_paths(t_route* route, t_paths* paths);
 void	print_paths_list(t_route *route);

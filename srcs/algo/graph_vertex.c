@@ -50,11 +50,8 @@ t_graph_vertex	*graph_add_vertex(int v)
 		return NULL;
 	vertex->vertex = v;
 	vertex->valid = true;
-	//parr_init(&vertex->in);
-	//parr_init(&vertex->out);
 	vertex->in_list = NULL;
 	vertex->out_list = NULL;
-	//vertex->attr = attr;
 	return vertex;
 }
 
@@ -87,8 +84,9 @@ void	add_vertices(t_route *route)
 		curr_ptr = route->graph->adj_list[i];
 		while (curr_ptr !=NULL)
 		{
-			printf("i:%d, curr_ptr->vertex:%d\n", i, curr_ptr->vertex);
+			//printf("i:%d, curr_ptr->vertex:%d\n", i, curr_ptr->vertex);
 			add_edges(route->graph, curr_ptr->vertex, i, 0, 1);
+			//add_edges(route->graph, i, curr_ptr->vertex, 1, 0);
 			curr_ptr = curr_ptr->link;
 		}
 	}
@@ -97,8 +95,8 @@ void	add_vertices(t_route *route)
 	{
 		v = graph_find_vertex(route->graph, i, 0);
 		curr_ptr = route->graph->adj_list[i];
-		printf("split edge v->vertex:%d, v->in_list.size:%d\n", v->vertex, ft_lstsize(v->in_list));
-		printf("split edge v->vertex:%d, v->out_list.size:%d\n", v->vertex, ft_lstsize(v->out_list));
+		//printf("split edge v->vertex:%d, v->in_list.size:%d\n", v->vertex, ft_lstsize(v->in_list));
+		//printf("split edge v->vertex:%d, v->out_list.size:%d\n", v->vertex, ft_lstsize(v->out_list));
 		size = ft_lstsize(v->in_list);
 		for (int j = 0; j < size; j++)
 		{
