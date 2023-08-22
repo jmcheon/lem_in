@@ -120,7 +120,8 @@ int	update_edge_flow(t_route *route, t_list *edge_list, int v)
 	t_list *path;
 
 	path = graph_edge_backtrack(route, edge_list, v);
-	printf("\t\tbacktracking return\n");
+	if (route->flags.debug)
+		printf("\t\tbacktracking return\n");
 	if (!path)
 		return 0;
 	free(path);
@@ -136,9 +137,12 @@ int	update_edge(t_route *route, t_graph_edge *edge)
 	//print_edge(route, );
 	edge->flow += 1;
 	rev_edge = get_edge(edge->v, edge->u);
-	printf("rev_e->u->vertex:%s_%s - rev_e->v->vertex:%s_%s\n", 
-		route->node_map[rev_edge->u->vertex], sVertexTypeStrings[rev_edge->u->type], 
-		route->node_map[rev_edge->v->vertex], sVertexTypeStrings[rev_edge->v->type]);
+	if (route->flags.debug)
+	{
+		printf("rev_e->u->vertex:%s_%s - rev_e->v->vertex:%s_%s\n", 
+			route->node_map[rev_edge->u->vertex], sVertexTypeStrings[rev_edge->u->type], 
+			route->node_map[rev_edge->v->vertex], sVertexTypeStrings[rev_edge->v->type]);
+	}
 	rev_edge->flow -= 1;
 	if (edge->flow < edge->capacity)
 		edge->valid = 1;
@@ -227,7 +231,8 @@ t_list	*save_max_flow_paths(t_route *route, t_graph_vertex *start, t_graph_verte
 			}
 			ft_lstadd_back(&paths, ft_lstnew(path));
 			path = NULL;
-			printf("\t\t\t\t\t paths size:%d\n", ft_lstsize(paths));
+			if (route->flags.debug)
+				printf("\t\t\t\t\t paths size:%d\n", ft_lstsize(paths));
 		}
 		i++;
 	}
@@ -243,11 +248,12 @@ t_list *graph_edge_backtrack(t_route *route, t_list *edges, int v)
 
 	//printf("\t\tbacktracking\n");
 	edge = (t_graph_edge*)ft_lstlast(edges)->content;
-	/*
-	printf("backtracking last edge->u->vertex:%s_%s - edge->v->vertex:%s_%s\n", 
-		route->node_map[edge->u->vertex], sVertexTypeStrings[edge->u->type],
-		route->node_map[edge->v->vertex], sVertexTypeStrings[edge->v->type]);
-	*/
+	if (route->flags.debug)
+	{
+		printf("backtracking last edge->u->vertex:%s_%s - edge->v->vertex:%s_%s\n", 
+			route->node_map[edge->u->vertex], sVertexTypeStrings[edge->u->type],
+			route->node_map[edge->v->vertex], sVertexTypeStrings[edge->v->type]);
+	}
 	if (v != edge->v->vertex || !update_edge(route, edge))
 		return NULL;
 	vertex = edge->u;
@@ -255,12 +261,26 @@ t_list *graph_edge_backtrack(t_route *route, t_list *edges, int v)
 	ft_lstadd_back(&path, ft_lstnew(edge->u));
 	ft_lstadd_back(&path, ft_lstnew(edge->v));
 	i = ft_lstsize(edges);
-	printf("\t\tbacktracking edge_list size:%d\n", i);
+	if (route->flags.debug)
+		printf("\t\tbacktracking edge_list size:%d\n", i);
 	while (i--)
 	{
 		edge = (t_graph_edge*)ft_lstfind_node(edges, i)->content;
-		if (edge->v->vertex == vertex->vertex)
+		if (route->flags.debug)
 		{
+			printf("backtracking %svertex:%s_%s, edge->v:%s_%s%s\n", RED,
+				route->node_map[vertex->vertex], sVertexTypeStrings[vertex->type],
+				route->node_map[edge->v->vertex], sVertexTypeStrings[edge->v->type], FIN);
+		}
+		//if (edge->v->vertex == vertex->vertex)
+		if (edge->v->vertex == vertex->vertex && edge->v->type == vertex->type)
+		{
+			if (route->flags.debug)
+			{
+				printf("%svertex:%s_%s, edge->v:%s_%s%s\n", ORANGE,
+					route->node_map[vertex->vertex], sVertexTypeStrings[vertex->type],
+					route->node_map[edge->v->vertex], sVertexTypeStrings[edge->v->type], FIN);
+			}
 			if (update_edge(route, edge) < 0)
 				return path;
 			ft_lstadd_front(&path, ft_lstnew(edge->u));

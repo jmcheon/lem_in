@@ -456,13 +456,17 @@ int	max_flow_edmonds_karp(t_route *route, int start, int end)
 	while (1)
 	{
 		edge_list = graph_bfs(route, s, t);
-		printf("edge_list->size:%d\n", ft_lstsize(edge_list));
+		if (route->flags.debug)
+			printf("edge_list->size:%d\n", ft_lstsize(edge_list));
 		if (ft_lstsize(edge_list) == 0 || !update_edge_flow(route, edge_list, end))
 			break ;
 		flow++;
 		paths = save_max_flow_paths(route, s, t, flow);
 		print_all_paths(route, paths);
-		printf("\t\tmax flow path:%d\n", ft_lstsize(paths));
+		if (route->flags.debug)
+		{
+			printf("\t\tmax flow path:%d\n", ft_lstsize(paths));
+		}
 		//e = graph_find_edge(route->graph, 6, 4, 1);
 		//printf("\t\t\t\te->u->vertex:%d\n", e->u->vertex);
 		i--;
@@ -477,11 +481,15 @@ int main(void)
 	
 	parse = parsing();
 	init_route(&route, parse);
-	int i = 0;
-	while (i < (route.num_vertices))
+	if (route.flags.debug)
 	{
-		printf("index: %d, str:[%s]\n", i, route.node_map[i]);
-		i++;
+		int i = 0;
+
+		while (i < (route.num_vertices))
+		{
+			printf("index: %d, str:[%s]\n", i, route.node_map[i]);
+			i++;
+		}
 	}
 	
 	add_vertices(&route);

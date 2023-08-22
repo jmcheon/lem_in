@@ -12,7 +12,7 @@ int	graph_iter_edges(t_route *route, t_list **ret, t_list **queue, t_graph_verte
 
 	(void)route;
 	(void)print_edges;
-	printf("iter edge size:%d\n", size);
+	//printf("iter edge size:%d\n", size);
 	while (i < size)
 	{
 		edge = (t_graph_edge*)ft_lstfind_node(vertex->out_list, i)->content;
@@ -33,19 +33,23 @@ int	graph_iter_edges(t_route *route, t_list **ret, t_list **queue, t_graph_verte
 			*/
 			edge->v->valid = false;
 			ft_lstadd_back(ret, ft_lstnew(edge));
-			printf("edge->u->vertex:%s_%s - edge->v->vertex:%s_%s\n", 
-				route->node_map[edge->u->vertex], sVertexTypeStrings[edge->u->type],
-				route->node_map[edge->v->vertex], sVertexTypeStrings[edge->v->type]);
+
+			if (route->flags.debug)
+			{
+				printf("edge->u->vertex:%s_%s - edge->v->vertex:%s_%s\n", 
+					route->node_map[edge->u->vertex], sVertexTypeStrings[edge->u->type],
+					route->node_map[edge->v->vertex], sVertexTypeStrings[edge->v->type]);
+			}
 			ft_lstadd_back(queue, ft_lstnew(edge->v));
-			printf("queue->size:%d added edge->v->vertex:%s_%s\n\n", 
-				ft_lstsize(*queue),
-				route->node_map[edge->v->vertex], sVertexTypeStrings[edge->v->type]);
+			if (route->flags.debug)
+			{
+				printf("queue->size:%d added edge->v->vertex:%s_%s\n\n", 
+					ft_lstsize(*queue),
+					route->node_map[edge->v->vertex], sVertexTypeStrings[edge->v->type]);
+			}
 			vertex = (t_graph_vertex*)ft_lstfind_node(*queue, queue_index)->content;
 			if (t && edge->v->vertex == t->vertex)
-			{
-				printf("end vertex returns\n");
 				return 1;
-			}
 		}
 		i++;
 	}
