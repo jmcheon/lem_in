@@ -66,14 +66,12 @@ void	print_vertex_lists(t_route *route)
 void	print_edge(t_route *route, void *data)
 {
 	t_graph_edge	*temp;
-	t_edge_attr		*attr;
 
 	temp = data;
-	attr = temp->attr;
 	printf("[%d]:%s_%s -> [%d]:%s_%s\t valid = %d, flow = %d, capacity = %d\n",
 		temp->u->vertex, route->node_map[temp->u->vertex], sVertexTypeStrings[temp->u->type], 
 		temp->v->vertex, route->node_map[temp->v->vertex], sVertexTypeStrings[temp->v->type],
-		temp->valid, attr->flow, attr->capacity);
+		temp->valid, temp->flow, temp->capacity);
 }
 
 
@@ -94,7 +92,7 @@ void	print_edges(t_route *route, t_list *lst, int reverse)
 		printf("%s========================reverse edge=======================%s\n", YELLOW, FIN);
 		for (int j = 0; j < size; j++)
 		{
-			print_edge(route, ((t_edge_attr*)((t_graph_edge*)ft_lstfind_node(lst, j)->content)->attr)->reverse_edge);
+			print_edge(route, ((t_graph_edge*)ft_lstfind_node(lst, j)->content)->reverse_edge);
 		}
 	}
 	printf("\n");

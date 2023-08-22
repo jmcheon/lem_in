@@ -36,15 +36,7 @@ typedef struct s_graph_edge
 	int				flow;
 	int				capacity;
 	struct s_graph_edge	*reverse_edge;
-	void			*attr;
 }	t_graph_edge;
-
-typedef struct s_edge_attr
-{
-	int	flow;
-	int	capacity;
-	t_graph_edge	*reverse_edge;
-}	t_edge_attr;
 
 typedef struct s_flags
 {
@@ -107,12 +99,11 @@ t_list		*graph_bfs(t_route *route, t_graph_vertex *s, t_graph_vertex *t);
 **	graph_edge.c
 */
 int				add_edges(t_graph *g, int u, int v, int u_in, int v_in);
-int				graph_add_edge(t_graph *g, int u_vertex, int v_vertex, int u_in, int v_in, void *attr);
+t_graph_edge	*graph_add_edge(t_graph *g, int u_vertex, int v_vertex, int u_in, int v_in, int capacity);
 t_graph_edge	*graph_find_edge(t_graph *g, int u, int v, int u_in);
 
 int				update_edge_flow(t_route *route, t_list *edge_list, int v);
 int				update_edge(t_route *route, t_graph_edge *edge);
-t_edge_attr		*init_edge_attr(int capacity);
 t_graph_edge 	*get_edge(t_graph_vertex *src, t_graph_vertex *des);
 t_list 			*graph_edge_backtrack(t_route *route, t_list *edges, int v);
 

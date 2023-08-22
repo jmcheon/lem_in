@@ -23,6 +23,11 @@ int	graph_iter_edges(t_route *route, t_list **ret, t_list **queue, t_graph_verte
 		//printf("edge->valid:%d, edge->v->valid:%d\n", edge->valid, edge->v->valid);
 		if (edge->valid && edge->v->valid)
 		{
+			/*
+			printf("%se->valid:%d, e->v->valid:%d\n", PINK, edge->valid, edge->v->valid);
+			printf("adding current edge(edge->v:%s_%s) to edge_list...%s\n", 
+				route->node_map[edge->v->vertex], sVertexTypeStrings[edge->v->type], FIN);
+			*/
 			edge->v->valid = false;
 			ft_lstadd_back(ret, ft_lstnew(edge));
 			//printf("edge->v->vertex:%d\n", edge->v->vertex);

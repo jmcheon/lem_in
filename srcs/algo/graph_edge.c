@@ -19,7 +19,7 @@ t_graph_edge *graph_find_edge(t_graph *g, int u, int v, int u_in)
 	return NULL;
 }
 
-int	graph_add_edge(t_graph *g, int u_vertex, int v_vertex, int u_in, int v_in, void *attr)
+t_graph_edge	*graph_add_edge(t_graph *g, int u_vertex, int v_vertex, int u_in, int v_in, int capacity)
 {
 	t_graph_edge *edge;
 	t_graph_vertex *u;
@@ -28,7 +28,8 @@ int	graph_add_edge(t_graph *g, int u_vertex, int v_vertex, int u_in, int v_in, v
 	edge = (t_graph_edge*)malloc(sizeof(t_graph_edge));
 
 	if (!edge)
-		return -1;
+		return NULL;
+		//return -1;
 	//printf("graph add edge, u_vertex:%d, v_vertex:%d\n", u_vertex, v_vertex);
 	v = graph_find_vertex(g, u_vertex, u_in);
 	u = graph_find_vertex(g, v_vertex, v_in);
@@ -37,44 +38,29 @@ int	graph_add_edge(t_graph *g, int u_vertex, int v_vertex, int u_in, int v_in, v
 	{
 		printf("adding an edge error.\n");
 		free(edge);
-		return -1;
+		return NULL;
+		//return -1;
 	}
 	edge->u = u;
 	edge->v = v;
 	//printf("adding edge->u->vertex:%d, valid:%d\n", edge->u->vertex, edge->u->valid);
 	//printf("adding edge->v->vertex:%d, valid:%d\n", edge->v->vertex, edge->v->valid);
 	edge->valid = true;
-	/*
 	edge->flow = 0;
 	edge->capacity = capacity;
 	edge->reverse_edge = NULL;
-	*/
-	edge->attr = attr;
 	ft_lstadd_back(&u->out_list, ft_lstnew(edge));
 	ft_lstadd_back(&v->in_list, ft_lstnew(edge));
-	return 1;
-}
-
-t_edge_attr *init_edge_attr(int capacity)
-{
-	t_edge_attr *attr;
-
-	attr = (t_edge_attr*)malloc(sizeof(t_edge_attr));
-	if (!attr)
-		return NULL;
-	attr->flow = 0;
-	attr->capacity = capacity;
-	attr->reverse_edge = NULL;
-	return attr;
+	//return 1;
+	return edge;
 }
 
 int	add_edges(t_graph *g, int u, int v, int u_in, int v_in)
 {
-	t_edge_attr *edge_attr;
-	t_edge_attr *rev_edge_attr;
 	t_graph_vertex *src;
 	t_graph_vertex *des;
 	t_graph_edge *rev_edge;
+	t_graph_edge *edge;
 
 	//printf("add_edges u:%d, v:%d\n", u, v);
 	src = graph_find_vertex(g, u, u_in);
@@ -90,14 +76,11 @@ int	add_edges(t_graph *g, int u, int v, int u_in, int v_in)
 	else
 		printf("des->vertex:%d\n", des->vertex);
 	*/
+	edge = graph_add_edge(g, src->vertex, des->vertex, u_in, v_in, 1);
+	rev_edge = graph_add_edge(g, des->vertex, src->vertex, v_in, u_in, 0);
+	if (edge == NULL || rev_edge == NULL)
+		return -1;
 
-	edge_attr = init_edge_attr(1);
-	rev_edge_attr = init_edge_attr(0);
-	if (!edge_attr || !rev_edge_attr)
-		return -1;
-	if (graph_add_edge(g, src->vertex, des->vertex, u_in, v_in, edge_attr) == -1
-		|| graph_add_edge(g, des->vertex, src->vertex, v_in, u_in, rev_edge_attr) == -1)
-		return -1;
 	rev_edge = graph_find_edge(g, u, v, u_in);
 	/*
 	if (!rev_edge)
@@ -108,9 +91,9 @@ int	add_edges(t_graph *g, int u, int v, int u_in, int v_in)
 	rev_edge->valid = false;
 
 
-	edge_attr->reverse_edge = graph_find_edge(g, u, v, u_in);
-	edge_attr->reverse_edge->valid = false;
-	rev_edge_attr->reverse_edge = graph_find_edge(g, v, u, v_in);
+	edge->reverse_edge = rev_edge;//graph_find_edge(g, u, v, u_in);
+	edge->reverse_edge->valid = false;
+	rev_edge->reverse_edge = edge;//graph_find_edge(g, v, u, v_in);
 	//printf("fini adding edges\n");
 	return 1;
 }
@@ -151,17 +134,17 @@ int	update_edge(t_route *route, t_graph_edge *edge)
 
 	(void)route;
 	//print_edge(route, );
-	((t_edge_attr*)edge->attr)->flow += 1;
+	edge->flow += 1;
 	rev_edge = get_edge(edge->v, edge->u);
 	printf("rev_e->u->vertex:%s_%s-rev_e->v->vertex:%s_%s\n", 
 		route->node_map[rev_edge->u->vertex], sVertexTypeStrings[rev_edge->u->type], 
 		route->node_map[rev_edge->v->vertex], sVertexTypeStrings[rev_edge->v->type]);
-	((t_edge_attr*)rev_edge->attr)->flow -= 1;
-	if (((t_edge_attr*)edge->attr)->flow < ((t_edge_attr*)edge->attr)->capacity)
+	rev_edge->flow -= 1;
+	if (edge->flow < edge->capacity)
 		edge->valid = 1;
 	else
 		edge->valid = 0;
-	if (((t_edge_attr*)rev_edge->attr)->flow < ((t_edge_attr*)rev_edge->attr)->capacity)
+	if (rev_edge->flow < rev_edge->capacity)
 		rev_edge->valid = 1;
 	else
 		rev_edge->valid = 0;
@@ -192,11 +175,10 @@ void	save_flow_path(t_route *route, t_list **path, t_graph_vertex *src, t_graph_
 			if (route->flags.debug)
 				printf("i:%d < size:%d\n", i, size);
 			e  = (t_graph_edge*)ft_lstfind_node(v->in_list, i)->content;
-			//printf("e->flow:%d\n", ((t_edge_attr*)e->attr)->flow);
-			if (((t_edge_attr*)e->attr)->flow > 0)
+			if (e->flow > 0)
 			{
 				if (route->flags.debug)
-					printf("e->u->vertex:%d-e->v->vertex:%d' flow:%d, break;\n", e->u->vertex, e->v->vertex, ((t_edge_attr*)e->attr)->flow);
+					printf("e->u->vertex:%d-e->v->vertex:%d' flow:%d, break;\n", e->u->vertex, e->v->vertex, e->flow);
 				break;
 			}
 			i++;
@@ -233,7 +215,7 @@ t_list	*save_max_flow_paths(t_route *route, t_graph_vertex *start, t_graph_verte
 	{
 		adj_edge = (t_graph_edge*)ft_lstfind_node(end->in_list, i)->content;
 		//printf("adj_edge->u->vertex:%d\n", adj_edge->u->vertex);
-		if (((t_edge_attr*)adj_edge->attr)->flow > 0)
+		if (adj_edge->flow > 0)
 		{
 			ft_lstadd_back(&path, ft_lstnew(end));
 			save_flow_path(route, &path, adj_edge->u, start);
