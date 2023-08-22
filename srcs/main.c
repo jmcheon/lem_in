@@ -450,18 +450,19 @@ int	max_flow_edmonds_karp(t_route *route, int start, int end)
 
 	(void)i;
 	(void)e;
-	s = graph_find_vertex(route->graph, start, 0);
-	t = graph_find_vertex(route->graph, end, 1);
+	paths = NULL;
+	s = graph_find_vertex(route->graph, start, 1);
+	t = graph_find_vertex(route->graph, end, 0);
 	while (1)
 	{
 		edge_list = graph_bfs(route, s, t);
 		//printf("test0\n");
-		//printf("edge_list->size:%d\n", ft_lstsize(edge_list));
+		printf("edge_list->size:%d\n", ft_lstsize(edge_list));
 		if (ft_lstsize(edge_list) == 0 || !update_edge_flow(edge_list, end))
 			break ;
 		flow++;
-		paths = save_max_flow_paths(s, t, flow);
-		print_all_paths(paths);
+		paths = save_max_flow_paths(route, s, t, flow);
+		print_all_paths(route, paths);
 		printf("\t\tmax flow path:%d\n", ft_lstsize(paths));
 		//e = graph_find_edge(route->graph, 6, 4, 1);
 		//printf("\t\t\t\te->u->vertex:%d\n", e->u->vertex);

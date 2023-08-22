@@ -45,4 +45,7 @@ void	init_route(t_route* route, t_parse* parse)
 
 	route->paths = (t_paths*)malloc(sizeof(t_paths));
 	init_paths(route->paths);
+
+	route->flags.verbose = 0;
+	route->flags.debug = 1;
 }

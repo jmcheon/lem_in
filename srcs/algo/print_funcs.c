@@ -5,7 +5,7 @@ void	print_edge_forward_travel(t_route *route)
 	t_graph_edge	*e;
 
 	//e = graph_find_edge(route->graph, route->start, route->graph->adj_list[0]->vertex, 0);
-	e = graph_find_edge(route->graph, route->start, 0, 1);
+	//e = graph_find_edge(route->graph, route->start, 0, 1);
 	//printf("%d\n", route->graph->adj_list[0]->vertex);
 	//while (v->vertex != route->end)
 	{
@@ -17,7 +17,7 @@ void	print_edge_forward_travel(t_route *route)
 	{
 		for (int j = 0; j < route->num_vertices; j++)
 		{
-			e = graph_find_edge(route->graph, i, j, 0);
+			e = graph_find_edge(route->graph, i, j, 1);
 			if (e != NULL)
 			{
 				//printf("(e->u->vertex, e->v->vertex): (%d, %d)\n", e->u->vertex, e->v->vertex);
@@ -47,66 +47,68 @@ void	print_vertex_lists(t_route *route)
 		v = graph_find_vertex(route->graph, i, 0);
 		//printf("\n%d_in\n", v->vertex);
 		printf("\n\n\n%s_in->in\n", route->node_map[v->vertex]);
-		print_edges(route, v->in_list);
+		print_edges(route, v->in_list, REVERSE_PRINT);
 		printf("%s_in->out\n", route->node_map[v->vertex]);
-		print_edges(route, v->out_list);
+		print_edges(route, v->out_list, REVERSE_PRINT);
 
 		v = graph_find_vertex(route->graph, i, 1);
 		//printf("%d_out\n", v->vertex);
 		printf("\n%s_out->in\n", route->node_map[v->vertex]);
-		print_edges(route, v->in_list);
+		print_edges(route, v->in_list, REVERSE_PRINT);
 		printf("%s_out->out\n", route->node_map[v->vertex]);
-		print_edges(route, v->out_list);
+		print_edges(route, v->out_list, REVERSE_PRINT);
 	}
 }
 
-void	print_edge(t_route *route, void *data, int i)
+void	print_edge(t_route *route, void *data)
 {
 	t_graph_edge	*temp;
 	t_edge_attr		*attr;
 
 	temp = data;
-	(void)i;
 	attr = temp->attr;
 	printf("[%d]:%s -> [%d]:%s\t valid = %d, flow = %d, capacity = %d\n",
 		temp->u->vertex, route->node_map[temp->u->vertex], temp->v->vertex, route->node_map[temp->v->vertex],
 		temp->valid, attr->flow, attr->capacity);
-	//return ((int)i);
 }
 
 
-void	print_edges(t_route *route, t_list *lst)
+void	print_edges(t_route *route, t_list *lst, int reverse)
 {
 	int	size;
 
 	size = ft_lstsize(lst);
-	printf("start printing edges... size:%d\n", size);
+	printf("%sStart printing connected edges... size:%s%d\n", BLUE, FIN, size);
 
 	for (int i = 0; i < size; i++)
 	{
-		print_edge(route, ft_lstfind_node(lst, i)->content, i);
+		print_edge(route, ft_lstfind_node(lst, i)->content);
 	}
 
-	printf("========================reverse edge=======================\n");
-	for (int j = 0; j < size; j++)
+	if (reverse)
 	{
-		print_edge(route, ((t_edge_attr*)((t_graph_edge*)ft_lstfind_node(lst, j)->content)->attr)->reverse_edge, j);
+		printf("%s========================reverse edge=======================%s\n", YELLOW, FIN);
+		for (int j = 0; j < size; j++)
+		{
+			print_edge(route, ((t_edge_attr*)((t_graph_edge*)ft_lstfind_node(lst, j)->content)->attr)->reverse_edge);
+		}
 	}
+	printf("\n");
 }
 
-void	print_all_paths(t_list *paths)
+void	print_all_paths(t_route *route, t_list *paths)
 {
 	t_list	*path;
 
 	while (paths != NULL)
 	{
 		path = (t_list*)paths->content;
-		print_one_path(path);
+		print_one_path(route, path);
 		paths = paths->next;
 	}
 }
 
-void	print_one_path(t_list *path)
+void	print_one_path(t_route *route, t_list *path)
 {
 	int	path_size;
 
@@ -115,9 +117,11 @@ void	print_one_path(t_list *path)
 	while (path != NULL)
 	{
 		if (path->next)
-			printf("%d -> ", ((t_graph_vertex*)path->content)->vertex);
+			//printf("%d -> ", ((t_graph_vertex*)path->content)->vertex);
+			printf("%s -> ", route->node_map[((t_graph_vertex*)path->content)->vertex]);
 		else
-			printf("%d\n", ((t_graph_vertex*)path->content)->vertex);
+			//printf("%d\n", ((t_graph_vertex*)path->content)->vertex);
+			printf("%s\n", route->node_map[((t_graph_vertex*)path->content)->vertex]);
 		path = path->next;
 	}
 }

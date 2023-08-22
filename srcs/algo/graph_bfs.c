@@ -1,18 +1,20 @@
 #include "../../includes/lem-in.h"
 
-int	graph_iter_edges(t_route *route, t_list **ret, t_list *queue, t_graph_vertex *t, int queue_index)
+int	graph_iter_edges(t_route *route, t_list **ret, t_list **queue, t_graph_vertex *t, int queue_index)
 {
 	t_graph_edge	*edge;
 	t_graph_vertex	*vertex;
 	int	i = 0;
 	int	size;
 
-	vertex = (t_graph_vertex*)ft_lstfind_node(queue, queue_index)->content;
+	vertex = (t_graph_vertex*)ft_lstfind_node(*queue, queue_index)->content;
 	size = ft_lstsize(vertex->out_list);
 
-	//print_edges(route, vertex->out_list);
+	printf("v->out\n");
+	print_edges(route, vertex->out_list, REVERSE_PRINT);
 	(void)route;
 	(void)print_edges;
+	//printf("iter edge size:%d\n", size);
 	while (i < size)
 	{
 		edge = (t_graph_edge*)ft_lstfind_node(vertex->out_list, i)->content;
@@ -24,9 +26,9 @@ int	graph_iter_edges(t_route *route, t_list **ret, t_list *queue, t_graph_vertex
 			edge->v->valid = false;
 			ft_lstadd_back(ret, ft_lstnew(edge));
 			//printf("edge->v->vertex:%d\n", edge->v->vertex);
-			ft_lstadd_back(&queue, ft_lstnew(edge->v));
+			ft_lstadd_back(queue, ft_lstnew(edge->v));
 			//printf("queue->size:%d\n", ft_lstsize(queue));
-			vertex = (t_graph_vertex*)ft_lstfind_node(queue, queue_index)->content;
+			vertex = (t_graph_vertex*)ft_lstfind_node(*queue, queue_index)->content;
 			if (t && edge->v->vertex == t->vertex)
 				return 1;
 		}
@@ -41,24 +43,18 @@ void	graph_bfs_loop(t_route *route, t_list **ret, t_graph_vertex *s, t_graph_ver
 	t_graph_vertex	*v;
 	int		i = 0;
 
-	//parr_init(&queue);
 	queue = NULL;
 	s->valid = false;
-	//ft_lstadd_back(&queue.data_list, ft_lstnew(s));
 	ft_lstadd_back(&queue, ft_lstnew(s));
-	//queue.len++;
-	//printf("queue.len:%d\n", queue.len);
-	//printf("queue size:%d\n", ft_lstsize(queue));
-	//while (i < queue.len)
+	//printf("bfs loop queue size:%d\n", ft_lstsize(queue));
 	while (i < ft_lstsize(queue))
 	{
-		//v = (t_graph_vertex*)ft_lstfind_node(queue.data_list, i)->content;
 		v = (t_graph_vertex*)ft_lstfind_node(queue, i)->content;
 		//printf("loop queue->size:%d\n", ft_lstsize(queue));
 		//printf("v->valid:%d\n", v->valid);
 		v->valid = false;
 		//if (graph_iter_edges(arr, &queue, t, i))
-		if (graph_iter_edges(route, ret, queue, t, i))
+		if (graph_iter_edges(route, ret, &queue, t, i))
 		{
 			//free(queue);
 			return;
@@ -109,12 +105,6 @@ t_list *graph_bfs(t_route *route, t_graph_vertex *s, t_graph_vertex *t)
 		((t_graph_vertex*)curr_ptr->content)->valid = true;
 		//printf("v in:%d, v->valid:%d\n", curr_vertex_ptr->vertex, curr_vertex_ptr->valid);
 		curr_ptr = curr_ptr->next;
-	}
-	for (int i = 0; i < route->num_vertices; i++)
-	{
-		//curr_vertex_ptr = (t_graph_vertex*)route->graph->v_in_list->content;
-		//ft_lstiter(route->graph->v_in_list, graph_vertex_valid);
-		//ft_lstiter(route->graph->v_out_list, graph_vertex_valid);
 	}
 	return ret;
 }

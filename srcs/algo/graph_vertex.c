@@ -1,12 +1,5 @@
 #include "../../includes/lem-in.h"
 
-/*
-void parr_init(t_parray *arr)
-{
-	arr->data_list = NULL;
-	arr->len = 0;
-}
-*/
 void	print_vertex_content(void *content)
 {
 	printf("v:%d\n", ((t_graph_vertex*)content)->vertex);
@@ -27,18 +20,6 @@ t_graph_vertex *graph_find_vertex(t_graph *g, int v, int in)
 		return (t_graph_vertex*)ft_lstfind_node(g->v_in_list, v)->content;
 	else
 		return (t_graph_vertex*)ft_lstfind_node(g->v_out_list, v)->content;
-/*
-	t_graph_vertex *temp;
-	t_graph_node *curr_ptr;
-	curr_ptr = g->adj_list[v];
-	if (curr_ptr != NULL)
-	{
-		temp = (t_graph_vertex*)malloc(sizeof(t_graph_vertex));
-		temp->vertex = v;
-		return temp;
-	}
-	return NULL;
-*/
 }
 
 t_graph_vertex	*graph_add_vertex(int v)
