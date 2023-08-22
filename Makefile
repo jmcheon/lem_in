@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+         #
+#    By: sucho <sucho@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/05 02:01:35 by sucho             #+#    #+#              #
-#    Updated: 2023/08/18 01:49:56 by cjung-mo         ###   ########.fr        #
+#    Updated: 2023/08/22 21:18:59 by sucho            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,7 @@ SRCS					=	./includes/get_next_line/get_next_line_bonus.c \
 							./srcs/algo/queue.c \
 							./srcs/algo/priority_queue.c \
 							./srcs/ants/ants_dist.c \
+							./srcs/ants/ants_dist2.c \
 							./srcs/ants/ants_quicksort.c \
 							./srcs/ants/ants_print_frame.c \
 							./srcs/free.c \

@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 15:59:05 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/17 02:52:48 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/22 21:24:55 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,12 @@ void	ants_setup_prints_strt(t_ants_print **matrix, t_path_len **elements, t_rout
 t_ants_print	**ants_init_ants_print(int longest, int total_used);
 
 void	ants_print_frames(t_route route, t_path_len **elements);
+
+/*
+**	ants_dist2.c
+*/
+void	ants_distribute_2(t_route *route, t_list *paths);
+t_path_len	**ants_init_elements2(t_list *paths, int num_paths);
+void	ants_setup_elements2(t_path_len **elements, t_list *paths);
 
 #endif

@@ -244,7 +244,7 @@ int	main2(void)
 	int **capacity;
 	int	**temp;
 	int	*parent;
-	
+
 	parse = parsing();
 	// printf("parse result:\n");
 	// parse_result_print(parse);
@@ -378,7 +378,7 @@ int	main2(void)
 
 
     ants_print_frames(route, elements);
-    
+
 	int total_length = 0;
 	for(int i = 0; i < route.paths->num_paths; i++)
 	{
@@ -387,7 +387,7 @@ int	main2(void)
 		total_length += elements[i]->value;
 	}
 	printf("total_length:%d\n", total_length);
-    
+
 
 	for (int u = 0; u < route.num_vertices; ++u)
 		free(temp[u]);
@@ -462,7 +462,10 @@ int	max_flow_edmonds_karp(t_route *route, int start, int end)
 			break ;
 		flow++;
 		paths = save_max_flow_paths(route, s, t, flow);
+		printf("-----------\n");
+		ants_distribute_2(route, paths);
 		print_all_paths(route, paths);
+		printf("-----------\n");
 		if (route->flags.debug)
 		{
 			printf("\t\tmax flow path:%d\n", ft_lstsize(paths));
@@ -478,7 +481,7 @@ int main(void)
 {
 	t_parse	*parse;
 	t_route	route;
-	
+
 	parse = parsing();
 	init_route(&route, parse);
 	if (route.flags.debug)
@@ -491,7 +494,7 @@ int main(void)
 			i++;
 		}
 	}
-	
+
 	add_vertices(&route);
 	//print_edge_forward_travel(&route);
 	//print_vertex_lists(&route);
@@ -503,7 +506,7 @@ int main(void)
 
 
     ants_print_frames(route, elements);
-    
+
 	int total_length = 0;
 	for(int i = 0; i < route.paths->num_paths; i++)
 	{
@@ -512,7 +515,7 @@ int main(void)
 		total_length += elements[i]->value;
 	}
 	printf("total_length:%d\n", total_length);
-    
+
 
 	for(int i = 0; i < route.paths->num_paths; i++)
 		free(elements[i]);

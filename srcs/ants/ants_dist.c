@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ants_dist.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 07:19:48 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/18 01:15:26 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/22 21:19:12 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	ants_setup_elements(t_path_len **elements, t_route route)
 		elements[i]->index = i;
 		j = 0;
 		onepath_head = (t_vertex_list*)paths_head->content;
-		
+
 		while(onepath_head != NULL)
 		{
 			j++;
