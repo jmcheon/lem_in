@@ -1,4 +1,4 @@
-15
+157
 # found paths total length: 5 + 9 = 14
 # optimized paths total length: 6 + 6 = 12
 ##start
@@ -24,6 +24,7 @@ d4 4 5
 d5 5 5
 e1 5 7
 e2 6 7
+e3 6 6
 r1 3 4
 start-a3
 a3-a4
@@ -40,7 +41,8 @@ d3-d4
 r1-d4
 d5-start
 e1-d4
-e2-start
+e2-e3
+e3-start
 end-c1
 c1-c2
 c2-c3
