@@ -14,4 +14,4 @@
 
 #endif
 
-void	free_edges(t_list *edges);
+void	free_graph_edges(t_list *edges);

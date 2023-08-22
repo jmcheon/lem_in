@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 16:58:03 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/14 04:02:19 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/22 21:27:12 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	free_paths(t_list *paths)
 	}
 }
 
-void	free_edges(t_list *edges)
+void	free_graph_edges(t_list *edges)
 {
 	t_list *tmp;
 

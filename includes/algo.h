@@ -146,8 +146,8 @@ void	print_vertex_lists(t_route *route);
 void	print_edge_forward_travel(t_route *route);
 void	print_edge(t_route *route, void *data);
 void	print_edges(t_route *route, t_list *lst, int reverse);
-void	print_all_paths(t_route *route, t_list *paths);
-void	print_one_path(t_route *route, t_list *path);
+void	print_all_paths(t_route *route, t_list *paths, int print_paths);
+void	print_one_path(t_route *route, t_list *path, int print_paths);
 
 void	print_path(t_route* route, int* parent, int path_id);
 void	print_paths(t_route* route, t_paths* paths);
