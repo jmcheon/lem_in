@@ -21,7 +21,10 @@ void	print_edge_forward_travel(t_route *route)
 			if (e != NULL)
 			{
 				//printf("(e->u->vertex, e->v->vertex): (%d, %d)\n", e->u->vertex, e->v->vertex);
-				printf("(e->u->vertex, e->v->vertex): (%s, %s) %d, %d\n", route->node_map[e->u->vertex], route->node_map[e->v->vertex], e->u->valid, e->v->valid);
+				printf("(e->u->vertex, e->v->vertex): (%s_%s, %s_%s) %d, %d\n", 
+					route->node_map[e->u->vertex], sVertexTypeStrings[e->u->type], 
+					route->node_map[e->v->vertex], sVertexTypeStrings[e->v->type], 
+					e->u->valid, e->v->valid);
 			}
 		}
 		printf("\n");
@@ -67,8 +70,9 @@ void	print_edge(t_route *route, void *data)
 
 	temp = data;
 	attr = temp->attr;
-	printf("[%d]:%s -> [%d]:%s\t valid = %d, flow = %d, capacity = %d\n",
-		temp->u->vertex, route->node_map[temp->u->vertex], temp->v->vertex, route->node_map[temp->v->vertex],
+	printf("[%d]:%s_%s -> [%d]:%s_%s\t valid = %d, flow = %d, capacity = %d\n",
+		temp->u->vertex, route->node_map[temp->u->vertex], sVertexTypeStrings[temp->u->type], 
+		temp->v->vertex, route->node_map[temp->v->vertex], sVertexTypeStrings[temp->v->type],
 		temp->valid, attr->flow, attr->capacity);
 }
 

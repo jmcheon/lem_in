@@ -132,11 +132,11 @@ t_graph_edge *get_edge(t_graph_vertex *src, t_graph_vertex *des)
 	return NULL;
 }
 
-int	update_edge_flow(t_list *edge_list, int v)
+int	update_edge_flow(t_route *route, t_list *edge_list, int v)
 {
 	t_list *path;
 
-	path = graph_edge_backtrack(edge_list, v);
+	path = graph_edge_backtrack(route, edge_list, v);
 	printf("\t\tbacktracking return\n");
 	if (!path)
 		return 0;
@@ -145,12 +145,17 @@ int	update_edge_flow(t_list *edge_list, int v)
 	return 1;
 }
 
-int	update_edge(t_graph_edge *edge)
+int	update_edge(t_route *route, t_graph_edge *edge)
 {
 	t_graph_edge *rev_edge;
 
+	(void)route;
+	//print_edge(route, );
 	((t_edge_attr*)edge->attr)->flow += 1;
 	rev_edge = get_edge(edge->v, edge->u);
+	printf("rev_e->u->vertex:%s_%s-rev_e->v->vertex:%s_%s\n", 
+		route->node_map[rev_edge->u->vertex], sVertexTypeStrings[rev_edge->u->type], 
+		route->node_map[rev_edge->v->vertex], sVertexTypeStrings[rev_edge->v->type]);
 	((t_edge_attr*)rev_edge->attr)->flow -= 1;
 	if (((t_edge_attr*)edge->attr)->flow < ((t_edge_attr*)edge->attr)->capacity)
 		edge->valid = 1;
@@ -181,7 +186,7 @@ void	save_flow_path(t_route *route, t_list **path, t_graph_vertex *src, t_graph_
 		size = ft_lstsize(v->in_list);
 		//printf("size:%d, v->vertex:%d, des->vertex:%d\n", size, v->vertex, des->vertex);
 		if (route->flags.debug)
-			print_edges(route, v->in_list, REVERSE_PRINT);
+			print_edges(route, v->in_list, FORWARD_PRINT);
 		while (i < size)
 		{
 			if (route->flags.debug)
@@ -233,8 +238,11 @@ t_list	*save_max_flow_paths(t_route *route, t_graph_vertex *start, t_graph_verte
 			ft_lstadd_back(&path, ft_lstnew(end));
 			save_flow_path(route, &path, adj_edge->u, start);
 			//print_all_paths(paths);
-			printf("selected current path:\n");
-			print_one_path(route, path);
+			if (route->flags.debug)
+			{
+				printf("selected current path:\n");
+				print_one_path(route, path);
+			}
 			ft_lstadd_back(&paths, ft_lstnew(path));
 			path = NULL;
 			printf("\t\t\t\t\t paths size:%d\n", ft_lstsize(paths));
@@ -244,29 +252,29 @@ t_list	*save_max_flow_paths(t_route *route, t_graph_vertex *start, t_graph_verte
 	return paths;
 }
 
-t_list *graph_edge_backtrack(t_list *edges, int v)
+t_list *graph_edge_backtrack(t_route *route, t_list *edges, int v)
 {
 	t_list *path;
 	t_graph_vertex *vertex;
 	t_graph_edge *edge;
 	int	i;
 
-	printf("\t\tbacktracking\n");
+	//printf("\t\tbacktracking\n");
 	edge = (t_graph_edge*)ft_lstlast(edges)->content;
-	if (v != edge->v->vertex || !update_edge(edge))
+	if (v != edge->v->vertex || !update_edge(route, edge))
 		return NULL;
 	vertex = edge->u;
 	path = NULL;
 	ft_lstadd_back(&path, ft_lstnew(edge->u));
 	ft_lstadd_back(&path, ft_lstnew(edge->v));
-	printf("\t\tbacktracking test\n");
 	i = ft_lstsize(edges);
+	printf("\t\tbacktracking edge_list size:%d\n", i);
 	while (i--)
 	{
 		edge = (t_graph_edge*)ft_lstfind_node(edges, i)->content;
 		if (edge->v->vertex == vertex->vertex)
 		{
-			if (update_edge(edge) < 0)
+			if (update_edge(route, edge) < 0)
 				return path;
 			ft_lstadd_front(&path, ft_lstnew(edge->u));
 			vertex = edge->u;

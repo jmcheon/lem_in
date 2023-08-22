@@ -22,7 +22,7 @@ t_graph_vertex *graph_find_vertex(t_graph *g, int v, int in)
 		return (t_graph_vertex*)ft_lstfind_node(g->v_out_list, v)->content;
 }
 
-t_graph_vertex	*graph_add_vertex(int v)
+t_graph_vertex	*graph_add_vertex(int v, VertexType type)
 {
 	t_graph_vertex *vertex;
 
@@ -30,6 +30,7 @@ t_graph_vertex	*graph_add_vertex(int v)
 	if (!vertex)
 		return NULL;
 	vertex->vertex = v;
+	vertex->type = type;
 	vertex->valid = true;
 	vertex->in_list = NULL;
 	vertex->out_list = NULL;
@@ -56,8 +57,8 @@ void	add_vertices(t_route *route)
 	{
 		//v = graph_add_vertex(i);
 		//printf("adding vertex:%d valid:%d\n", v->vertex, v->valid);
-		ft_lstadd_back(&route->graph->v_in_list, ft_lstnew(graph_add_vertex(i)));
-		ft_lstadd_back(&route->graph->v_out_list, ft_lstnew(graph_add_vertex(i)));
+		ft_lstadd_back(&route->graph->v_in_list, ft_lstnew(graph_add_vertex(i, IN)));
+		ft_lstadd_back(&route->graph->v_out_list, ft_lstnew(graph_add_vertex(i, OUT)));
 		add_edges(route->graph, i, i, 1, 0);
 	}
 	for (int i = 0; i < route->num_vertices; i++)

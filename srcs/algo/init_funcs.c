@@ -1,5 +1,10 @@
 #include "../../includes/lem-in.h"
 
+const char* sVertexTypeStrings[] = {
+	"IN",
+	"OUT",
+};
+
 void	init_vertex_list(t_vertex_list *path, int v)
 {
 	path->vertex = v;

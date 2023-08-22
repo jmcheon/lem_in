@@ -11,9 +11,18 @@
 # define REVERSE_PRINT 1
 # define FORWARD_PRINT 0
 
+extern const char* sVertexTypeStrings[];
+
+typedef enum VertexType 
+{
+	IN=0,
+	OUT
+} VertexType;
+
 typedef struct s_graph_vertex
 {
 	int vertex;
+	VertexType	type;
 	t_list	*in_list;
 	t_list	*out_list;
 	bool		valid;
@@ -101,11 +110,11 @@ int				add_edges(t_graph *g, int u, int v, int u_in, int v_in);
 int				graph_add_edge(t_graph *g, int u_vertex, int v_vertex, int u_in, int v_in, void *attr);
 t_graph_edge	*graph_find_edge(t_graph *g, int u, int v, int u_in);
 
-int				update_edge_flow(t_list *edge_list, int v);
-int				update_edge(t_graph_edge *edge);
+int				update_edge_flow(t_route *route, t_list *edge_list, int v);
+int				update_edge(t_route *route, t_graph_edge *edge);
 t_edge_attr		*init_edge_attr(int capacity);
 t_graph_edge 	*get_edge(t_graph_vertex *src, t_graph_vertex *des);
-t_list 			*graph_edge_backtrack(t_list *edges, int v);
+t_list 			*graph_edge_backtrack(t_route *route, t_list *edges, int v);
 
 t_list			*save_max_flow_paths(t_route *route, t_graph_vertex *start, t_graph_vertex *end, int max_flow);
 
@@ -114,7 +123,7 @@ t_list			*save_max_flow_paths(t_route *route, t_graph_vertex *start, t_graph_ver
 */
 void			add_vertices(t_route *route);
 void			graph_vertex_valid(void *content);
-t_graph_vertex	*graph_add_vertex(int v);
+t_graph_vertex	*graph_add_vertex(int v, VertexType type);
 t_graph_vertex 	*graph_find_vertex(t_graph *g, int v, int in);
 
 /*
