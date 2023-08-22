@@ -90,14 +90,6 @@ void	graph_bfs_loop(t_route *route, t_list **ret, t_graph_vertex *s, t_graph_ver
 	return;
 }
 
-void	graph_veretx_valid(void *content)
-{
-	t_graph_vertex	*v;
-
-	v = (t_graph_vertex*)content;
-	v->valid = true;
-}
-
 t_list *graph_bfs(t_route *route, t_graph_vertex *s, t_graph_vertex *t)
 {
 	t_list	*ret;
