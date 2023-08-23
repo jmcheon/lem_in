@@ -123,9 +123,9 @@ t_graph_vertex 	*multishot_find_vertex(t_graph *g, int v, int in);
 /*
 **	multishot_edmonds_karp.c
 */
-void			multishot_add_one_path(t_route *route, t_list **path, t_graph_vertex *src, t_graph_vertex *des);
-t_list			*multishot_add_all_paths(t_route *route, t_graph_vertex *start, t_graph_vertex *end);
-t_list			*multishot_edmonds_karp(t_route *route);
+void			multishot_add_one_path(t_route *route, t_graph_vertex *src, t_graph_vertex *des);
+void			multishot_add_all_paths(t_route *route, t_graph_vertex *start, t_graph_vertex *end);
+void			multishot_edmonds_karp(t_route *route);
 
 
 /*
@@ -139,7 +139,7 @@ int oneshot_bfs_with_weights(t_route* route, int* parent, int **capacity);
 void	oneshot_edmonds_karp(t_route* route, t_paths* paths, int* parent, int **capacity);
 void	edmonds_karp_with_weights(t_route* route, t_paths* paths, int* parent, int **capacity);
 void	fill_capacity(t_graph*paths, int **capacity);
-void	insert_next_parent(t_paths *paths, int v);
+void 	insert_vertex(t_paths *paths, int v);
 void	optimize(t_route *route);
 
 /*

@@ -15,7 +15,7 @@ void	fill_capacity(t_graph* graph, int **capacity)
 	}
 }
 
-void insert_next_parent(t_paths *paths, int v)
+void insert_vertex(t_paths *paths, int v)
 {
 	t_vertex_list	*new_path_ptr;
 	t_vertex_list	*curr_vertex_ptr;
@@ -73,8 +73,8 @@ void	edmonds_karp_with_weights(t_route* route, t_paths* paths, int* parent, int 
 			int u = parent[v];
 			//printf("u, v = %d, %d\n", u, v);
 			if (v == route->end)
-				insert_next_parent(paths, v);
-			insert_next_parent(paths, u);
+				insert_vertex(paths, v);
+			insert_vertex(paths, u);
 			capacity[u][v] -= 1;
 			capacity[v][u] += 1;
 		}
@@ -95,8 +95,8 @@ void	oneshot_edmonds_karp(t_route* route, t_paths* paths, int* parent, int **cap
 			int u = parent[v];
 			//printf("u, v = %d, %d\n", u, v);
 			if (v == route->end)
-				insert_next_parent(paths, v);
-			insert_next_parent(paths, u);
+				insert_vertex(paths, v);
+			insert_vertex(paths, u);
 			capacity[u][v] -= 1;
 			capacity[v][u] += 1;
 		}

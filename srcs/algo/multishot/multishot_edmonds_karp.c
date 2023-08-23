@@ -1,6 +1,6 @@
 #include "../../../includes/lem-in.h"
 
-void	multishot_add_one_path(t_route *route, t_list **path, t_graph_vertex *src, t_graph_vertex *des)
+void	multishot_add_one_path(t_route *route, t_graph_vertex *src, t_graph_vertex *des)
 {
 	t_graph_vertex	*v;
 	t_graph_edge	*e;
@@ -10,9 +10,7 @@ void	multishot_add_one_path(t_route *route, t_list **path, t_graph_vertex *src, 
 
 	v = src;
 	e = NULL;
-	insert_next_parent(route->multishot_paths, v->vertex);
-	ft_lstadd_back(path, ft_lstnew(v));
-	//printf("%d\n", v->vertex);
+	insert_vertex(route->multishot_paths, v->vertex);
 	while (v->vertex != des->vertex)
 	{
 		i = 0;
@@ -38,9 +36,7 @@ void	multishot_add_one_path(t_route *route, t_list **path, t_graph_vertex *src, 
 			//printf("adding e->u->vertex:%d\n",e->u->vertex);
 			if (route->flags.debug)
 				printf("%sadding e->u->vertex:%s%s\n", GREEN, FIN, route->node_map[e->u->vertex]);
-			insert_next_parent(route->multishot_paths, e->u->vertex);
-			ft_lstadd_back(path, ft_lstnew(e->u));
-			//printf("%d\n", e->u->vertex);
+			insert_vertex(route->multishot_paths, e->u->vertex);
 		}
 		if (route->flags.debug)
 			printf("v = e->u:%d\n",e->u->vertex);
@@ -49,23 +45,18 @@ void	multishot_add_one_path(t_route *route, t_list **path, t_graph_vertex *src, 
 }
 
 
-t_list	*multishot_add_all_paths(t_route *route, t_graph_vertex *start, t_graph_vertex *end)
+void	multishot_add_all_paths(t_route *route, t_graph_vertex *start, t_graph_vertex *end)
 {
-	(void)route;
-	t_list	*paths;
-	t_list	*path;
 	t_graph_edge *adj_edge;
 	int	i = 0;
 	int	size;
 
-	paths = NULL;
-	path = NULL;
 	size = ft_lstsize(end->in_list);
 
 	if (route->multishot_paths->paths != NULL)
 	{
-		//free_paths(route->multishot_paths->paths);
-		//init_paths(route->multishot_paths);
+		free_paths(route->multishot_paths->paths);
+		init_paths(route->multishot_paths);
 	}
 	while (i < size)
 	{
@@ -73,39 +64,33 @@ t_list	*multishot_add_all_paths(t_route *route, t_graph_vertex *start, t_graph_v
 		//printf("adj_edge->u->vertex:%d\n", adj_edge->u->vertex);
 		if (adj_edge->flow > 0)
 		{
-			insert_next_parent(route->multishot_paths, end->vertex);
-			ft_lstadd_back(&path, ft_lstnew(end));
+			insert_vertex(route->multishot_paths, end->vertex);
 			//printf("%d\n", end->vertex);
-			multishot_add_one_path(route, &path, adj_edge->u, start);
+			multishot_add_one_path(route, adj_edge->u, start);
 			route->multishot_paths->num_paths++;
 			//multishot_print_all_paths(paths);
 			if (route->flags.debug)
 			{
 				printf("selected current path:\n");
-				multishot_print_one_path(route, path, 1);
+				multishot_print_one_path(route, ft_lstlast(route->multishot_paths->paths), 1);
 			}
-			ft_lstadd_back(&paths, ft_lstnew(path));
-			path = NULL;
 			if (route->flags.debug)
-				printf("\t\t\t\t\t paths size:%d\n", ft_lstsize(paths));
+				printf("\t\t\t\t\t paths size:%d\n", ft_lstsize(route->multishot_paths->paths));
 		}
 		i++;
 	}
-	return paths;
 }
 
 
-t_list	*multishot_edmonds_karp(t_route *route)
+void	multishot_edmonds_karp(t_route *route)
 {
 	t_list	*edge_list;
 	t_list	*paths;
-	t_list	*prev_paths;
 	t_graph_vertex *s;
 	t_graph_vertex *t;
 	int	prev_path_len;
 
 	paths = NULL;
-	prev_paths = NULL;
 	s = multishot_find_vertex(route->graph, route->start, OUT);
 	t = multishot_find_vertex(route->graph, route->end, IN);
 	prev_path_len = 0;
@@ -121,7 +106,6 @@ t_list	*multishot_edmonds_karp(t_route *route)
 		if (prev_path_len != 0 && prev_path_len < ants_check_loop_len(route, route->multishot_paths))
 		{
 			route->multishot_paths->loop_len = prev_path_len - 2;
-			route->multishot_paths->paths = prev_paths;
 			// printf("========0000000============\n");
 			// printf("path_len:%d\n",prev_path_len - 2);
 			// printf("========0000000============\n");
@@ -130,9 +114,7 @@ t_list	*multishot_edmonds_karp(t_route *route)
 		multishot_print_all_paths(route, route->multishot_paths->paths, SIZE_PRINT);
 		printf("\t\tmax flow path:%d\n", ft_lstsize(route->multishot_paths->paths));
 		prev_path_len = ants_check_loop_len(route, route->multishot_paths);
-		prev_paths = paths;
 		(void)paths;
 	}
-	return prev_paths;
 }
 
