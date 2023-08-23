@@ -5,22 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/23 16:37:44 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/24 00:07:56 by sucho            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../../includes/lem-in.h"
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ants_dist_multishot.c                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 21:19:38 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/23 16:13:04 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/24 01:07:00 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +33,12 @@ int		ants_find_dist_begin2(int *elements2, int num_paths, int num_ants)
 	return (ret);
 }
 
-void	ants_dist_fillin3(int *ant_dist, int *elements2, int paths_num, int dist_begin, int num_ants)
+int	ants_dist_find_result(int *ant_dist, int *elements2, int paths_num, int dist_begin, int num_ants)
 {
 	int ants_to_dist = num_ants;
 	int dist_len = paths_num - dist_begin;
-	int ant_remainder;
+	int ants_remainder;
+	int ants_div;
 
 	for (int i = paths_num - 1; i > dist_begin; i--)
 	{
@@ -59,41 +46,10 @@ void	ants_dist_fillin3(int *ant_dist, int *elements2, int paths_num, int dist_be
 		ant_dist[i] = dist;
 		ants_to_dist -= dist;
 	}
-	ant_remainder = ants_to_dist % dist_len;
-	for(int i= paths_num - 1; i >= dist_begin; i--)
-	{
-		ant_dist[i] += ants_to_dist / dist_len;
-		// printf("ant_dist[%d]:%d\t%d\n",i, ant_dist[i], ant_num_temp / route.paths->num_paths);
-		if (ant_remainder != 0)
-		{
-			ant_dist[i] += 1;
-			ant_remainder--;
-		}
-	}
-}
-void	ants_dist_fillin2(int *ant_dist, t_path_len **elements, int paths_num, int dist_begin, int num_ants)
-{
-	int ants_to_dist = num_ants;
-	int dist_len = paths_num - dist_begin;
-	int ant_remainder;
-
-	for (int i = paths_num - 1; i > dist_begin; i--)
-	{
-		int dist = elements[dist_begin]->value - elements[i]->value;
-		ant_dist[i] = dist;
-		ants_to_dist -= dist;
-	}
-	ant_remainder = ants_to_dist % dist_len;
-	for(int i= paths_num - 1; i >= dist_begin; i--)
-	{
-		ant_dist[i] += ants_to_dist / dist_len;
-		// printf("ant_dist[%d]:%d\t%d\n",i, ant_dist[i], ant_num_temp / route.paths->num_paths);
-		if (ant_remainder != 0)
-		{
-			ant_dist[i] += 1;
-			ant_remainder--;
-		}
-	}
+	ants_remainder = ants_to_dist % dist_len;
+	ants_div = ants_to_dist / dist_len;
+	int result = elements2[paths_num -1] + ant_dist[paths_num - 1] + ants_div + (ants_remainder > 0 ? 1 : 0);
+	return (result);
 }
 
 void	ants_setup_elements_array(int *elements2, t_list *paths)
@@ -131,7 +87,5 @@ int	ants_check_loop_len(t_route *route, t_paths *paths)
 	paths->dist_begin = dist_begin;
 	int ant_dist[paths_num];
 	ft_memset(&ant_dist, 0, sizeof(ant_dist));
-	ants_dist_fillin3(ant_dist, elements, paths_num, dist_begin, route->num_ants);
-	int result = elements[paths_num - 1] + ant_dist[paths_num -1];
-	return (result);
+	return (ants_dist_find_result(ant_dist, elements, paths_num, dist_begin, route->num_ants));
 }
