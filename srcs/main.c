@@ -246,6 +246,16 @@ int	perform_oneshot(t_route *route)
 	oneshot_edmonds_karp(route, parent, temp, oneshot_bfs_with_weights);
 	fill_capacity(route->graph, capacity);
 	route->oneshot_paths->loop_len = ants_check_loop_len(route, route->oneshot_paths) - 2;
+
+ 	for (int u = 0; u < route->num_vertices; ++u)
+	{
+ 		free(temp[u]);
+ 		free(capacity[u]);
+	}
+ 	free(temp);
+ 	free(capacity);
+	free(parent);
+
 	return (route->oneshot_paths->loop_len);
 }
 
@@ -320,8 +330,9 @@ int main(void)
 
 	//ft_lstclear(&route.graph->v_in_list, free);
 	//free_vertices(&route);
-	free_vertices_edge_inout_lists(&route);
+	free_edges_lists(&route);
 	free_vertices_inout_lists(&route);
+	//free_vertices_edge_inout_lists(&route);
 
 
 	// for(int i = 0; i < route.oneshot_paths->num_paths; i++)

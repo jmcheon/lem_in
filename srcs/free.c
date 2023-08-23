@@ -6,7 +6,7 @@
 /*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 16:58:03 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/23 16:48:49 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/23 20:26:29 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,6 @@ void	free_graph_edges(t_list *edges)
 	}
 }
 */
-void	free_graph_edges(t_route *route)
-{
-	for (int i = 0; i < route->num_vertices; i++)
-	{
-	}
-}
 
 void	free_vertices_edge_inout_lists(t_route *route)
 {
@@ -136,6 +130,29 @@ void	free_graph_vertices(t_route *route)
 	}
 }
 
+void	free_edges_lists(t_route *route)
+{
+	t_list	*temp;
+	t_list	*temp2;
+
+	temp = route->graph->edge_list;
+	while (temp != NULL)
+	{
+		free(temp->content);
+		temp2 = temp;
+		temp = temp->next;
+		free(temp2);
+	}
+	temp = route->graph->rev_edge_list;
+	while (temp != NULL)
+	{
+		free(temp->content);
+		temp2 = temp;
+		temp = temp->next;
+		free(temp2);
+	}
+}
+
 void	free_vertices_inout_lists(t_route *route)
 {
 	t_list	*temp;
@@ -144,17 +161,17 @@ void	free_vertices_inout_lists(t_route *route)
 	temp = route->graph->v_in_list;
 	while (temp != NULL)
 	{
-		free(temp->content);
 		temp2 = temp;
 		temp = temp->next;
+		free(temp2->content);
 		free(temp2);
 	}
 	temp = route->graph->v_out_list;
 	while (temp != NULL)
 	{
-		free(temp->content);
 		temp2 = temp;
 		temp = temp->next;
+		free(temp2->content);
 		free(temp2);
 	}
 }

@@ -140,7 +140,6 @@ int oneshot_bfs_with_priority(t_route* route, int* parent, int **capacity);
 void	oneshot_edmonds_karp(t_route* route, int* parent, int **capacity, int (*f)(t_route*, int*, int**));
 void	fill_capacity(t_graph*paths, int **capacity);
 void 	insert_vertex(t_paths *paths, int v);
-void	optimize(t_route *route);
 
 /*
 **	init_funcs.c
@@ -195,9 +194,9 @@ void	free_paths_list(t_paths *paths);
 
 
 void	free_list_ptr(t_list *head);
-void	free_graph_edges(t_route *route);
+void	free_edges_lists(t_route *route);
+void	free_vertices_inout_lists(t_route *route);
 void	free_vertices_edge_inout_lists(t_route *route);
 void	free_graph_vertices(t_route *route);
-void	free_vertices_inout_lists(t_route *route);
 
 #endif
