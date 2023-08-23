@@ -10,7 +10,7 @@ int	main2(void)
 	int **capacity;
 	int	**temp;
 	int	*parent;
-	
+
 	parse = parsing();
 	// printf("parse result:\n");
 	// parse_result_print(parse);
@@ -144,7 +144,7 @@ int	main2(void)
 
 
     ants_print_frames(route, elements);
-    
+
 	int total_length = 0;
 	for(int i = 0; i < route.paths->num_paths; i++)
 	{
@@ -153,7 +153,7 @@ int	main2(void)
 		total_length += elements[i]->value;
 	}
 	printf("total_length:%d\n", total_length);
-    
+
 
 	for (int u = 0; u < route.num_vertices; ++u)
 		free(temp[u]);
@@ -196,14 +196,71 @@ int	main2(void)
 	return (0);
 }
 
+int	perform_oneshot(t_route *route)
+{
+	int **capacity;
+	int	**temp;
+	int	*parent;
+
+	dijkstra(route);
+
+	capacity = (int **)malloc(sizeof(int*) * (route->num_vertices + 1));
+	int i = 0;
+	while (i < route->num_vertices)
+	{
+		capacity[i] = (int *)malloc(sizeof(int) * (route->num_vertices + 1));
+		for (int j = 0; j <= route->num_vertices; j++)
+			capacity[i][j] = '\0';
+		// capacity[i][route->num_vertices] = '\0';
+		i++;
+	}
+	capacity[i] = NULL;
+
+
+	fill_capacity(route->graph, capacity);
+	init_int_array(&parent, route->num_vertices, -1);
+	oneshot_edmonds_karp(route, route->paths, parent, capacity);
+	temp = (int **)malloc(sizeof(int*) * (route->num_vertices + 1));
+	i = 0;
+	while (i < route->num_vertices)
+	{
+		temp[i] = (int *)malloc(sizeof(int) * (route->num_vertices + 1));
+		temp[i][route->num_vertices] = '\0';
+		i++;
+	}
+	temp[i] = NULL;
+
+	fill_capacity(route->graph, temp);
+	for (int u = 0; u < route->num_vertices; ++u)
+	{
+		for (int v = 0; v < route->num_vertices; ++v)
+		{
+			if (capacity[u][v] == 1)
+				temp[u][v] = 0;
+		}
+	}
+	free_paths(route->paths->paths);
+	init_paths(route->paths);
+	free(parent);
+	init_int_array(&parent, route->num_vertices, -1);
+	edmonds_karp_with_weights(route, route->paths, parent, temp);
+	fill_capacity(route->graph, capacity);
+	return (ants_check_loop_len(route, route->paths->paths));
+}
 int main(void)
 {
 	t_parse	*parse;
 	t_route	route;
 	t_list	*paths;
-	
+
+
+
 	parse = parsing();
 	init_route(&route, parse);
+
+
+	printf("testing:%d\n", perform_oneshot(&route));
+
 	if (route.flags.debug)
 	{
 		int i = 0;
@@ -214,7 +271,7 @@ int main(void)
 			i++;
 		}
 	}
-	
+
 	multishot_add_vertices(&route);
 	//multishot_print_edge_forward_travel(&route);
 	//multishot_print_vertex_lists(&route);
@@ -229,7 +286,7 @@ int main(void)
 
 
     ants_print_frames(route, elements);
-    
+
 	int total_length = 0;
 	for(int i = 0; i < route.paths->num_paths; i++)
 	{
@@ -244,7 +301,7 @@ int main(void)
 	//free_vertices(&route);
 	free_vertices_edge_inout_lists(&route);
 	free_vertices_inout_lists(&route);
-    
+
 
 	for(int i = 0; i < route.paths->num_paths; i++)
 		free(elements[i]);

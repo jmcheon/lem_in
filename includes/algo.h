@@ -15,7 +15,7 @@
 
 extern const char* sVertexTypeStrings[];
 
-typedef enum VertexType 
+typedef enum VertexType
 {
 	IN=0,
 	OUT
@@ -47,7 +47,7 @@ typedef struct s_flags
 
 ///////////////////////////////
 
-typedef struct s_graph_node 
+typedef struct s_graph_node
 {
 	int vertex;
 	struct s_graph_node *link;
@@ -73,6 +73,7 @@ typedef struct s_paths
 {
 	t_list *paths;
 	int	num_paths;
+	int dist_begin;
 } t_paths;
 
 typedef struct s_route
