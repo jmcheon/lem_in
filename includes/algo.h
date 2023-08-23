@@ -79,7 +79,8 @@ typedef struct s_paths
 typedef struct s_route
 {
 	t_graph	*graph;
-	t_paths	*paths;
+	t_paths	*oneshot_paths;
+	t_paths	*multishot_paths;
 	t_flags	flags;
 	int	*distances;
     int start;

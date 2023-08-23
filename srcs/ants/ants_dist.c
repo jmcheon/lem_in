@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ants_dist.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 07:19:48 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/18 01:15:26 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/23 16:54:54 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,17 @@ int		ft_intlen(int *s)
 void	ants_dist_fillin(int *ant_dist, t_path_len **elements, t_route route, int dist_begin)
 {
 	int ants_to_dist = route.num_ants;
-	int dist_len = route.paths->num_paths - dist_begin;
+	int dist_len = route.oneshot_paths->num_paths - dist_begin;
 	int ant_remainder;
 
-	for (int i = route.paths->num_paths - 1; i > dist_begin; i--)
+	for (int i = route.oneshot_paths->num_paths - 1; i > dist_begin; i--)
 	{
 		int dist = elements[dist_begin]->value - elements[i]->value;
 		ant_dist[i] = dist;
 		ants_to_dist -= dist;
 	}
 	ant_remainder = ants_to_dist % dist_len;
-	for(int i= route.paths->num_paths - 1; i >= dist_begin; i--)
+	for(int i= route.oneshot_paths->num_paths - 1; i >= dist_begin; i--)
 	{
 		ant_dist[i] += ants_to_dist / dist_len;
 		// printf("ant_dist[%d]:%d\t%d\n",i, ant_dist[i], ant_num_temp / route.paths->num_paths);
@@ -75,7 +75,7 @@ void	ants_setup_elements(t_path_len **elements, t_route route)
 	int i;
 	int j;
 
-	paths_head = route.paths->paths;
+	paths_head = route.oneshot_paths->paths;
 	// onepath_head = (t_vertex_list*)paths_head->content;
 	i = 0;
 	while (paths_head != NULL)
@@ -83,7 +83,7 @@ void	ants_setup_elements(t_path_len **elements, t_route route)
 		elements[i]->index = i;
 		j = 0;
 		onepath_head = (t_vertex_list*)paths_head->content;
-		
+
 		while(onepath_head != NULL)
 		{
 			j++;
@@ -125,7 +125,7 @@ t_path_len	**ants_distribute(t_route route)
 	// t_list *paths_head;
 	// t_vertex_list *onepath_head;
 
-	elements = ants_init_elements(route, route.paths->num_paths);
+	elements = ants_init_elements(route, route.oneshot_paths->num_paths);
 
 	// int i;
 	// i =0;
@@ -159,7 +159,7 @@ t_path_len	**ants_distribute(t_route route)
     // }
     // printf("\n");
 
-	quicksort(elements, 0, route.paths->num_paths - 1);
+	quicksort(elements, 0, route.oneshot_paths->num_paths - 1);
 
     // printf("Sorted array in descending order:\n");
     // for (int i = 0; i < route.paths->num_paths; i++) {
@@ -183,13 +183,13 @@ t_path_len	**ants_distribute(t_route route)
 	// }
 	int dist_begin;
 	dist_begin = ants_find_dist_begin(elements, \
-								route.paths->num_paths, route.num_ants);
+								route.oneshot_paths->num_paths, route.num_ants);
 	//printf("distribution begins from here: [%d]\n", dist_begin);
 
 	// int ant_num_temp = route.num_ants;
 	// int dist_len = route.paths->num_paths - dist_begin;
 
-	int ant_dist[route.paths->num_paths];
+	int ant_dist[route.oneshot_paths->num_paths];
 	// int ant_dist[route.paths->num_paths];
 	ft_memset(&ant_dist, 0, sizeof(ant_dist));
 
@@ -221,7 +221,7 @@ t_path_len	**ants_distribute(t_route route)
 
 	// // printf("=========================\n");
 
-	for(int i = 0; i < route.paths->num_paths; i++)
+	for(int i = 0; i < route.oneshot_paths->num_paths; i++)
 		elements[i]->num_ants = ant_dist[i];
 	return (elements);
 }

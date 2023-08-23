@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 16:36:46 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/17 04:51:26 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/23 16:55:53 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	ants_setup_prints_strt(t_ants_print **matrix, t_path_len **elements, t_rout
 	while (i < total_used)
 	{
 		// printf("[%d]", (route.paths->num_paths - total_used_path) + i);
-		t_vertex_list *one_path = ft_lstfind_node(route.paths->paths, elements[(route.paths->num_paths - total_used) + i]->index)->content;
+		t_vertex_list *one_path = ft_lstfind_node(route.oneshot_paths->paths, elements[(route.oneshot_paths->num_paths - total_used) + i]->index)->content;
 		while (one_path != NULL)
 		{
 			if (one_path->next == NULL)
@@ -76,7 +76,7 @@ void	ants_setup_prints_strt(t_ants_print **matrix, t_path_len **elements, t_rout
 		{
 			// needs to change
 			matrix[i][begin].node_name = route.node_map[one_path->vertex];
-			matrix[i][begin].ant_max = elements[(route.paths->num_paths - total_used) + i]->num_ants;
+			matrix[i][begin].ant_max = elements[(route.oneshot_paths->num_paths - total_used) + i]->num_ants;
 			matrix[i][begin].ant_current = 0;
 			// printf("%d ",one_path->vertex);
 			begin++;
@@ -109,7 +109,7 @@ t_ants_print	**ants_init_ants_print(int longest, int total_used)
 
 void	ants_set_path_vars(t_route route, t_path_len **elements, int *longest, int *total_used)
 {
-	for(int i = 0; i < route.paths->num_paths; i++)
+	for(int i = 0; i < route.oneshot_paths->num_paths; i++)
 	{
 		if (elements[i]->num_ants > 0)
 		{
@@ -184,7 +184,7 @@ void ants_print_frames(t_route route, t_path_len **elements)
 	// printf("================================\n");
 
 	int loop = 0;
-	for(int i = route.paths->num_paths - total_used_path ; i < route.paths->num_paths; i++)
+	for(int i = route.oneshot_paths->num_paths - total_used_path ; i < route.oneshot_paths->num_paths; i++)
 	{
 		if (loop < elements[i]->value + elements[i]->num_ants)
 			loop = elements[i]->value + elements[i]->num_ants;

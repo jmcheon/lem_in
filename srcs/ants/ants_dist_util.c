@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 16:37:44 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/23 16:39:08 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/23 17:19:36 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,15 +99,15 @@ t_path_len	**ants_init_elements2(t_list *paths, int num_paths)
 	return (ret);
 }
 
-int	ants_check_loop_len(t_route *route, t_list *paths)
+int	ants_check_loop_len(t_route *route, t_paths *paths)
 {
 	t_path_len **elements;
 
 	// (void)route;
-	int paths_num = ft_lstsize(paths);
+	int paths_num = ft_lstsize((t_list *)paths->paths);
 	// printf("paths_num: %d\n", paths_num);
-
-	elements = ants_init_elements2(paths, paths_num);
+	paths->num_paths = paths_num;
+	elements = ants_init_elements2(paths->paths, paths->num_paths);
 
 	// (void)elements;
 
@@ -129,6 +129,7 @@ int	ants_check_loop_len(t_route *route, t_list *paths)
 	dist_begin = ants_find_dist_begin(elements, \
 								paths_num, route->num_ants);
 	// printf("distribution begins from here: [%d]\n", dist_begin);
+	paths->dist_begin = dist_begin;
 	int ant_dist[paths_num];
 	ft_memset(&ant_dist, 0, sizeof(ant_dist));
 	ants_dist_fillin2(ant_dist, elements, paths_num, dist_begin, route->num_ants);

@@ -208,7 +208,7 @@ int	optimize1(t_route *route)
 
 	ft_memset(visited, 0, sizeof(visited));
 	visited[route->end] = 1;
-	curr_list_ptr = route->paths->paths;
+	curr_list_ptr = route->oneshot_paths->paths;
 
 	while (curr_list_ptr != NULL)
 	{

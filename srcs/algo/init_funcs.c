@@ -30,6 +30,7 @@ void	init_paths(t_paths* paths)
 	//paths->paths = ft_lstnew(NULL);
 	paths->paths = NULL;
 	paths->num_paths = 0;
+	paths->dist_begin = -1;
 }
 
 void	init_route(t_route* route, t_parse* parse)
@@ -60,8 +61,10 @@ void	init_route(t_route* route, t_parse* parse)
 	route->start = 0;
 	route->end = route->num_vertices - 1;
 
-	route->paths = (t_paths*)malloc(sizeof(t_paths));
-	init_paths(route->paths);
+	route->oneshot_paths = (t_paths*)malloc(sizeof(t_paths));
+	init_paths(route->oneshot_paths);
+	route->multishot_paths = (t_paths*)malloc(sizeof(t_paths));
+	init_paths(route->multishot_paths);
 
 	route->flags.debug = 0;
 }
