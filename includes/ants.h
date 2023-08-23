@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 15:59:05 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/23 23:31:14 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/24 00:06:06 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,6 @@ void	ants_dist_fillin2(int *ant_dist, t_path_len **elements, int paths_num, int 
 /*
 **	ants_quicksort2.c
 */
-void quicksort2(int *arr, int low, int high);
+void quicksort_int_array(int *arr, int low, int high);
 
 #endif

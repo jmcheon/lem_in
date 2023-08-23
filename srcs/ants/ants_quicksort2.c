@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 15:58:26 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/23 23:39:20 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/24 00:05:48 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ int partition_desc2(int *arr, int low, int high)
     return (i + 1);
 }
 
-void quicksort2(int *arr, int low, int high)
+void quicksort_int_array(int *arr, int low, int high)
 {
     if (low < high)
     {
         int pivotIndex = partition_desc2(arr, low, high);
-        quicksort2(arr, low, pivotIndex - 1);
-        quicksort2(arr, pivotIndex + 1, high);
+        quicksort_int_array(arr, low, pivotIndex - 1);
+        quicksort_int_array(arr, pivotIndex + 1, high);
     }
 }
