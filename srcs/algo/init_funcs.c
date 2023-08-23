@@ -5,6 +5,24 @@ const char* sVertexTypeStrings[] = {
 	"OUT",
 };
 
+void	set_all_vertices_valid(t_route *route, bool valid)
+{
+	t_list			*curr_ptr;
+
+	curr_ptr = route->graph->v_out_list;
+	while (curr_ptr != NULL)
+	{
+		((t_graph_vertex*)curr_ptr->content)->valid = valid;
+		curr_ptr = curr_ptr->next;
+	}
+	curr_ptr = route->graph->v_in_list;
+	while (curr_ptr != NULL)
+	{
+		((t_graph_vertex*)curr_ptr->content)->valid = valid;
+		curr_ptr = curr_ptr->next;
+	}
+}
+
 void	reset_int_array(int **arr, int length, int value)
 {
 	for (int i = 0; i < length; i++)
@@ -27,7 +45,6 @@ void	init_vertex_list(t_vertex_list *path, int v)
 
 void	init_paths(t_paths* paths)
 {
-	//paths->paths = ft_lstnew(NULL);
 	paths->paths = NULL;
 	paths->num_paths = 0;
 	paths->dist_begin = -1;

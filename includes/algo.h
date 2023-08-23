@@ -97,7 +97,6 @@ typedef struct s_route
 **	multishot_bfs.c
 */
 int			multishot_iterate_edges(t_route *route, t_list **ret, t_list **queue, t_graph_vertex *t, int queue_index);
-void		multishot_bfs_loop(t_route *route, t_list **ret, t_graph_vertex *s, t_graph_vertex *t);
 t_list		*multishot_bfs(t_route *route, t_graph_vertex *s, t_graph_vertex *t);
 
 /*
@@ -144,6 +143,7 @@ void	optimize(t_route *route);
 /*
 **	init_funcs.c
 */
+void	set_all_vertices_valid(t_route *route, bool valid);
 void	init_route(t_route* route, t_parse* parse);
 void	init_vertex_list(t_vertex_list* path, int v);
 void	init_paths(t_paths* paths);
@@ -192,6 +192,7 @@ void	free_graph(t_graph *g);
 void	free_paths_list(t_paths *paths);
 
 
+void	free_list_ptr(t_list *head);
 void	free_graph_edges(t_route *route);
 void	free_vertices_edge_inout_lists(t_route *route);
 void	free_graph_vertices(t_route *route);

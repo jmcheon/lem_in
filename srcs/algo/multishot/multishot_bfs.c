@@ -11,7 +11,6 @@ int	multishot_iterate_edges(t_route *route, t_list **ret, t_list **queue, t_grap
 	size = ft_lstsize(vertex->out_list);
 
 	(void)route;
-	(void)multishot_print_edges;
 	//printf("iter edge size:%d\n", size);
 	while (i < size)
 	{
@@ -56,72 +55,29 @@ int	multishot_iterate_edges(t_route *route, t_list **ret, t_list **queue, t_grap
 	return 0;
 }
 
-void	multishot_bfs_loop(t_route *route, t_list **ret, t_graph_vertex *s, t_graph_vertex *t)
+t_list *multishot_bfs(t_route *route, t_graph_vertex *s, t_graph_vertex *t)
 {
+	t_list	*ret;
 	t_list	*queue;
 	t_graph_vertex	*v;
 	int		i = 0;
 
+	if (s == NULL)
+		return NULL;
+	ret = NULL;
 	queue = NULL;
 	s->valid = false;
 	ft_lstadd_back(&queue, ft_lstnew(s));
-	//printf("oneshot_bfs loop queue size:%d\n", ft_lstsize(queue));
-	if (route->flags.debug)
-		printf("%sPrint edges_list...%s\n", ORANGE, FIN);
 	while (i < ft_lstsize(queue))
 	{
 		v = (t_graph_vertex*)ft_lstfind_node(queue, i)->content;
-		//printf("loop queue->size:%d\n", ft_lstsize(queue));
-		//printf("v->valid:%d\n", v->valid);
 		v->valid = false;
-		//if (multishot_iterate_edges(arr, &queue, t, i))
-		if (multishot_iterate_edges(route, ret, &queue, t, i))
-		{
-			if (route->flags.debug)
-				printf("%sEnd printing edges_list...%s\n", ORANGE, FIN);
-			free(queue);
-			return;
-		}
+		if (multishot_iterate_edges(route, &ret, &queue, t, i))
+			break ;
 		i++;
 	}
-	if (route->flags.debug)
-		printf("%sEnd printing edges_list...%s\n", ORANGE, FIN);
-	free(queue);
-	return;
-}
-
-t_list *multishot_bfs(t_route *route, t_graph_vertex *s, t_graph_vertex *t)
-{
-	t_list	*ret;
-	t_list	*curr_ptr;
-	t_graph_vertex	*curr_vertex_ptr;
-
-	(void)curr_vertex_ptr;
-	if (s == NULL)
-	{
-		printf("test1-1 s==NULL\n");
-		return NULL;
-	}
-	ret = NULL;
-	multishot_bfs_loop(route, &ret, s, t);
+	set_all_vertices_valid(route, true);
 	//printf("af graph oneshot_bfs loop ret size:%d\n", ft_lstsize(ret));
-	curr_ptr = route->graph->v_out_list;
-	while (curr_ptr != NULL)
-	{
-		curr_vertex_ptr = (t_graph_vertex*)curr_ptr->content;
-		//if (i != curr_vertex_ptr->vertex)
-		((t_graph_vertex*)curr_ptr->content)->valid = true;
-		//printf("v out:%d, v->valid:%d\n", curr_vertex_ptr->vertex, curr_vertex_ptr->valid);
-		curr_ptr = curr_ptr->next;
-	}
-	curr_ptr = route->graph->v_in_list;
-	while (curr_ptr != NULL)
-	{
-		curr_vertex_ptr = (t_graph_vertex*)curr_ptr->content;
-		//if (i != curr_vertex_ptr->vertex)
-		((t_graph_vertex*)curr_ptr->content)->valid = true;
-		//printf("v in:%d, v->valid:%d\n", curr_vertex_ptr->vertex, curr_vertex_ptr->valid);
-		curr_ptr = curr_ptr->next;
-	}
+	free_list_ptr(queue);
 	return ret;
 }
