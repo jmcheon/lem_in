@@ -219,7 +219,7 @@ int	perform_oneshot(t_route *route)
 
 	fill_capacity(route->graph, capacity);
 	init_int_array(&parent, route->num_vertices, -1);
-	oneshot_edmonds_karp(route, route->oneshot_paths, parent, capacity);
+	oneshot_edmonds_karp(route, parent, capacity, oneshot_bfs);
 	temp = (int **)malloc(sizeof(int*) * (route->num_vertices + 1));
 	i = 0;
 	while (i < route->num_vertices)
@@ -243,11 +243,12 @@ int	perform_oneshot(t_route *route)
 	init_paths(route->oneshot_paths);
 	free(parent);
 	init_int_array(&parent, route->num_vertices, -1);
-	edmonds_karp_with_weights(route, route->oneshot_paths, parent, temp);
+	oneshot_edmonds_karp(route, parent, temp, oneshot_bfs_with_weights);
 	fill_capacity(route->graph, capacity);
 	route->oneshot_paths->loop_len = ants_check_loop_len(route, route->oneshot_paths) - 2;
 	return (route->oneshot_paths->loop_len);
 }
+
 int main(void)
 {
 	t_parse	*parse;

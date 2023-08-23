@@ -136,8 +136,8 @@ void	init_int_array(int **arr, int length, int value);
 
 int oneshot_bfs(t_route* route, int* parent, int **capacity);
 int oneshot_bfs_with_weights(t_route* route, int* parent, int **capacity);
-void	oneshot_edmonds_karp(t_route* route, t_paths* paths, int* parent, int **capacity);
-void	edmonds_karp_with_weights(t_route* route, t_paths* paths, int* parent, int **capacity);
+int oneshot_bfs_with_priority(t_route* route, int* parent, int **capacity);
+void	oneshot_edmonds_karp(t_route* route, int* parent, int **capacity, int (*f)(t_route*, int*, int**));
 void	fill_capacity(t_graph*paths, int **capacity);
 void 	insert_vertex(t_paths *paths, int v);
 void	optimize(t_route *route);
