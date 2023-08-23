@@ -29,7 +29,6 @@ t_graph_edge	*multishot_init_edge(t_graph *g, int u_vertex, int v_vertex, int u_
 
 	if (!edge)
 		return NULL;
-	//printf("graph add edge, u_vertex:%d, v_vertex:%d\n", u_vertex, v_vertex);
 	v = multishot_find_vertex(g, u_vertex, u_in);
 	u = multishot_find_vertex(g, v_vertex, v_in);
 
@@ -41,8 +40,6 @@ t_graph_edge	*multishot_init_edge(t_graph *g, int u_vertex, int v_vertex, int u_
 	}
 	edge->u = u;
 	edge->v = v;
-	//printf("adding edge->u->vertex:%d, valid:%d\n", edge->u->vertex, edge->u->valid);
-	//printf("adding edge->v->vertex:%d, valid:%d\n", edge->v->vertex, edge->v->valid);
 	edge->valid = true;
 	edge->flow = 0;
 	edge->capacity = capacity;
@@ -142,7 +139,6 @@ t_list *multishot_backtrack_edges(t_route *route, t_list *edges, int v)
 	t_graph_edge *edge;
 	int	i;
 
-	//printf("\t\tbacktracking\n");
 	edge = (t_graph_edge*)ft_lstlast(edges)->content;
 	if (route->flags.debug)
 	{

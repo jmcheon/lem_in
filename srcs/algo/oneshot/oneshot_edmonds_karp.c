@@ -31,36 +31,19 @@ t_vertex_list	*insert_vertex(t_paths *paths, int v)
 	init_vertex_list(new_path_ptr, v);
 
 	curr_list_ptr = ft_lstfind_node(paths->paths, paths->num_paths);
-	// adding t_list node
+	// adding t_list
 	if (curr_list_ptr == NULL)
-	{
-		// printf("list node for path id:%d not found!\n", paths->num_paths);
 		ft_lstadd_back(&paths->paths, ft_lstnew(new_path_ptr));
-		// printf("\tinsertion vertex:%d to path id:%d finished\n\n", v, paths->num_paths);
-	}
-	// adding t_vertex_list vertex
-	else// if (curr_list_ptr != NULL)
+	// adding t_vertex_list
+	else
 	{
 		curr_list_ptr = ft_lstfind_node(paths->paths, paths->num_paths);
-		// if (curr_list_ptr)
-		// 	printf("list node for path id:%d FOUND!\n", paths->num_paths);
-		// if (curr_list_ptr->content != NULL)
-		// 	printf("currnet vertext:%d, new vertex:%d\n", ((t_vertex_list*)curr_list_ptr->content)->vertex, v);
-		curr_vertex_ptr = (t_vertex_list*)curr_list_ptr->content; //paths->paths[paths->num_paths];
-		// if (curr_vertex_ptr == NULL)
-		// {
-		// 	printf("path id:%d head not found\n", paths->num_paths);
-		// 	//curr_list_ptr->content = new_path_ptr;
-		// }
-		// else
-		// {
-			while (curr_vertex_ptr->next != NULL)
-				curr_vertex_ptr = curr_vertex_ptr->next;
-			curr_vertex_ptr->next = new_path_ptr;
-			new_path_ptr->prev = curr_vertex_ptr;
-			new_path_ptr->length = curr_vertex_ptr->length + 1;
-		// }
-		// printf("\tinsertion vertex:%d to path id:%d finished\n\n", v, paths->num_paths);
+		curr_vertex_ptr = (t_vertex_list*)curr_list_ptr->content;
+		while (curr_vertex_ptr->next != NULL)
+			curr_vertex_ptr = curr_vertex_ptr->next;
+		curr_vertex_ptr->next = new_path_ptr;
+		new_path_ptr->prev = curr_vertex_ptr;
+		new_path_ptr->length = curr_vertex_ptr->length + 1;
 	}
 	return new_path_ptr;
 }
@@ -84,8 +67,11 @@ void	oneshot_edmonds_karp(t_route* route, int *parent, int **capacity, int (*f)(
 			capacity[u][v] -= 1;
 			capacity[v][u] += 1;
 		}
-		start_vertex_ptr->next = end_vertex_ptr;
-		end_vertex_ptr->prev = start_vertex_ptr;
+		if (start_vertex_ptr != NULL && end_vertex_ptr != NULL)
+		{
+			start_vertex_ptr->next = end_vertex_ptr;
+			end_vertex_ptr->prev = start_vertex_ptr;
+		}
 		route->oneshot_paths->num_paths++;
 	}
 }

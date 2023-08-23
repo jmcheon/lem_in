@@ -10,30 +10,24 @@ int	perform_oneshot(t_route *route)
 	dijkstra(route);
 
 	capacity = (int **)malloc(sizeof(int*) * (route->num_vertices + 1));
+	temp = (int **)malloc(sizeof(int*) * (route->num_vertices + 1));
 	int i = 0;
 	while (i < route->num_vertices)
 	{
 		capacity[i] = (int *)malloc(sizeof(int) * (route->num_vertices + 1));
 		for (int j = 0; j <= route->num_vertices; j++)
 			capacity[i][j] = '\0';
-		// capacity[i][route->num_vertices] = '\0';
+		temp[i] = (int *)malloc(sizeof(int) * (route->num_vertices + 1));
+		temp[i][route->num_vertices] = '\0';
 		i++;
 	}
 	capacity[i] = NULL;
+	temp[i] = NULL;
 
 
 	fill_capacity(route->graph, capacity);
 	init_int_array(&parent, route->num_vertices, -1);
 	oneshot_edmonds_karp(route, parent, capacity, oneshot_bfs);
-	temp = (int **)malloc(sizeof(int*) * (route->num_vertices + 1));
-	i = 0;
-	while (i < route->num_vertices)
-	{
-		temp[i] = (int *)malloc(sizeof(int) * (route->num_vertices + 1));
-		temp[i][route->num_vertices] = '\0';
-		i++;
-	}
-	temp[i] = NULL;
 
 	fill_capacity(route->graph, temp);
 	for (int u = 0; u < route->num_vertices; ++u)
@@ -110,7 +104,7 @@ int main(void)
 	if (route.oneshot_paths->loop_len < route.multishot_paths->loop_len)
 	{
 		t_path_len **elements = ants_distribute(route, route.oneshot_paths);
-    	ants_print_frames(route, route.oneshot_paths, elements);
+    	//ants_print_frames(route, route.oneshot_paths, elements);
 		printf("oneshot win: %d(one) < %d(multi)\n", route.oneshot_paths->loop_len, route.multishot_paths->loop_len);
 		for(int i = 0; i < route.oneshot_paths->num_paths; i++)
 			free(elements[i]);
@@ -119,7 +113,7 @@ int main(void)
 	else
 	{
 		t_path_len **elements = ants_distribute(route, route.multishot_paths);
-    	ants_print_frames(route, route.multishot_paths, elements);
+    	//ants_print_frames(route, route.multishot_paths, elements);
 		printf("multishot win: %d(multi) < %d(one)\n", route.multishot_paths->loop_len, route.oneshot_paths->loop_len);
 		for(int i = 0; i < route.multishot_paths->num_paths; i++)
 			free(elements[i]);

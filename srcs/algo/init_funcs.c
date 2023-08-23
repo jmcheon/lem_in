@@ -7,19 +7,17 @@ const char* sVertexTypeStrings[] = {
 
 void	set_all_vertices_valid(t_route *route, bool valid)
 {
-	t_list			*curr_ptr;
+	t_list			*out_ptr;
+	t_list			*in_ptr;
 
-	curr_ptr = route->graph->v_out_list;
-	while (curr_ptr != NULL)
+	out_ptr = route->graph->v_out_list;
+	in_ptr = route->graph->v_in_list;
+	for (int i = 0; i < route->num_vertices; i++)
 	{
-		((t_graph_vertex*)curr_ptr->content)->valid = valid;
-		curr_ptr = curr_ptr->next;
-	}
-	curr_ptr = route->graph->v_in_list;
-	while (curr_ptr != NULL)
-	{
-		((t_graph_vertex*)curr_ptr->content)->valid = valid;
-		curr_ptr = curr_ptr->next;
+		((t_graph_vertex*)out_ptr->content)->valid = valid;
+		out_ptr = out_ptr->next;
+		((t_graph_vertex*)in_ptr->content)->valid = valid;
+		in_ptr = in_ptr->next;
 	}
 }
 
