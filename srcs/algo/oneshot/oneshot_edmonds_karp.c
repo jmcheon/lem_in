@@ -67,6 +67,9 @@ t_vertex_list	*insert_vertex(t_paths *paths, int v)
 
 void	oneshot_edmonds_karp(t_route* route, int *parent, int **capacity, int (*f)(t_route*, int*, int**))
 {
+	t_vertex_list	*end_vertex_ptr;
+	t_vertex_list	*start_vertex_ptr;
+
 	while (f(route, parent, capacity) != -1)
 	{
 		for (int v = route->end; v != route->start; v = parent[v])
@@ -74,11 +77,13 @@ void	oneshot_edmonds_karp(t_route* route, int *parent, int **capacity, int (*f)(
 			int u = parent[v];
 			//printf("u, v = %d, %d\n", u, v);
 			if (v == route->end)
-				insert_vertex(route->oneshot_paths, v);
-			insert_vertex(route->oneshot_paths, u);
+				end_vertex_ptr = insert_vertex(route->oneshot_paths, v);
+			start_vertex_ptr = insert_vertex(route->oneshot_paths, u);
 			capacity[u][v] -= 1;
 			capacity[v][u] += 1;
 		}
+		start_vertex_ptr->next = end_vertex_ptr;
+		end_vertex_ptr->prev = start_vertex_ptr;
 		route->oneshot_paths->num_paths++;
 	}
 }

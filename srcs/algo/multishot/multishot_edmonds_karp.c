@@ -61,7 +61,7 @@ void	multishot_add_all_paths(t_route *route, t_graph_vertex *start, t_graph_vert
 
 	if (route->multishot_paths->paths != NULL)
 	{
-		free_paths(route->multishot_paths->paths);
+		//free_paths(route->multishot_paths->paths);
 		init_paths(route->multishot_paths);
 	}
 	while (i < size)
