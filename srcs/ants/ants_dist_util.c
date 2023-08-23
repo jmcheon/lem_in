@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 16:37:44 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/23 21:20:51 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/23 23:02:11 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ void	ants_dist_fillin2(int *ant_dist, t_path_len **elements, int paths_num, int 
 void	ants_setup_elements2(t_path_len **elements, t_list *paths)
 {
 	t_list *paths_head;
-	t_list *onepath_head;
+	t_vertex_list *onepath_head;
 	int i;
-	int j;
+	// int j;
 
 	paths_head = paths;
 	// onepath_head = (t_vertex_list*)paths_head->content;
@@ -64,17 +64,17 @@ void	ants_setup_elements2(t_path_len **elements, t_list *paths)
 	while (paths_head != NULL)
 	{
 		elements[i]->index = i;
-		j = 0;
-		onepath_head = (t_list*)paths_head->content;
+		// j = 0;
+		onepath_head = (t_vertex_list*)paths_head->content;
 
-		while(onepath_head != NULL)
-		{
-			j++;
-			// printf("vertex:%d\n", onepath_head->vertex);
-			onepath_head = onepath_head->next;
-		}
+		// while(onepath_head != NULL)
+		// {
+		// 	j++;
+		// 	// printf("vertex:%d\n", onepath_head->vertex);
+		// 	onepath_head = onepath_head->next;
+		// }
 		// printf("j:%d\n",j);
-		elements[i]->value = j; // start and end
+		elements[i]->value = onepath_head->prev->length; // start and end
 		elements[i]->num_ants = 0;
 		i++;
 		paths_head = paths_head->next;

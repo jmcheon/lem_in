@@ -118,8 +118,8 @@ void	multishot_edmonds_karp(t_route *route)
 			// printf("========0000000============\n");
 			break;
 		}
-		multishot_print_all_paths(route, route->multishot_paths->paths, SIZE_PRINT);
-		printf("\t\tmax flow path:%d\n", ft_lstsize(route->multishot_paths->paths));
+		// multishot_print_all_paths(route, route->multishot_paths->paths, SIZE_PRINT);
+		// printf("\t\tmax flow path:%d\n", ft_lstsize(route->multishot_paths->paths));
 		prev_path_len = path_len;//ants_check_loop_len(route, route->multishot_paths);
 		free_list_ptr(edge_list);
 	}

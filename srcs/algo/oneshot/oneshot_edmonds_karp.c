@@ -70,6 +70,8 @@ void	oneshot_edmonds_karp(t_route* route, int *parent, int **capacity, int (*f)(
 	t_vertex_list	*end_vertex_ptr;
 	t_vertex_list	*start_vertex_ptr;
 
+	start_vertex_ptr = NULL;
+	end_vertex_ptr = NULL;
 	while (f(route, parent, capacity) != -1)
 	{
 		for (int v = route->end; v != route->start; v = parent[v])

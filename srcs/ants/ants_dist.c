@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 07:19:48 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/23 20:05:32 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/23 23:10:42 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	ants_setup_elements(t_path_len **elements, t_paths *paths)
 	t_list *paths_head;
 	t_vertex_list *onepath_head;
 	int i;
-	int j;
+	// int j;
 
 	paths_head = paths->paths;
 	// onepath_head = (t_vertex_list*)paths_head->content;
@@ -81,17 +81,17 @@ void	ants_setup_elements(t_path_len **elements, t_paths *paths)
 	while (paths_head != NULL)
 	{
 		elements[i]->index = i;
-		j = 0;
+		// j = 0;
 		onepath_head = (t_vertex_list*)paths_head->content;
 
-		while(onepath_head != NULL)
-		{
-			j++;
-			// printf("vertex:%d\n", onepath_head->vertex);
-			onepath_head = onepath_head->next;
-		}
+		// while(onepath_head != NULL)
+		// {
+		// 	j++;
+		// 	// printf("vertex:%d\n", onepath_head->vertex);
+		// 	onepath_head = onepath_head->next;
+		// }
 		// printf("j:%d\n",j);
-		elements[i]->value = j; // start and end
+		elements[i]->value = onepath_head->prev->length; // start and end
 		elements[i]->num_ants = 0;
 		i++;
 		paths_head = paths_head->next;

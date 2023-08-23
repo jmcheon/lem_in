@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 16:36:46 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/23 20:32:14 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/23 23:14:51 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,17 +62,17 @@ void	ants_setup_prints_strt(t_ants_print **matrix, t_path_len **elements, t_rout
 	{
 		// printf("[%d]", (route.paths->num_paths - total_used_path) + i);
 		t_vertex_list *one_path = ft_lstfind_node(paths->paths, elements[(paths->num_paths - total_used) + i]->index)->content;
-		while (one_path != NULL)
-		{
-			if (one_path->next == NULL)
-				break;
-			one_path = one_path->next;
-		}
+		// while (one_path != NULL)
+		// {
+		// 	if (one_path->next == NULL)
+		// 		break;
+		// 	one_path = one_path->next;
+		// }
 		// int begin = longest_path - elements[i]->value;
 		int begin = 0;
 		one_path = one_path->prev;
 		// printf("begin:%d\ti:%d\n", begin, i);
-		while (one_path != NULL)
+		while (one_path->vertex != route.end)
 		{
 			// needs to change
 			matrix[i][begin].node_name = route.node_map[one_path->vertex];
