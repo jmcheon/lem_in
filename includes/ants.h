@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 15:59:05 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/23 17:14:59 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/23 18:20:40 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void quicksort(t_path_len **arr, int low, int high);
 */
 void ants_dist_fillin(int *ant_dist, t_path_len **elements, t_route route, int dist_begin);
 int	ants_find_dist_begin(t_path_len **elements, int num_paths, int num_ants);
-t_path_len **ants_init_elements(t_route route, int num_paths);
-t_path_len **ants_distribute(t_route route);
+t_path_len **ants_init_elements(t_paths *paths);
+t_path_len **ants_distribute(t_route route, t_paths *paths);
 
 /*
 **	ants_print_frame.c
