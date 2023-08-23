@@ -10,9 +10,9 @@ void	multishot_add_one_path(t_route *route, t_list **path, t_graph_vertex *src, 
 
 	v = src;
 	e = NULL;
-	ft_lstadd_back(path, ft_lstnew(v));
 	insert_next_parent(route->multishot_paths, v->vertex);
-	printf("%d\n", v->vertex);
+	ft_lstadd_back(path, ft_lstnew(v));
+	//printf("%d\n", v->vertex);
 	while (v->vertex != des->vertex)
 	{
 		i = 0;
@@ -38,9 +38,9 @@ void	multishot_add_one_path(t_route *route, t_list **path, t_graph_vertex *src, 
 			//printf("adding e->u->vertex:%d\n",e->u->vertex);
 			if (route->flags.debug)
 				printf("%sadding e->u->vertex:%s%s\n", GREEN, FIN, route->node_map[e->u->vertex]);
-			ft_lstadd_back(path, ft_lstnew(e->u));
 			insert_next_parent(route->multishot_paths, e->u->vertex);
-			printf("%d\n", e->u->vertex);
+			ft_lstadd_back(path, ft_lstnew(e->u));
+			//printf("%d\n", e->u->vertex);
 		}
 		if (route->flags.debug)
 			printf("v = e->u:%d\n",e->u->vertex);
@@ -62,15 +62,20 @@ t_list	*multishot_add_all_paths(t_route *route, t_graph_vertex *start, t_graph_v
 	path = NULL;
 	size = ft_lstsize(end->in_list);
 
+	if (route->multishot_paths->paths != NULL)
+	{
+		//free_paths(route->multishot_paths->paths);
+		//init_paths(route->multishot_paths);
+	}
 	while (i < size)
 	{
 		adj_edge = (t_graph_edge*)ft_lstfind_node(end->in_list, i)->content;
 		//printf("adj_edge->u->vertex:%d\n", adj_edge->u->vertex);
 		if (adj_edge->flow > 0)
 		{
-			ft_lstadd_back(&path, ft_lstnew(end));
 			insert_next_parent(route->multishot_paths, end->vertex);
-			printf("%d\n", end->vertex);
+			ft_lstadd_back(&path, ft_lstnew(end));
+			//printf("%d\n", end->vertex);
 			multishot_add_one_path(route, &path, adj_edge->u, start);
 			route->multishot_paths->num_paths++;
 			//multishot_print_all_paths(paths);
@@ -111,7 +116,8 @@ t_list	*multishot_edmonds_karp(t_route *route)
 			printf("edge_list->size:%d\n", ft_lstsize(edge_list));
 		if (ft_lstsize(edge_list) == 0 || !multishot_update_edge_flow(route, edge_list, route->end))
 			break ;
-		route->multishot_paths->paths = multishot_add_all_paths(route, s, t);
+		multishot_add_all_paths(route, s, t);
+		//route->multishot_paths->paths = multishot_add_all_paths(route, s, t);
 		if (prev_path_len != 0 && prev_path_len < ants_check_loop_len(route, route->multishot_paths))
 		{
 			route->multishot_paths->loop_len = prev_path_len - 2;

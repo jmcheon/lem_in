@@ -279,6 +279,7 @@ int main(void)
 	(void)paths;
 	// paths = multishot_edmonds_karp(&route);
 	multishot_edmonds_karp(&route);
+	//printf("%d\n", ((t_vertex_list*)ft_lstlast(route.multishot_paths->paths)->content)->vertex);
 	//multishot_print_all_paths(&route, paths, 0);
 	//printf("\t\tmax flow path:%d\n", ft_lstsize(paths));
 	printf("v_in_list size:%d, v_out_list size:%d\n", ft_lstsize(route.graph->v_in_list), ft_lstsize(route.graph->v_out_list));
