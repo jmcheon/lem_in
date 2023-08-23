@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 16:37:44 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/23 17:19:36 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/23 21:20:51 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,9 @@ int	ants_check_loop_len(t_route *route, t_paths *paths)
 	// 	printf("value:%d\tindex:%d\t\tnum_ants:%d\n",elements[i]->value, elements[i]->index, elements[i]->num_ants);
 
 	// printf("=======================\n");
-
-	return (elements[paths_num - 1]->value + elements[paths_num -1]->num_ants);
+	int result = elements[paths_num - 1]->value + elements[paths_num -1]->num_ants;
+	for(int i = 0; i < paths->num_paths; i++)
+		free(elements[i]);
+	free(elements);
+	return (result);
 }

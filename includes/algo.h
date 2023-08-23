@@ -148,6 +148,7 @@ void	set_all_vertices_valid(t_route *route, bool valid);
 void	init_route(t_route* route, t_parse* parse);
 void	init_vertex_list(t_vertex_list* path, int v);
 void	init_paths(t_paths* paths);
+void	init_2d_int_array(int ***arr, int length);
 
 
 /*

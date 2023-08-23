@@ -87,6 +87,7 @@ void	multishot_edmonds_karp(t_route *route)
 	t_graph_vertex *s;
 	t_graph_vertex *t;
 	int	prev_path_len;
+	int	path_len;
 
 	s = multishot_find_vertex(route->graph, route->start, OUT);
 	t = multishot_find_vertex(route->graph, route->end, IN);
@@ -100,7 +101,8 @@ void	multishot_edmonds_karp(t_route *route)
 			break ;
 		multishot_add_all_paths(route, s, t);
 		//route->multishot_paths->paths = multishot_add_all_paths(route, s, t);
-		if (prev_path_len != 0 && prev_path_len < ants_check_loop_len(route, route->multishot_paths))
+		path_len = ants_check_loop_len(route, route->multishot_paths);
+		if (prev_path_len != 0 && prev_path_len <= path_len)
 		{
 			// printf("========0000000============\n");
 			// printf("path_len:%d\n",prev_path_len - 2);
@@ -109,7 +111,7 @@ void	multishot_edmonds_karp(t_route *route)
 		}
 		multishot_print_all_paths(route, route->multishot_paths->paths, SIZE_PRINT);
 		printf("\t\tmax flow path:%d\n", ft_lstsize(route->multishot_paths->paths));
-		prev_path_len = ants_check_loop_len(route, route->multishot_paths);
+		prev_path_len = path_len;//ants_check_loop_len(route, route->multishot_paths);
 		free_list_ptr(edge_list);
 	}
 	free_list_ptr(edge_list);

@@ -34,19 +34,23 @@ void	init_int_array(int **arr, int length, int value)
 	*arr = (int *)malloc(sizeof(int) * (length));
 	reset_int_array(arr, length, value);
 }
-/*
-void	reset_2d_int_array(int ***arr, int length, int value)
+
+void	init_2d_int_array(int ***arr, int length)
 {
-	for (int i = 0; i < length; i++)
-		(*arr)[i] = value;
+	int i = 0;
+
+	*arr = (int **)malloc(sizeof(int) * (length + 1));
+	while (i < length)
+	{
+		(*arr)[i] = (int *)malloc(sizeof(int) * (length + 1));
+		for (int j = 0; j <= length; j++)
+			(*arr)[i][j] = '\0';
+		i++;
+	}
+	(*arr)[i] = NULL;
+	//reset_int_array(arr, length, value);
 }
 
-void	init_2d_int_array(int ***arr, int length, int value)
-{
-	**arr = (int **)malloc(sizeof(int) * (length + 1));
-	reset_int_array(arr, length, value);
-}
-*/
 void	init_vertex_list(t_vertex_list *path, int v)
 {
 	path->vertex = v;
