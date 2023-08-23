@@ -6,13 +6,13 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 21:19:38 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/24 01:07:00 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/24 01:12:29 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/lem-in.h"
 
-int		ants_find_dist_begin2(int *elements2, int num_paths, int num_ants)
+int		ants_find_dist_begin2(int *elements, int num_paths, int num_ants)
 {
 	int ret;
 
@@ -21,7 +21,7 @@ int		ants_find_dist_begin2(int *elements2, int num_paths, int num_ants)
 	{
 		int tmp = 0;
 		for (int j = i + 1; j < num_paths; j++)
-			tmp += (elements2[i] - elements2[j]);
+			tmp += (elements[i] - elements[j]);
 		// printf("tmp:%d\n", tmp);
 		// printf("tmp2:%d \n", tmp + (route.paths->num_paths - i));
 		if (tmp + (num_paths - i) <= num_ants)
@@ -33,23 +33,20 @@ int		ants_find_dist_begin2(int *elements2, int num_paths, int num_ants)
 	return (ret);
 }
 
-int	ants_dist_find_result(int *ant_dist, int *elements2, int paths_num, int dist_begin, int num_ants)
+int	ants_dist_find_result(int *ant_dist, int *elements, int paths_num, int dist_begin, int num_ants)
 {
-	int ants_to_dist = num_ants;
 	int dist_len = paths_num - dist_begin;
 	int ants_remainder;
 	int ants_div;
 
 	for (int i = paths_num - 1; i > dist_begin; i--)
 	{
-		int dist = elements2[dist_begin] - elements2[i];
-		ant_dist[i] = dist;
-		ants_to_dist -= dist;
+		ant_dist[i] = elements[dist_begin] - elements[i];
+		num_ants -= ant_dist[i];
 	}
-	ants_remainder = ants_to_dist % dist_len;
-	ants_div = ants_to_dist / dist_len;
-	int result = elements2[paths_num -1] + ant_dist[paths_num - 1] + ants_div + (ants_remainder > 0 ? 1 : 0);
-	return (result);
+	ants_remainder = num_ants % dist_len;
+	ants_div = num_ants / dist_len;
+	return (elements[paths_num -1] + ant_dist[paths_num - 1] + ants_div + (ants_remainder > 0 ? 1 : 0));
 }
 
 void	ants_setup_elements_array(int *elements2, t_list *paths)
