@@ -73,6 +73,8 @@ int	multishot_add_edges(t_graph *g, int u_vertex, int v_vertex, int u_in, int v_
 	edge->reverse_edge = rev_edge;
 	edge->reverse_edge->valid = false;
 	rev_edge->reverse_edge = edge;
+	ft_lstadd_back(&g->edge_list, ft_lstnew(edge));
+	ft_lstadd_back(&g->rev_edge_list, ft_lstnew(rev_edge));
 	return 1;
 }
 

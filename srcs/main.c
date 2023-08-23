@@ -281,6 +281,8 @@ int main(void)
 	multishot_edmonds_karp(&route);
 	//multishot_print_all_paths(&route, paths, 0);
 	//printf("\t\tmax flow path:%d\n", ft_lstsize(paths));
+	printf("v_in_list size:%d, v_out_list size:%d\n", ft_lstsize(route.graph->v_in_list), ft_lstsize(route.graph->v_out_list));
+	printf("edge_list size:%d, rev_edge_list size:%d\n", ft_lstsize(route.graph->edge_list), ft_lstsize(route.graph->rev_edge_list));
 
 	printf("oneshot\n\tnum_paths:%d\tdist_begin:%d\tloop_len:%d\n", route.oneshot_paths->num_paths, route.oneshot_paths->dist_begin, route.oneshot_paths->loop_len);
 	printf("multishot\n\tnum_paths:%d\tdist_begin:%d\tloop_len:%d\n", route.multishot_paths->num_paths, route.multishot_paths->dist_begin, route.multishot_paths->loop_len);

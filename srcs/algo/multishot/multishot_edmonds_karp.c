@@ -12,6 +12,7 @@ void	multishot_add_one_path(t_route *route, t_list **path, t_graph_vertex *src, 
 	e = NULL;
 	ft_lstadd_back(path, ft_lstnew(v));
 	insert_next_parent(route->multishot_paths, v->vertex);
+	printf("%d\n", v->vertex);
 	while (v->vertex != des->vertex)
 	{
 		i = 0;
@@ -39,6 +40,7 @@ void	multishot_add_one_path(t_route *route, t_list **path, t_graph_vertex *src, 
 				printf("%sadding e->u->vertex:%s%s\n", GREEN, FIN, route->node_map[e->u->vertex]);
 			ft_lstadd_back(path, ft_lstnew(e->u));
 			insert_next_parent(route->multishot_paths, e->u->vertex);
+			printf("%d\n", e->u->vertex);
 		}
 		if (route->flags.debug)
 			printf("v = e->u:%d\n",e->u->vertex);
@@ -68,6 +70,7 @@ t_list	*multishot_add_all_paths(t_route *route, t_graph_vertex *start, t_graph_v
 		{
 			ft_lstadd_back(&path, ft_lstnew(end));
 			insert_next_parent(route->multishot_paths, end->vertex);
+			printf("%d\n", end->vertex);
 			multishot_add_one_path(route, &path, adj_edge->u, start);
 			route->multishot_paths->num_paths++;
 			//multishot_print_all_paths(paths);

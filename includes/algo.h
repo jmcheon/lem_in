@@ -59,6 +59,8 @@ typedef struct s_graph
 	t_graph_node **adj_list;
 	t_list	*v_in_list;
 	t_list	*v_out_list;
+	t_list	*edge_list;
+	t_list	*rev_edge_list;
 }	t_graph;
 
 typedef struct s_vertex_list
