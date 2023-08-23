@@ -6,7 +6,7 @@
 #    By: sucho <sucho@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/05 02:01:35 by sucho             #+#    #+#              #
-#    Updated: 2023/08/23 16:39:03 by sucho            ###   ########.fr        #
+#    Updated: 2023/08/23 23:31:25 by sucho            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ SRCS					=	./includes/get_next_line/get_next_line_bonus.c \
 							./srcs/ants/ants_dist_util.c \
 							./srcs/ants/ants_dist.c \
 							./srcs/ants/ants_quicksort.c \
+							./srcs/ants/ants_quicksort2.c \
 							./srcs/ants/ants_print_frame.c \
 							./srcs/free.c \
 							./srcs/main.c

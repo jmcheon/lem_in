@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 16:37:44 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/23 23:02:11 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/23 23:46:54 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,51 @@
 
 #include "../../includes/lem-in.h"
 
+int		ants_find_dist_begin2(int *elements2, int num_paths, int num_ants)
+{
+	int ret;
+
+	ret = 0;
+	for (int i = 0; i < num_paths; i++)
+	{
+		int tmp = 0;
+		for (int j = i + 1; j < num_paths; j++)
+			tmp += (elements2[i] - elements2[j]);
+		// printf("tmp:%d\n", tmp);
+		// printf("tmp2:%d \n", tmp + (route.paths->num_paths - i));
+		if (tmp + (num_paths - i) <= num_ants)
+		{
+			ret = i;
+			break;
+		}
+	}
+	return (ret);
+}
+
+void	ants_dist_fillin3(int *ant_dist, int *elements2, int paths_num, int dist_begin, int num_ants)
+{
+	int ants_to_dist = num_ants;
+	int dist_len = paths_num - dist_begin;
+	int ant_remainder;
+
+	for (int i = paths_num - 1; i > dist_begin; i--)
+	{
+		int dist = elements2[dist_begin] - elements2[i];
+		ant_dist[i] = dist;
+		ants_to_dist -= dist;
+	}
+	ant_remainder = ants_to_dist % dist_len;
+	for(int i= paths_num - 1; i >= dist_begin; i--)
+	{
+		ant_dist[i] += ants_to_dist / dist_len;
+		// printf("ant_dist[%d]:%d\t%d\n",i, ant_dist[i], ant_num_temp / route.paths->num_paths);
+		if (ant_remainder != 0)
+		{
+			ant_dist[i] += 1;
+			ant_remainder--;
+		}
+	}
+}
 void	ants_dist_fillin2(int *ant_dist, t_path_len **elements, int paths_num, int dist_begin, int num_ants)
 {
 	int ants_to_dist = num_ants;
@@ -82,6 +127,26 @@ void	ants_setup_elements2(t_path_len **elements, t_list *paths)
 
 }
 
+void	ants_setup_elements3(int *elements2, t_list *paths)
+{
+	t_list *paths_head;
+	t_vertex_list *onepath_head;
+	int i;
+
+	paths_head = paths;
+	i = 0;
+	while (paths_head != NULL)
+	{
+		onepath_head = (t_vertex_list*)paths_head->content;
+		elements2[i] = onepath_head->prev->length; // start and end
+
+		i++;
+		paths_head = paths_head->next;
+	}
+
+}
+
+
 t_path_len	**ants_init_elements2(t_list *paths, int num_paths)
 {
 	t_path_len **ret;
@@ -102,12 +167,19 @@ t_path_len	**ants_init_elements2(t_list *paths, int num_paths)
 int	ants_check_loop_len(t_route *route, t_paths *paths)
 {
 	t_path_len **elements;
-
+	int	elements2[paths->num_paths];
 	// (void)route;
 	int paths_num = ft_lstsize((t_list *)paths->paths);
 	// printf("paths_num: %d\n", paths_num);
 	paths->num_paths = paths_num;
 	elements = ants_init_elements2(paths->paths, paths->num_paths);
+
+	ants_setup_elements3(elements2, paths->paths);
+    printf("Original array:\n");
+    for (int i = 0; i < paths_num; i++) {
+        printf("%d ", elements2[i]);
+    }
+    printf("\n");
 
 	// (void)elements;
 
@@ -117,22 +189,28 @@ int	ants_check_loop_len(t_route *route, t_paths *paths)
     // }
     // printf("\n");
 	quicksort(elements, 0, paths_num - 1);
-	// printf("Sorted array in descending order:\n");
-    // for (int i = 0; i < paths_num; i++) {
-    //     printf("%d (Index: %d) ", elements[i]->value, elements[i]->index);
-    // }
-	// printf("\n");
+	quicksort2(elements2, 0, paths_num - 1);
+	printf("Sorted array in descending order:\n");
+    for (int i = 0; i < paths_num; i++) {
+        printf("%d ", elements2[i]);
+    }
+	printf("\n");
 
 
 	//dist_begin in route
 	int dist_begin;
+	int dist_begin2;
 	dist_begin = ants_find_dist_begin(elements, \
 								paths_num, route->num_ants);
-	// printf("distribution begins from here: [%d]\n", dist_begin);
+	dist_begin2 = ants_find_dist_begin2(elements2, \
+								paths_num, route->num_ants);
+	printf("distribution begins from here: [%d][%d]\n", dist_begin, dist_begin2);
 	paths->dist_begin = dist_begin;
 	int ant_dist[paths_num];
+	int ant_dist2[paths_num];
 	ft_memset(&ant_dist, 0, sizeof(ant_dist));
 	ants_dist_fillin2(ant_dist, elements, paths_num, dist_begin, route->num_ants);
+	ants_dist_fillin3(ant_dist2, elements2, paths_num, dist_begin, route->num_ants);
 	for(int i = 0; i < paths_num; i++)
 		elements[i]->num_ants = ant_dist[i];
 	// printf("=======================\n");
@@ -141,6 +219,8 @@ int	ants_check_loop_len(t_route *route, t_paths *paths)
 
 	// printf("=======================\n");
 	int result = elements[paths_num - 1]->value + elements[paths_num -1]->num_ants;
+	int result2 = elements2[paths_num - 1] + ant_dist2[paths_num -1];
+	printf("result1: %d\tresult2:%d\n",result, result2);
 	for(int i = 0; i < paths->num_paths; i++)
 		free(elements[i]);
 	free(elements);
