@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 16:36:46 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/23 16:55:53 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/23 20:32:14 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,13 @@ void	ants_print_oneframe(t_ants_print **test, int total_used_path, int longest_p
 	}
 }
 
-void	ants_setup_prints_strt(t_ants_print **matrix, t_path_len **elements, t_route route, int total_used)
+void	ants_setup_prints_strt(t_ants_print **matrix, t_path_len **elements, t_route route, t_paths *paths, int total_used)
 {
 	int	i = 0;
 	while (i < total_used)
 	{
 		// printf("[%d]", (route.paths->num_paths - total_used_path) + i);
-		t_vertex_list *one_path = ft_lstfind_node(route.oneshot_paths->paths, elements[(route.oneshot_paths->num_paths - total_used) + i]->index)->content;
+		t_vertex_list *one_path = ft_lstfind_node(paths->paths, elements[(paths->num_paths - total_used) + i]->index)->content;
 		while (one_path != NULL)
 		{
 			if (one_path->next == NULL)
@@ -76,7 +76,7 @@ void	ants_setup_prints_strt(t_ants_print **matrix, t_path_len **elements, t_rout
 		{
 			// needs to change
 			matrix[i][begin].node_name = route.node_map[one_path->vertex];
-			matrix[i][begin].ant_max = elements[(route.oneshot_paths->num_paths - total_used) + i]->num_ants;
+			matrix[i][begin].ant_max = elements[(paths->num_paths - total_used) + i]->num_ants;
 			matrix[i][begin].ant_current = 0;
 			// printf("%d ",one_path->vertex);
 			begin++;
@@ -107,9 +107,9 @@ t_ants_print	**ants_init_ants_print(int longest, int total_used)
 	return (test);
 }
 
-void	ants_set_path_vars(t_route route, t_path_len **elements, int *longest, int *total_used)
+void	ants_set_path_vars(t_paths *paths, t_path_len **elements, int *longest, int *total_used)
 {
-	for(int i = 0; i < route.oneshot_paths->num_paths; i++)
+	for(int i = 0; i < paths->num_paths; i++)
 	{
 		if (elements[i]->num_ants > 0)
 		{
@@ -120,50 +120,22 @@ void	ants_set_path_vars(t_route route, t_path_len **elements, int *longest, int 
 	}
 }
 
-void ants_print_frames(t_route route, t_path_len **elements)
+void ants_print_frames(t_route route, t_paths *paths, t_path_len **elements)
 {
 	t_ants_print **ants_print_matrix;
 	int longest_path;
 	int total_used_path;
 
-	longest_path = 0;
-	total_used_path = 0;
-	ants_set_path_vars(route, elements, &longest_path, &total_used_path);
-
-	// printf("longest_path:%d total_used_path:%d\n", longest_path, total_used_path);
+	longest_path =  elements[paths->dist_begin]->value;
+	total_used_path = paths->num_paths - paths->dist_begin;
+	// ants_set_path_vars(paths, elements, &longest_path, &total_used_path);
+	// (void) ants_print_matrix;
+	printf("longest_path:%d total_used_path:%d\n", longest_path, total_used_path);
+	printf("test:%d\n", elements[paths->dist_begin]->value);
 
 
 	ants_print_matrix = ants_init_ants_print(longest_path, total_used_path);
-	ants_setup_prints_strt(ants_print_matrix, elements, route, total_used_path);
-
-	// int	i = 0;
-	// while (i < total_used_path)
-	// {
-	// 	// printf("[%d]", (route.paths->num_paths - total_used_path) + i);
-	// 	t_vertex_list *one_path = ft_lstfind_node(route.paths->paths, elements[(route.paths->num_paths - total_used_path) + i]->index)->content;
-	// 	while (one_path != NULL)
-	// 	{
-	// 		if (one_path->next == NULL)
-	// 			break;
-	// 		one_path = one_path->next;
-	// 	}
-	// 	// int begin = longest_path - elements[i]->value;
-	// 	int begin = 0;
-	// 	one_path = one_path->prev;
-	// 	// printf("begin:%d\ti:%d\n", begin, i);
-	// 	while (one_path != NULL)
-	// 	{
-	// 		// needs to change
-	// 		ants_print_matrix[i][begin].node_name = route.node_map[one_path->vertex];
-	// 		ants_print_matrix[i][begin].ant_max = elements[(route.paths->num_paths - total_used_path) + i]->num_ants;
-	// 		ants_print_matrix[i][begin].ant_current = 0;
-	// 		// printf("%d ",one_path->vertex);
-	// 		begin++;
-	// 		one_path = one_path->prev;
-	// 	}
-	// 	// printf("\n");
-	// 	i++;
-	// }
+	ants_setup_prints_strt(ants_print_matrix, elements, route, paths, total_used_path);
 
 	// printf("================================\n");
 	// int i = 0;
@@ -183,16 +155,16 @@ void ants_print_frames(t_route route, t_path_len **elements)
 	// }
 	// printf("================================\n");
 
-	int loop = 0;
-	for(int i = route.oneshot_paths->num_paths - total_used_path ; i < route.oneshot_paths->num_paths; i++)
-	{
-		if (loop < elements[i]->value + elements[i]->num_ants)
-			loop = elements[i]->value + elements[i]->num_ants;
-	}
-	// printf("loop:%d\n", loop);
+	// int loop = 0;
+	// for(int i = route.oneshot_paths->num_paths - total_used_path ; i < route.oneshot_paths->num_paths; i++)
+	// {
+	// 	if (loop < elements[i]->value + elements[i]->num_ants)
+	// 		loop = elements[i]->value + elements[i]->num_ants;
+	// }
+	// // printf("loop:%d\n", loop);
 
 	int ant_index = 1;
-	for(int i = 0; i < (loop - 2); i++)
+	for(int i = 0; i < (paths->loop_len); i++)
 	{
 		if (i < longest_path)
 		{

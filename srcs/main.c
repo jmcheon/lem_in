@@ -290,9 +290,18 @@ int main(void)
 	printf("multishot\n\tnum_paths:%d\tdist_begin:%d\tloop_len:%d\n", route.multishot_paths->num_paths, route.multishot_paths->dist_begin, route.multishot_paths->loop_len);
 
 	// t_path_len **elements = ants_distribute(route);
-	ants_distribute(route, route.multishot_paths);
-	printf("========================\n");
-	ants_distribute(route, route.oneshot_paths);
+	if (route.oneshot_paths->loop_len < route.multishot_paths->loop_len)
+	{
+		t_path_len **elements = ants_distribute(route, route.oneshot_paths);
+    	ants_print_frames(route, route.oneshot_paths, elements);
+		printf("oneshot win: %d(one) < %d(multi)\n", route.oneshot_paths->loop_len, route.multishot_paths->loop_len);
+	}
+	else
+	{
+		t_path_len **elements = ants_distribute(route, route.multishot_paths);
+    	ants_print_frames(route, route.multishot_paths, elements);
+		printf("multishot win: %d(multi) < %d(one)\n", route.multishot_paths->loop_len, route.oneshot_paths->loop_len);
+	}
 	// for(int i = 0; elements[i] != NULL; i++)
 	// 	printf("value:%d\tindex:%d\tnum_ants%d\n",elements[i]->value, elements[i]->index, elements[i]->num_ants);
 
