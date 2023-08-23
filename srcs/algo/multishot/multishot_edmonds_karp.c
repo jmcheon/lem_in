@@ -69,6 +69,7 @@ t_list	*multishot_add_all_paths(t_route *route, t_graph_vertex *start, t_graph_v
 			ft_lstadd_back(&path, ft_lstnew(end));
 			insert_next_parent(route->multishot_paths, end->vertex);
 			multishot_add_one_path(route, &path, adj_edge->u, start);
+			route->multishot_paths->num_paths++;
 			//multishot_print_all_paths(paths);
 			if (route->flags.debug)
 			{
