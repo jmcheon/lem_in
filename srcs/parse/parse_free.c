@@ -29,6 +29,7 @@ void	free_list(t_list *head)
 	{
 		tmp = head;
 		head = head->next;
+		if (tmp->content != NULL)
 		free(tmp->content);
 		free(tmp);
 	}

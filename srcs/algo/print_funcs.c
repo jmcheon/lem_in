@@ -1,6 +1,6 @@
 #include "../../includes/lem-in.h"
 
-void	print_edge_forward_travel(t_route *route)
+void	multishot_print_edge_forward_travel(t_route *route)
 {
 	t_graph_edge	*e;
 
@@ -8,7 +8,7 @@ void	print_edge_forward_travel(t_route *route)
 	{
 		for (int j = 0; j < route->num_vertices; j++)
 		{
-			e = graph_find_edge(route->graph, i, j, 1);
+			e = multishot_find_edge(route->graph, i, j, 1);
 			if (e != NULL)
 			{
 				//printf("(e->u->vertex, e->v->vertex): (%d, %d)\n", e->u->vertex, e->v->vertex);
@@ -22,29 +22,29 @@ void	print_edge_forward_travel(t_route *route)
 	}
 }
 
-void	print_vertex_lists(t_route *route)
+void	multishot_print_vertex_lists(t_route *route)
 {
 	t_graph_vertex	*v;
 
 	for (int i = 0; i < route->num_vertices; i++)
 	{
-		v = graph_find_vertex(route->graph, i, 0);
+		v = multishot_find_vertex(route->graph, i, 0);
 		//printf("\n%d_in\n", v->vertex);
 		printf("\n\n\n%s_in->in\n", route->node_map[v->vertex]);
-		print_edges(route, v->in_list, REVERSE_PRINT);
+		multishot_print_edges(route, v->in_list, REVERSE_PRINT);
 		printf("%s_in->out\n", route->node_map[v->vertex]);
-		print_edges(route, v->out_list, REVERSE_PRINT);
+		multishot_print_edges(route, v->out_list, REVERSE_PRINT);
 
-		v = graph_find_vertex(route->graph, i, 1);
+		v = multishot_find_vertex(route->graph, i, 1);
 		//printf("%d_out\n", v->vertex);
 		printf("\n%s_out->in\n", route->node_map[v->vertex]);
-		print_edges(route, v->in_list, REVERSE_PRINT);
+		multishot_print_edges(route, v->in_list, REVERSE_PRINT);
 		printf("%s_out->out\n", route->node_map[v->vertex]);
-		print_edges(route, v->out_list, REVERSE_PRINT);
+		multishot_print_edges(route, v->out_list, REVERSE_PRINT);
 	}
 }
 
-void	print_edge(t_route *route, void *data)
+void	multishot_print_edge(t_route *route, void *data)
 {
 	t_graph_edge	*temp;
 
@@ -56,7 +56,7 @@ void	print_edge(t_route *route, void *data)
 }
 
 
-void	print_edges(t_route *route, t_list *lst, int reverse)
+void	multishot_print_edges(t_route *route, t_list *lst, int reverse)
 {
 	int	size;
 
@@ -65,7 +65,7 @@ void	print_edges(t_route *route, t_list *lst, int reverse)
 
 	for (int i = 0; i < size; i++)
 	{
-		print_edge(route, ft_lstfind_node(lst, i)->content);
+		multishot_print_edge(route, ft_lstfind_node(lst, i)->content);
 	}
 
 	if (reverse)
@@ -73,31 +73,31 @@ void	print_edges(t_route *route, t_list *lst, int reverse)
 		printf("%s========================reverse edge=======================%s\n", YELLOW, FIN);
 		for (int j = 0; j < size; j++)
 		{
-			print_edge(route, ((t_graph_edge*)ft_lstfind_node(lst, j)->content)->reverse_edge);
+			multishot_print_edge(route, ((t_graph_edge*)ft_lstfind_node(lst, j)->content)->reverse_edge);
 		}
 	}
 	printf("\n");
 }
 
-void	print_all_paths(t_route *route, t_list *paths, int print_path)
+void	multishot_print_all_paths(t_route *route, t_list *paths, int oneshot_print_path)
 {
 	t_list	*path;
 
 	while (paths != NULL)
 	{
 		path = (t_list*)paths->content;
-		print_one_path(route, path, print_path);
+		multishot_print_one_path(route, path, oneshot_print_path);
 		paths = paths->next;
 	}
 }
 
-void	print_one_path(t_route *route, t_list *path, int print_path)
+void	multishot_print_one_path(t_route *route, t_list *path, int oneshot_print_path)
 {
 	int	path_size;
 
 	path_size = ft_lstsize(path);
 	printf("path_size:%d\n", path_size);
-	if (print_path)
+	if (oneshot_print_path)
 	{
 		while (path != NULL)
 		{
@@ -112,7 +112,7 @@ void	print_one_path(t_route *route, t_list *path, int print_path)
 	}
 }
 
-void	print_path(t_route* route, int* parent, int path_id)
+void	oneshot_print_path(t_route* route, int* parent, int path_id)
 {
 	int	v;
 
@@ -132,28 +132,17 @@ void	print_path(t_route* route, int* parent, int path_id)
 	printf("\n");
 }
 
-void print_path_node(void *data)
-{
-	t_vertex_list *curr_paths_ptr;
-
-	curr_paths_ptr = (t_vertex_list*)data;
-	if (curr_paths_ptr != NULL)
-		printf(" <- %d", curr_paths_ptr->vertex);
-}
-
-void print_paths_list(t_route *route)
+void oneshot_print_paths_list(t_route *route)
 {
 	t_vertex_list	*curr_vertex_ptr;
 	t_list			*curr_list_ptr;
 	int i;
 
 	curr_list_ptr = route->paths->paths;
-	//ft_lstiter(curr_list_ptr, print_path_node);
 	//for (int i = 0; i < paths->num_pahts; ++i)
 	i = 0;
 	while (curr_list_ptr != NULL)
 	{
-		//ft_lstiter(curr_list_ptr, print_path_node);
 		curr_vertex_ptr = (t_vertex_list*)curr_list_ptr->content;
 		printf("path %d - ", i + 1);
 		if (curr_vertex_ptr != NULL)

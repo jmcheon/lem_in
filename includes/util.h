@@ -12,6 +12,5 @@
 
 # include "./algo.h"
 
-void	free_graph_edges(t_list *edges);
 
 #endif

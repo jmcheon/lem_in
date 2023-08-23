@@ -5,6 +5,18 @@ const char* sVertexTypeStrings[] = {
 	"OUT",
 };
 
+void	reset_int_array(int **arr, int length, int value)
+{
+	for (int i = 0; i < length; i++)
+		(*arr)[i] = value;
+}
+
+void	init_int_array(int **arr, int length, int value)
+{
+	*arr = (int *)malloc(sizeof(int) * (length));
+	reset_int_array(arr, length, value);
+}
+
 void	init_vertex_list(t_vertex_list *path, int v)
 {
 	path->vertex = v;
@@ -51,6 +63,5 @@ void	init_route(t_route* route, t_parse* parse)
 	route->paths = (t_paths*)malloc(sizeof(t_paths));
 	init_paths(route->paths);
 
-	route->flags.verbose = 0;
 	route->flags.debug = 0;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 16:58:03 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/22 22:20:13 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/23 15:42:46 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	free_paths(t_list *paths)
 	}
 }
 
+/*
 void	free_graph_edges(t_list *edges)
 {
 	t_list *tmp;
@@ -58,53 +59,92 @@ void	free_graph_edges(t_list *edges)
 		free(tmp);
 	}
 }
+*/
+void	free_graph_edges(t_route *route)
+{
+	for (int i = 0; i < route->num_vertices; i++)
+	{
+	}
+}
 
-void	free_edges_vertices(t_route *route)
+void	free_vertices_edge_inout_lists(t_route *route)
 {
 	t_graph_vertex	*v;
-	t_graph_vertex	*v2;
 	t_list	*temp;
-	int	size;
+	t_list	*temp2;
 
-	for (int m = 0; m < route->num_vertices; m++)
+	(void)temp2;
+	for (int i = 0; i < route->num_vertices; i++)
 	{
-		v = graph_find_vertex(route->graph, m, IN);
-		v2 = graph_find_vertex(route->graph, m, OUT);
+		v = multishot_find_vertex(route->graph, i, IN);
 		//printf("v->vertex:%d\n", v->vertex);
+		temp = v->in_list;
+		while (temp != NULL)
+		{
+			temp2 = temp;
+			temp = temp->next;
+			//free(temp2->content);
+			//temp2->content = NULL;
+			//free(temp2);
+		}
+		temp = v->out_list;
+		while (temp != NULL)
+		{
+			temp2 = temp;
+			temp = temp->next;
+			//free(temp2->content);
+			//temp2->content = NULL;
+			//free(temp2);
+		}
 
-		size = ft_lstsize(v->in_list);
-		for (int i = 0; i < size; i++)
+		v = multishot_find_vertex(route->graph, i, OUT);
+		temp = v->in_list;
+		while (temp != NULL)
 		{
-			temp = ft_lstfind_node(v->in_list, i);
-			free(((t_graph_edge*)temp->content)->reverse_edge);
-			free(temp->content);
-			free(temp);
+			temp2 = temp;
+			temp = temp->next;
+			//free(temp2->content);
+			//temp2->content = NULL;
+			//free(temp2);
 		}
-		size = ft_lstsize(v->out_list);
-		for (int i = 0; i < size; i++)
+		temp = v->out_list;
+		while (temp != NULL)
 		{
-			temp = ft_lstfind_node(v->out_list, i);
-			free(((t_graph_edge*)temp->content)->reverse_edge);
-			free(temp->content);
-			free(temp);
+			temp2 = temp;
+			temp = temp->next;
+			//free(temp2->content);
+			//temp2->content = NULL;
+			//free(temp2);
 		}
-		size = ft_lstsize(v2->in_list);
-		for (int i = 0; i < size; i++)
-		{
-			temp = ft_lstfind_node(v2->in_list, i);
-			free(((t_graph_edge*)temp->content)->reverse_edge);
-			free(temp->content);
-			free(temp);
-		}
-		size = ft_lstsize(v2->out_list);
-		for (int i = 0; i < size; i++)
-		{
-			temp = ft_lstfind_node(v2->out_list, i);
-			free(((t_graph_edge*)temp->content)->reverse_edge);
-			free(temp->content);
-			free(temp);
-		}
-		free(v);
-		free(v2);
+	}
+}
+
+void	free_graph_vertices(t_route *route)
+{
+	for (int i = 0; i < route->num_vertices; i++)
+	{
+	}
+}
+
+void	free_vertices_inout_lists(t_route *route)
+{
+	t_list	*temp;
+	t_list	*temp2;
+
+	temp = route->graph->v_in_list;
+	while (temp != NULL)
+	{
+		free(temp->content);
+		temp2 = temp;
+		temp = temp->next;
+		free(temp2);
+	}
+	temp = route->graph->v_out_list;
+	while (temp != NULL)
+	{
+		free(temp->content);
+		temp2 = temp;
+		temp = temp->next;
+		free(temp2);
 	}
 }

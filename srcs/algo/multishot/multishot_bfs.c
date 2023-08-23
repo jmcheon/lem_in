@@ -1,6 +1,6 @@
-#include "../../includes/lem-in.h"
+#include "../../../includes/lem-in.h"
 
-int	graph_iter_edges(t_route *route, t_list **ret, t_list **queue, t_graph_vertex *t, int queue_index)
+int	multishot_iterate_edges(t_route *route, t_list **ret, t_list **queue, t_graph_vertex *t, int queue_index)
 {
 	t_graph_edge	*edge;
 	t_graph_vertex	*vertex;
@@ -11,7 +11,7 @@ int	graph_iter_edges(t_route *route, t_list **ret, t_list **queue, t_graph_verte
 	size = ft_lstsize(vertex->out_list);
 
 	(void)route;
-	(void)print_edges;
+	(void)multishot_print_edges;
 	//printf("iter edge size:%d\n", size);
 	while (i < size)
 	{
@@ -24,7 +24,7 @@ int	graph_iter_edges(t_route *route, t_list **ret, t_list **queue, t_graph_verte
 			if (route->flags.debug)
 			{
 				printf("%sPrinting v->out_list%s\n", YELLOW, FIN);
-				print_edges(route, vertex->out_list, FORWARD_PRINT);
+				multishot_print_edges(route, vertex->out_list, FORWARD_PRINT);
 			}
 			/*
 			printf("%se->valid:%d, e->v->valid:%d\n", PINK, edge->valid, edge->v->valid);
@@ -56,7 +56,7 @@ int	graph_iter_edges(t_route *route, t_list **ret, t_list **queue, t_graph_verte
 	return 0;
 }
 
-void	graph_bfs_loop(t_route *route, t_list **ret, t_graph_vertex *s, t_graph_vertex *t)
+void	multishot_bfs_loop(t_route *route, t_list **ret, t_graph_vertex *s, t_graph_vertex *t)
 {
 	t_list	*queue;
 	t_graph_vertex	*v;
@@ -65,7 +65,7 @@ void	graph_bfs_loop(t_route *route, t_list **ret, t_graph_vertex *s, t_graph_ver
 	queue = NULL;
 	s->valid = false;
 	ft_lstadd_back(&queue, ft_lstnew(s));
-	//printf("bfs loop queue size:%d\n", ft_lstsize(queue));
+	//printf("oneshot_bfs loop queue size:%d\n", ft_lstsize(queue));
 	if (route->flags.debug)
 		printf("%sPrint edges_list...%s\n", ORANGE, FIN);
 	while (i < ft_lstsize(queue))
@@ -74,8 +74,8 @@ void	graph_bfs_loop(t_route *route, t_list **ret, t_graph_vertex *s, t_graph_ver
 		//printf("loop queue->size:%d\n", ft_lstsize(queue));
 		//printf("v->valid:%d\n", v->valid);
 		v->valid = false;
-		//if (graph_iter_edges(arr, &queue, t, i))
-		if (graph_iter_edges(route, ret, &queue, t, i))
+		//if (multishot_iterate_edges(arr, &queue, t, i))
+		if (multishot_iterate_edges(route, ret, &queue, t, i))
 		{
 			if (route->flags.debug)
 				printf("%sEnd printing edges_list...%s\n", ORANGE, FIN);
@@ -90,7 +90,7 @@ void	graph_bfs_loop(t_route *route, t_list **ret, t_graph_vertex *s, t_graph_ver
 	return;
 }
 
-t_list *graph_bfs(t_route *route, t_graph_vertex *s, t_graph_vertex *t)
+t_list *multishot_bfs(t_route *route, t_graph_vertex *s, t_graph_vertex *t)
 {
 	t_list	*ret;
 	t_list	*curr_ptr;
@@ -103,8 +103,8 @@ t_list *graph_bfs(t_route *route, t_graph_vertex *s, t_graph_vertex *t)
 		return NULL;
 	}
 	ret = NULL;
-	graph_bfs_loop(route, &ret, s, t);
-	//printf("af graph bfs loop ret size:%d\n", ft_lstsize(ret));
+	multishot_bfs_loop(route, &ret, s, t);
+	//printf("af graph oneshot_bfs loop ret size:%d\n", ft_lstsize(ret));
 	curr_ptr = route->graph->v_out_list;
 	while (curr_ptr != NULL)
 	{

@@ -6,7 +6,7 @@
 #    By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/05 02:01:35 by sucho             #+#    #+#              #
-#    Updated: 2023/08/18 01:49:56 by cjung-mo         ###   ########.fr        #
+#    Updated: 2023/08/23 15:58:48 by cjung-mo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,17 +31,19 @@ SRCS					=	./includes/get_next_line/get_next_line_bonus.c \
 							./srcs/parse/parse_check.c \
 							./srcs/parse/parse_util.c \
 							./srcs/parse/parse_free.c \
+							./srcs/algo/multishot/multishot_edge.c \
+							./srcs/algo/multishot/multishot_vertex.c \
+							./srcs/algo/multishot/multishot_bfs.c \
+							./srcs/algo/multishot/multishot_edmonds_karp.c \
+							./srcs/algo/oneshot/oneshot_edmonds_karp.c \
+							./srcs/algo/oneshot/oneshot_bfs.c \
+							./srcs/algo/disjoint_path.c \
 							./srcs/algo/init_funcs.c \
 							./srcs/algo/print_funcs.c \
-							./srcs/algo/edmonds_karp.c \
-							./srcs/algo/disjoint_path.c \
-							./srcs/algo/graph_edge.c \
-							./srcs/algo/graph_vertex.c \
-							./srcs/algo/graph_bfs.c \
-							./srcs/algo/graph_list.c \
-							./srcs/algo/graph_util.c \
 							./srcs/algo/queue.c \
 							./srcs/algo/priority_queue.c \
+							./srcs/algo/graph_list.c \
+							./srcs/algo/graph_util.c \
 							./srcs/ants/ants_dist.c \
 							./srcs/ants/ants_quicksort.c \
 							./srcs/ants/ants_print_frame.c \

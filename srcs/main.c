@@ -1,18 +1,6 @@
 #include "../includes/queue.h"
 #include "../includes/lem-in.h"
 
-void	reset_parent_array(t_route *route, int **parent)
-{
-	for (int i = 0; i < route->num_vertices; i++)
-		(*parent)[i] = -1;
-}
-
-void	init_parent_array(t_route *route, int **parent)
-{
-	*parent = (int *)malloc(sizeof(int) * (route->num_vertices));
-	reset_parent_array(route, parent);
-}
-
 int	main2(void)
 {
 	t_parse	*parse;
@@ -38,7 +26,7 @@ int	main2(void)
 	modified_dijkstra1(&route);
     disjoint_path(&route, weights);
 	printf("disjoin paths:\n");
-	print_paths_list(&route);
+	oneshot_print_paths_list(&route);
 
 	free_paths(route.paths->paths);
 	init_route(&route, parse);
@@ -69,8 +57,8 @@ int	main2(void)
 	// **	edmonds-karp
 	// */
 	// parent = (int *)malloc(sizeof(int) * (route.num_vertices));
-	init_parent_array(&route, &parent);
-	edmonds_karp(&route, route.paths, parent, capacity);
+	init_int_array(&parent, route.num_vertices, -1);
+	oneshot_edmonds_karp(&route, route.paths, parent, capacity);
 	/*
 	i = 0;
 	while (i < (route.num_vertices))
@@ -83,7 +71,7 @@ int	main2(void)
 	printf("\naf ek capacity");
 	print_2d_array(capacity, route.num_vertices);
 	printf("disjoin paths:\n");
-	print_paths_list(&route);
+	oneshot_print_paths_list(&route);
 	*/
 
 	// /*
@@ -120,11 +108,11 @@ int	main2(void)
 	free_paths(route.paths->paths);
 	init_paths(route.paths);
 	free(parent);
-	init_parent_array(&route, &parent);
+	init_int_array(&parent, route.num_vertices, -1);
 	edmonds_karp_with_weights(&route, route.paths, parent, temp);
 	*/
 	//printf("ek disjoin paths:\n");
-	//print_paths_list(&route);
+	//oneshot_print_paths_list(&route);
 	/*
 	printf("\naf ek temp");
 	print_2d_array(temp, route.num_vertices);
@@ -143,8 +131,8 @@ int	main2(void)
 	free_paths(route.paths->paths);
 	init_paths(route.paths);
 	free(parent);
-	init_parent_array(&route, &parent);
-	edmonds_karp(&route, route.paths, parent, capacity);
+	init_int_array(&parent, route.num_vertices, -1);
+	oneshot_edmonds_karp(&route, route.paths, parent, capacity);
 	*/
 	//optimize(&route);
 
@@ -208,49 +196,6 @@ int	main2(void)
 	return (0);
 }
 
-void	print_cur_path(void *content)
-{
-	t_graph_vertex *curr_vertex_ptr;
-
-	curr_vertex_ptr = (t_graph_vertex*)content;
-	printf("%d -> ", curr_vertex_ptr->vertex);
-}
-
-t_list	*max_flow_edmonds_karp(t_route *route, int start, int end)
-{
-	int	flow = 0;
-	t_list	*edge_list;
-	t_list	*paths;
-	t_list	*prev_paths;
-	t_graph_vertex *s;
-	t_graph_vertex *t;
-	t_graph_edge	*e;
-	int i = 0;
-
-	(void)i;
-	(void)e;
-	paths = NULL;
-	prev_paths = NULL;
-	s = graph_find_vertex(route->graph, start, 1);
-	t = graph_find_vertex(route->graph, end, 0);
-	while (1)
-	{
-		edge_list = graph_bfs(route, s, t);
-		if (route->flags.debug)
-			printf("edge_list->size:%d\n", ft_lstsize(edge_list));
-		if (ft_lstsize(edge_list) == 0 || !update_edge_flow(route, edge_list, end))
-			break ;
-		flow++;
-		paths = save_max_flow_paths(route, s, t, flow);
-		prev_paths = paths;
-		(void)paths;
-		//e = graph_find_edge(route->graph, 6, 4, 1);
-		//printf("\t\t\t\te->u->vertex:%d\n", e->u->vertex);
-		i++;
-	}
-	return prev_paths;
-}
-
 int main(void)
 {
 	t_parse	*parse;
@@ -270,12 +215,13 @@ int main(void)
 		}
 	}
 	
-	add_vertices(&route);
-	//print_edge_forward_travel(&route);
-	//print_vertex_lists(&route);
-	paths = max_flow_edmonds_karp(&route, route.start, route.end);
-	print_all_paths(&route, paths, 0);
-	printf("\t\tmax flow path:%d\n", ft_lstsize(paths));
+	multishot_add_vertices(&route);
+	//multishot_print_edge_forward_travel(&route);
+	//multishot_print_vertex_lists(&route);
+	(void)paths;
+	paths = multishot_edmonds_karp(&route);
+	//multishot_print_all_paths(&route, paths, 0);
+	//printf("\t\tmax flow path:%d\n", ft_lstsize(paths));
 
 	t_path_len **elements = ants_distribute(route);
 	// for(int i = 0; elements[i] != NULL; i++)
@@ -295,7 +241,9 @@ int main(void)
 
 
 	//ft_lstclear(&route.graph->v_in_list, free);
-	free_vertices(&route);
+	//free_vertices(&route);
+	free_vertices_edge_inout_lists(&route);
+	free_vertices_inout_lists(&route);
     
 
 	for(int i = 0; i < route.paths->num_paths; i++)
