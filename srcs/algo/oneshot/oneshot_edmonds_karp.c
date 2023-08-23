@@ -15,7 +15,7 @@ void	fill_capacity(t_graph* graph, int **capacity)
 	}
 }
 
-void insert_vertex(t_paths *paths, int v)
+t_vertex_list	*insert_vertex(t_paths *paths, int v)
 {
 	t_vertex_list	*new_path_ptr;
 	t_vertex_list	*curr_vertex_ptr;
@@ -25,7 +25,7 @@ void insert_vertex(t_paths *paths, int v)
 	if (new_path_ptr == NULL)
 	{
 		ft_putstr_fd("malloc error\n", STDOUT_FILENO);
-		return ;
+		return NULL;
 	}
 
 	init_vertex_list(new_path_ptr, v);
@@ -62,6 +62,7 @@ void insert_vertex(t_paths *paths, int v)
 		// }
 		// printf("\tinsertion vertex:%d to path id:%d finished\n\n", v, paths->num_paths);
 	}
+	return new_path_ptr;
 }
 
 void	oneshot_edmonds_karp(t_route* route, int *parent, int **capacity, int (*f)(t_route*, int*, int**))

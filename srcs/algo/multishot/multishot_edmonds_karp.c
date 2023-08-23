@@ -1,16 +1,17 @@
 #include "../../../includes/lem-in.h"
 
-void	multishot_add_one_path(t_route *route, t_graph_vertex *src, t_graph_vertex *des)
+t_vertex_list	*multishot_add_one_path(t_route *route, t_graph_vertex *src, t_graph_vertex *des)
 {
 	t_graph_vertex	*v;
 	t_graph_edge	*e;
+	t_vertex_list	*curr_vertex_ptr;
 	int	i;
 	int	every = 1;
 	int	size;
 
 	v = src;
 	e = NULL;
-	insert_vertex(route->multishot_paths, v->vertex);
+	curr_vertex_ptr = insert_vertex(route->multishot_paths, v->vertex);
 	while (v->vertex != des->vertex)
 	{
 		i = 0;
@@ -36,21 +37,26 @@ void	multishot_add_one_path(t_route *route, t_graph_vertex *src, t_graph_vertex 
 			//printf("adding e->u->vertex:%d\n",e->u->vertex);
 			if (route->flags.debug)
 				printf("%sadding e->u->vertex:%s%s\n", GREEN, FIN, route->node_map[e->u->vertex]);
-			insert_vertex(route->multishot_paths, e->u->vertex);
+			curr_vertex_ptr = insert_vertex(route->multishot_paths, e->u->vertex);
 		}
 		if (route->flags.debug)
 			printf("v = e->u:%d\n",e->u->vertex);
 		v = e->u;
 	}
+	return curr_vertex_ptr;
 }
 
 
 void	multishot_add_all_paths(t_route *route, t_graph_vertex *start, t_graph_vertex *end)
 {
-	t_graph_edge *adj_edge;
+	t_graph_edge 	*adj_edge;
+	t_vertex_list	*end_vertex_ptr;
+	t_vertex_list	*start_vertex_ptr;
 	int	i = 0;
 	int	size;
 
+	(void)start_vertex_ptr;
+	(void)end_vertex_ptr;
 	size = ft_lstsize(end->in_list);
 
 	if (route->multishot_paths->paths != NULL)
@@ -64,9 +70,11 @@ void	multishot_add_all_paths(t_route *route, t_graph_vertex *start, t_graph_vert
 		//printf("adj_edge->u->vertex:%d\n", adj_edge->u->vertex);
 		if (adj_edge->flow > 0)
 		{
-			insert_vertex(route->multishot_paths, end->vertex);
+			end_vertex_ptr = insert_vertex(route->multishot_paths, end->vertex);
 			//printf("%d\n", end->vertex);
-			multishot_add_one_path(route, adj_edge->u, start);
+			start_vertex_ptr = multishot_add_one_path(route, adj_edge->u, start);
+			start_vertex_ptr->next = end_vertex_ptr;
+			end_vertex_ptr->prev = start_vertex_ptr;
 			route->multishot_paths->num_paths++;
 			//multishot_print_all_paths(paths);
 			if (route->flags.debug)
@@ -75,6 +83,7 @@ void	multishot_add_all_paths(t_route *route, t_graph_vertex *start, t_graph_vert
 				multishot_print_one_path(route, ft_lstlast(route->multishot_paths->paths), 1);
 				printf("\t\t\t\t\t paths size:%d\n", ft_lstsize(route->multishot_paths->paths));
 			}
+			//printf("start vertex:%d\n", end_vertex_ptr->prev->vertex);
 		}
 		i++;
 	}
