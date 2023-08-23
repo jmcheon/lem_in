@@ -6,7 +6,7 @@
 /*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 16:58:03 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/23 20:26:29 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/23 21:00:47 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,21 +56,6 @@ void	free_paths(t_list *paths)
 	}
 }
 
-/*
-void	free_graph_edges(t_list *edges)
-{
-	t_list *tmp;
-
-	while (edges != NULL)
-	{
-		tmp = edges;
-		free((t_graph_edge*)tmp->content);
-		edges = edges->next;
-		free(tmp);
-	}
-}
-*/
-
 void	free_vertices_edge_inout_lists(t_route *route)
 {
 	t_graph_vertex	*v;
@@ -89,7 +74,7 @@ void	free_vertices_edge_inout_lists(t_route *route)
 			temp = temp->next;
 			//free(temp2->content);
 			//temp2->content = NULL;
-			//free(temp2);
+			free(temp2);
 		}
 		temp = v->out_list;
 		while (temp != NULL)
@@ -98,7 +83,7 @@ void	free_vertices_edge_inout_lists(t_route *route)
 			temp = temp->next;
 			//free(temp2->content);
 			//temp2->content = NULL;
-			//free(temp2);
+			free(temp2);
 		}
 
 		v = multishot_find_vertex(route->graph, i, OUT);
@@ -107,26 +92,15 @@ void	free_vertices_edge_inout_lists(t_route *route)
 		{
 			temp2 = temp;
 			temp = temp->next;
-			//free(temp2->content);
-			//temp2->content = NULL;
-			//free(temp2);
+			free(temp2);
 		}
 		temp = v->out_list;
 		while (temp != NULL)
 		{
 			temp2 = temp;
 			temp = temp->next;
-			//free(temp2->content);
-			//temp2->content = NULL;
-			//free(temp2);
+			free(temp2);
 		}
-	}
-}
-
-void	free_graph_vertices(t_route *route)
-{
-	for (int i = 0; i < route->num_vertices; i++)
-	{
 	}
 }
 

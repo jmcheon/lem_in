@@ -104,7 +104,7 @@ int	multishot_update_edge_flow(t_route *route, t_list *edge_list, int v)
 		printf("\t\tbacktracking return\n");
 	if (!path)
 		return 0;
-	free(path);
+	free_list_ptr(path);
 
 	return 1;
 }

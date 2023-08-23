@@ -102,11 +102,9 @@ void	multishot_edmonds_karp(t_route *route)
 		//route->multishot_paths->paths = multishot_add_all_paths(route, s, t);
 		if (prev_path_len != 0 && prev_path_len < ants_check_loop_len(route, route->multishot_paths))
 		{
-			route->multishot_paths->loop_len = prev_path_len - 2;
 			// printf("========0000000============\n");
 			// printf("path_len:%d\n",prev_path_len - 2);
 			// printf("========0000000============\n");
-			free_list_ptr(edge_list);
 			break;
 		}
 		multishot_print_all_paths(route, route->multishot_paths->paths, SIZE_PRINT);
@@ -114,5 +112,7 @@ void	multishot_edmonds_karp(t_route *route)
 		prev_path_len = ants_check_loop_len(route, route->multishot_paths);
 		free_list_ptr(edge_list);
 	}
+	free_list_ptr(edge_list);
+	route->multishot_paths->loop_len = prev_path_len - 2;
 }
 

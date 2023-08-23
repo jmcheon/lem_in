@@ -197,6 +197,5 @@ void	free_list_ptr(t_list *head);
 void	free_edges_lists(t_route *route);
 void	free_vertices_inout_lists(t_route *route);
 void	free_vertices_edge_inout_lists(t_route *route);
-void	free_graph_vertices(t_route *route);
 
 #endif
