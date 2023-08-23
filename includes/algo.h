@@ -74,6 +74,7 @@ typedef struct s_paths
 	t_list *paths;
 	int	num_paths;
 	int dist_begin;
+	int	loop_len;
 } t_paths;
 
 typedef struct s_route

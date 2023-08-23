@@ -31,6 +31,7 @@ void	init_paths(t_paths* paths)
 	paths->paths = NULL;
 	paths->num_paths = 0;
 	paths->dist_begin = -1;
+	paths->loop_len = -1;
 }
 
 void	init_route(t_route* route, t_parse* parse)

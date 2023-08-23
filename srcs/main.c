@@ -245,7 +245,8 @@ int	perform_oneshot(t_route *route)
 	init_int_array(&parent, route->num_vertices, -1);
 	edmonds_karp_with_weights(route, route->oneshot_paths, parent, temp);
 	fill_capacity(route->graph, capacity);
-	return (ants_check_loop_len(route, route->oneshot_paths));
+	route->oneshot_paths->loop_len = ants_check_loop_len(route, route->oneshot_paths) - 2;
+	return (route->oneshot_paths->loop_len);
 }
 int main(void)
 {
@@ -259,7 +260,7 @@ int main(void)
 	init_route(&route, parse);
 
 
-	printf("testing:%d\n", perform_oneshot(&route) - 2);
+	printf("testing:%d\n", perform_oneshot(&route));
 
 	if (route.flags.debug)
 	{
@@ -276,9 +277,13 @@ int main(void)
 	//multishot_print_edge_forward_travel(&route);
 	//multishot_print_vertex_lists(&route);
 	(void)paths;
-	paths = multishot_edmonds_karp(&route);
+	// paths = multishot_edmonds_karp(&route);
+	multishot_edmonds_karp(&route);
 	//multishot_print_all_paths(&route, paths, 0);
 	//printf("\t\tmax flow path:%d\n", ft_lstsize(paths));
+
+	printf("oneshot\n\tnum_paths:%d\tdist_begin:%d\tloop_len:%d\n", route.oneshot_paths->num_paths, route.oneshot_paths->dist_begin, route.oneshot_paths->loop_len);
+	printf("multishot\n\tnum_paths:%d\tdist_begin:%d\tloop_len:%d\n", route.multishot_paths->num_paths, route.multishot_paths->dist_begin, route.multishot_paths->loop_len);
 
 	t_path_len **elements = ants_distribute(route);
 	// for(int i = 0; elements[i] != NULL; i++)
