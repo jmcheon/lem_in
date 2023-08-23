@@ -12,5 +12,4 @@
 
 # include "./algo.h"
 
-
 #endif

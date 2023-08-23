@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem-in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 02:07:32 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/22 22:02:46 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/23 23:35:13 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,25 +29,5 @@
 # define PARSE_XY_END 3
 # define PARSE_EDGE 4
 # define PARSE_COMMENT 5
-
-
-/*
-**	ant_dist.c
-*/
-
-// void	swap(t_path_len *a, t_path_len *b);
-// int		partition_asc(t_path_len arr[], int low, int high);
-// int		partition_desc(t_path_len arr[], int low, int high);
-// void	quicksort(t_path_len arr[], int low, int high);
-
-/*
-**	utils.c
-*/
-void	free_linked_list(t_list **list_head);
-
-/*
-**	free.c
-*/
-void	free_paths(t_list *paths);
 
 #endif

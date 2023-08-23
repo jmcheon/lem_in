@@ -6,7 +6,7 @@
 /*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 16:58:03 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/23 21:00:47 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/23 23:30:50 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	free_list_ptr(t_list *head)
 void	free_paths(t_list *paths)
 {
 	t_list *tmp;
+	t_vertex_list *vertex_head;
 	t_vertex_list *vertex_tmp;
 	t_vertex_list *vertex_tmp_2;
 
@@ -45,7 +46,11 @@ void	free_paths(t_list *paths)
 	{
 		tmp = paths;
 		vertex_tmp = tmp->content;
-		while (vertex_tmp != NULL)
+		vertex_head = vertex_tmp;
+		vertex_tmp_2 = vertex_tmp;
+		vertex_tmp = vertex_tmp->next;
+		free(vertex_tmp_2);
+		while (vertex_tmp != vertex_head)
 		{
 			vertex_tmp_2 = vertex_tmp;
 			vertex_tmp = vertex_tmp->next;

@@ -194,6 +194,10 @@ void	free_graph(t_graph *g);
 void	free_paths_list(t_paths *paths);
 
 
+/*
+**	free.c
+*/
+void	free_paths(t_list *paths);
 void	free_list_ptr(t_list *head);
 void	free_edges_lists(t_route *route);
 void	free_vertices_inout_lists(t_route *route);

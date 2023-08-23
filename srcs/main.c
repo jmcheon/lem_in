@@ -44,7 +44,7 @@ int	perform_oneshot(t_route *route)
 				temp[u][v] = 0;
 		}
 	}
-	// free_paths(route->oneshot_paths->paths);
+	free_paths(route->oneshot_paths->paths);
 	init_paths(route->oneshot_paths);
 	free(parent);
 	init_int_array(&parent, route->num_vertices, -1);
@@ -156,10 +156,10 @@ int main(void)
 	free(route.graph);
 
 	//free paths
-	// free_paths(route.oneshot_paths->paths);
-	// free(route.oneshot_paths);
-	// free_paths(route.multishot_paths->paths);
-	// free(route.multishot_paths);
+	free_paths(route.oneshot_paths->paths);
+	free(route.oneshot_paths);
+	free_paths(route.multishot_paths->paths);
+	free(route.multishot_paths);
 	free(route.distances);
 
 	free(route.node_map);
