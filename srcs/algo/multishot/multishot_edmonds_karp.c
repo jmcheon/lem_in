@@ -109,7 +109,6 @@ void	multishot_edmonds_karp(t_route *route)
 		if (ft_lstsize(edge_list) == 0 || !multishot_update_edge_flow(route, edge_list, route->end))
 			break ;
 		multishot_add_all_paths(route, s, t);
-		//route->multishot_paths->paths = multishot_add_all_paths(route, s, t);
 		path_len = ants_check_loop_len(route, route->multishot_paths);
 		if (prev_path_len != 0 && prev_path_len <= path_len)
 		{

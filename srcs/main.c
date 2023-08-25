@@ -105,7 +105,7 @@ int main(void)
 	{
 		t_path_len **elements = ants_distribute(route, route.oneshot_paths);
     	//ants_print_frames(route, route.oneshot_paths, elements);
-		printf("oneshot win: %d(one) < %d(multi)\n", route.oneshot_paths->loop_len, route.multishot_paths->loop_len);
+		printf("%soneshot win: %d(one) < %d(multi)%s\n", GREEN, route.oneshot_paths->loop_len, route.multishot_paths->loop_len, FIN);
 		for(int i = 0; i < route.oneshot_paths->num_paths; i++)
 			free(elements[i]);
 		free(elements);
@@ -114,7 +114,7 @@ int main(void)
 	{
 		t_path_len **elements = ants_distribute(route, route.multishot_paths);
     	//ants_print_frames(route, route.multishot_paths, elements);
-		printf("multishot win: %d(multi) < %d(one)\n", route.multishot_paths->loop_len, route.oneshot_paths->loop_len);
+		printf("%smultishot win: %d(multi) < %d(one)%s\n", GREEN, route.multishot_paths->loop_len, route.oneshot_paths->loop_len, FIN);
 		for(int i = 0; i < route.multishot_paths->num_paths; i++)
 			free(elements[i]);
 		free(elements);
