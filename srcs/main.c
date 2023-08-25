@@ -44,7 +44,9 @@ int	perform_oneshot(t_route *route)
 	init_int_array(&parent, route->num_vertices, -1);
 	oneshot_edmonds_karp(route, parent, temp, oneshot_bfs_with_weights);
 
-	route->oneshot_paths->loop_len = ants_check_loop_len(route, route->oneshot_paths) - 1;
+	
+	if (ft_lstsize(route->oneshot_paths->paths) > 0)
+		route->oneshot_paths->loop_len = ants_check_loop_len(route, route->oneshot_paths) - 1;
 
  	for (int u = 0; u < route->num_vertices; ++u)
 	{
@@ -67,7 +69,26 @@ int main(void)
 	init_route(&route, parse);
 
 
-	perform_oneshot(&route);
+	if (perform_oneshot(&route) == -1)
+	{
+		ft_lstclear(&parse->nodes_head, free_node_xy);
+		ft_lstclear(&parse->edge_info_head, free_edge);
+		// free_graph
+		free_graph(route.graph);
+		free(route.graph);
+
+		//free paths
+		free_paths(route.oneshot_paths->paths);
+		free(route.oneshot_paths);
+		free_paths(route.multishot_paths->paths);
+		free(route.multishot_paths);
+		free(route.distances);
+
+		free(route.node_map);
+		free(parse);
+		ft_putstr_fd("error", STDOUT_FILENO);
+		exit(1);
+	}
 
 	if (route.req != -1 && route.req < route.oneshot_paths->loop_len)
 	{

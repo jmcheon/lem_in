@@ -6,7 +6,7 @@
 /*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 20:44:25 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/25 22:26:21 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/26 00:43:33 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,11 @@ int	parse_check_nodeline(t_list **line_head, t_parse **parse)
 	parse_status = 1;
 	while ((*line_head) != NULL)
 	{
+		if ((*line_head)->next == NULL)
+		{
+			ft_putstr_fd("Error in node lines\n", STDOUT_FILENO);
+			return (0);
+		}
 		parse_status = check_nodeline_status((*line_head)->content, parse_status, &tmp);
 		if (parse_status == PARSE_EDGE)
 			break;

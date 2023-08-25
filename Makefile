@@ -6,7 +6,7 @@
 #    By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/05 02:01:35 by sucho             #+#    #+#              #
-#    Updated: 2023/08/25 22:32:23 by cjung-mo         ###   ########.fr        #
+#    Updated: 2023/08/26 00:56:14 by cjung-mo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME					=	lem-in
 LIBFT					=	libft.a
 
 CC						=	gcc
-CFLAGS					=	-Wall -Wextra -Werror -O3
+CFLAGS					=	-Wall -Wextra -Werror -O3 -g
 RM						=	rm -f
 
 INCLUDES_PATH			=	./includes/
