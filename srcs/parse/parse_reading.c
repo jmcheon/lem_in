@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 20:44:25 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/14 22:09:24 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/25 15:47:27 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,10 @@ int	check_nodeline_status(char *line, int parse_status, t_list **node)
 		return PARSE_XY_START;
 	else if (ft_strncmp(line, "##end", 5) == 0)
 		return PARSE_XY_END;
+	else if (ft_strncmp(line, "#Here", 5) == 0)
+		return PARSE_REQ;
 	else if (line[0] == '#' && line[1] != '#')
 		return PARSE_COMMENT;
-
 	else
 	{
 		if (check_split_count(line, ' ') != 3)
@@ -131,6 +132,13 @@ int	parse_check_nodeline(t_list **line_head, t_parse **parse)
 		parse_status = check_nodeline_status((*line_head)->content, parse_status, &tmp);
 		if (parse_status == PARSE_EDGE)
 			break;
+		else if (parse_status == PARSE_REQ)
+		{
+			char **tmp = ft_split((*line_head)->content, ':');
+			(*parse)->req = ft_atoi(tmp[1]);
+			free_2d(tmp);
+			parse_status = PARSE_XY;
+		}
 		else if (parse_status == PARSE_COMMENT)
 			parse_status = PARSE_XY;
 		else if (!parse_status)

@@ -67,6 +67,10 @@ void	init_paths(t_paths* paths)
 
 void	init_route(t_route* route, t_parse* parse)
 {
+	if (parse->req > 0)
+		route->req = parse->req;
+	else
+		route->req = -1;
 	route->num_ants = parse->num_ants;
 	route->num_vertices = ft_lstsize(parse->nodes_head);
 	//printf("num_vertices:%d\n", route->num_vertices);

@@ -91,6 +91,7 @@ typedef struct s_route
     int num_vertices;
 	//int	num_edges;
 	int	num_ants;
+	int	req;
 
     char	**node_map;
 } t_route;
