@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 07:19:48 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/23 23:10:42 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/25 16:58:39 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,11 +129,11 @@ t_path_len	**ants_distribute(t_route route, t_paths *paths)
 	(void)	route;
 
 
-    printf("Original array:\n");
-    for (int i = 0; i < paths->num_paths; i++) {
-        printf("%d ", elements[i]->value);
-    }
-    printf("\n");
+    // printf("Original array:\n");
+    // for (int i = 0; i < paths->num_paths; i++) {
+    //     printf("%d ", elements[i]->value);
+    // }
+    // printf("\n");
 
 	quicksort(elements, 0, paths->num_paths - 1);
 

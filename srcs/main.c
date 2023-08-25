@@ -67,7 +67,7 @@ int main(void)
 	init_route(&route, parse);
 
 
-	printf("testing:%d\n", perform_oneshot(&route));
+	perform_oneshot(&route);
 
 	if (route.flags.debug)
 	{

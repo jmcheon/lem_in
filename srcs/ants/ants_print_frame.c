@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 16:36:46 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/25 16:57:01 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/25 16:58:09 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,8 +134,8 @@ void ants_print_frames(t_route route, t_paths *paths, t_path_len **elements)
 	total_used_path = paths->num_paths - paths->dist_begin;
 	// ants_set_path_vars(paths, elements, &longest_path, &total_used_path);
 	// (void) ants_print_matrix;
-	printf("longest_path:%d total_used_path:%d\n", longest_path, total_used_path);
-	printf("test:%d\n", elements[paths->dist_begin]->value);
+	// printf("longest_path:%d total_used_path:%d\n", longest_path, total_used_path);
+	// printf("test:%d\n", elements[paths->dist_begin]->value);
 
 
 	ants_print_matrix = ants_init_ants_print(longest_path, total_used_path);
