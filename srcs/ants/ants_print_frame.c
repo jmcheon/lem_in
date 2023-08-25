@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 16:36:46 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/23 23:14:51 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/25 16:27:20 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,19 @@ void	ants_setup_prints_strt(t_ants_print **matrix, t_path_len **elements, t_rout
 		t_vertex_list *one_path = ft_lstfind_node(paths->paths, elements[(paths->num_paths - total_used) + i]->index)->content;
 		// while (one_path != NULL)
 		// {
-		// 	if (one_path->next == NULL)
+		// 	printf("[%d]",one_path->length);
+		// 	if (one_path->vertex == route.end)
+		// 	{
+		// 		printf("\n");
 		// 		break;
+		// 	}
 		// 	one_path = one_path->next;
 		// }
 		// int begin = longest_path - elements[i]->value;
 		int begin = 0;
-		one_path = one_path->prev;
+		one_path = one_path->prev->prev;
 		// printf("begin:%d\ti:%d\n", begin, i);
-		while (one_path->vertex != route.end)
+		while (one_path->vertex != route.start)
 		{
 			// needs to change
 			matrix[i][begin].node_name = route.node_map[one_path->vertex];
@@ -164,7 +168,7 @@ void ants_print_frames(t_route route, t_paths *paths, t_path_len **elements)
 	// // printf("loop:%d\n", loop);
 
 	int ant_index = 1;
-	for(int i = 0; i < (paths->loop_len); i++)
+	for(int i = 0; i < (paths->loop_len + 1); i++)
 	{
 		if (i < longest_path)
 		{
