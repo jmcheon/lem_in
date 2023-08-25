@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ants_print_frame.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 16:36:46 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/25 16:58:09 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/25 17:08:05 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ void ants_print_frames(t_route route, t_paths *paths, t_path_len **elements)
 	// // printf("loop:%d\n", loop);
 
 	int ant_index = 1;
-	for(int i = 0; i < (paths->loop_len + 1); i++)
+	for(int i = 0; i < (paths->loop_len); i++)
 	{
 		if (i < longest_path)
 		{

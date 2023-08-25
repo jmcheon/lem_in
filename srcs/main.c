@@ -44,7 +44,7 @@ int	perform_oneshot(t_route *route)
 	init_int_array(&parent, route->num_vertices, -1);
 	oneshot_edmonds_karp(route, parent, temp, oneshot_bfs_with_weights);
 	fill_capacity(route->graph, capacity);
-	route->oneshot_paths->loop_len = ants_check_loop_len(route, route->oneshot_paths) - 2;
+	route->oneshot_paths->loop_len = ants_check_loop_len(route, route->oneshot_paths) - 1;
 
  	for (int u = 0; u < route->num_vertices; ++u)
 	{
@@ -96,8 +96,29 @@ int main(void)
 		printf("oneshot\n\tnum_paths:%d\tdist_begin:%d\tloop_len:%d\n", route.oneshot_paths->num_paths, route.oneshot_paths->dist_begin, route.oneshot_paths->loop_len);
 		printf("multishot\n\tnum_paths:%d\tdist_begin:%d\tloop_len:%d\n", route.multishot_paths->num_paths, route.multishot_paths->dist_begin, route.multishot_paths->loop_len);
 
-	// t_path_len **elements = ants_distribute(route);
-	if (route.oneshot_paths->loop_len < route.multishot_paths->loop_len)
+		if (route.oneshot_paths->loop_len < route.multishot_paths->loop_len)
+		{
+			t_path_len **elements = ants_distribute(route, route.oneshot_paths);
+    		ants_print_frames(route, route.oneshot_paths, elements);
+			printf("%soneshot win: %d(one) < %d(multi)%s\n", GREEN, route.oneshot_paths->loop_len, route.multishot_paths->loop_len, FIN);
+			for(int i = 0; i < route.oneshot_paths->num_paths; i++)
+				free(elements[i]);
+			free(elements);
+		}
+		else
+		{
+			t_path_len **elements = ants_distribute(route, route.multishot_paths);
+    		ants_print_frames(route, route.multishot_paths, elements);
+			printf("%smultishot win: %d(multi) < %d(one)%s\n", GREEN, route.multishot_paths->loop_len, route.oneshot_paths->loop_len, FIN);
+			for(int i = 0; i < route.multishot_paths->num_paths; i++)
+				free(elements[i]);
+			free(elements);
+		}
+		free_edges_lists(&route);
+		free_vertices_edge_inout_lists(&route);
+		free_vertices_inout_lists(&route);
+	}
+	else
 	{
 		t_path_len **elements = ants_distribute(route, route.oneshot_paths);
     	ants_print_frames(route, route.oneshot_paths, elements);
@@ -106,24 +127,6 @@ int main(void)
 			free(elements[i]);
 		free(elements);
 	}
-	else
-	{
-		t_path_len **elements = ants_distribute(route, route.multishot_paths);
-    	ants_print_frames(route, route.multishot_paths, elements);
-		printf("%smultishot win: %d(multi) < %d(one)%s\n", GREEN, route.multishot_paths->loop_len, route.oneshot_paths->loop_len, FIN);
-		for(int i = 0; i < route.multishot_paths->num_paths; i++)
-			free(elements[i]);
-		free(elements);
-		free_edges_lists(&route);
-		free_vertices_edge_inout_lists(&route);
-		free_vertices_inout_lists(&route);
-	}
-	t_path_len **elements = ants_distribute(route, route.oneshot_paths);
-    ants_print_frames(route, route.oneshot_paths, elements);
-	printf("%soneshot win: %d(one) < %d(multi)%s\n", GREEN, route.oneshot_paths->loop_len, route.multishot_paths->loop_len, FIN);
-	for(int i = 0; i < route.oneshot_paths->num_paths; i++)
-		free(elements[i]);
-	free(elements);
 	// for(int i = 0; elements[i] != NULL; i++)
 	// 	printf("value:%d\tindex:%d\tnum_ants%d\n",elements[i]->value, elements[i]->index, elements[i]->num_ants);
 
