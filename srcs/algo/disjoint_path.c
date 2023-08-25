@@ -23,7 +23,6 @@ void	dijkstra(t_route* route)
 	int *distances = route->distances;
     int	visited[size];
 
-	//printf("size:%d\n", size);
     for (int i = 0; i < size; i++)
 	{
         distances[i] = INT_MAX;
@@ -47,11 +46,4 @@ void	dijkstra(t_route* route)
             temp_node = temp_node->link;
         }
     }
-
-/*
-    printf("Vertex\t Distance from start\n");
-    for (int i = 0; i < size; i++) {
-        printf("%d\t\t%d\n", i, distances[i]);
-    }
-	*/
 }

@@ -34,7 +34,7 @@ t_graph_edge	*multishot_init_edge(t_graph *g, int u_vertex, int v_vertex, int u_
 
 	if (!u || !v)
 	{
-		printf("adding an edge error.\n");
+		ft_putstr_fd("adding an edge error.\n", STDOUT_FILENO);
 		free(edge);
 		return NULL;
 	}
@@ -97,8 +97,6 @@ int	multishot_update_edge_flow(t_route *route, t_list *edge_list, int v)
 	t_list *path;
 
 	path = multishot_backtrack_edges(route, edge_list, v);
-	if (route->flags.debug)
-		printf("\t\tbacktracking return\n");
 	if (!path)
 		return 0;
 	free_list_ptr(path);
@@ -113,12 +111,7 @@ int	multishot_update_edge(t_route *route, t_graph_edge *edge)
 	(void)route;
 	edge->flow += 1;
 	rev_edge = multishot_get_edge(edge->v, edge->u);
-	if (route->flags.debug)
-	{
-		printf("rev_e->u->vertex:%s_%s - rev_e->v->vertex:%s_%s\n", 
-			route->node_map[rev_edge->u->vertex], sVertexTypeStrings[rev_edge->u->type], 
-			route->node_map[rev_edge->v->vertex], sVertexTypeStrings[rev_edge->v->type]);
-	}
+
 	rev_edge->flow -= 1;
 	if (edge->flow < edge->capacity)
 		edge->valid = 1;
@@ -140,12 +133,7 @@ t_list *multishot_backtrack_edges(t_route *route, t_list *edges, int v)
 	int	i;
 
 	edge = (t_graph_edge*)ft_lstlast(edges)->content;
-	if (route->flags.debug)
-	{
-		printf("backtracking last edge->u->vertex:%s_%s - edge->v->vertex:%s_%s\n", 
-			route->node_map[edge->u->vertex], sVertexTypeStrings[edge->u->type],
-			route->node_map[edge->v->vertex], sVertexTypeStrings[edge->v->type]);
-	}
+
 	if (v != edge->v->vertex || !multishot_update_edge(route, edge))
 		return NULL;
 	vertex = edge->u;
@@ -153,25 +141,13 @@ t_list *multishot_backtrack_edges(t_route *route, t_list *edges, int v)
 	ft_lstadd_back(&path, ft_lstnew(edge->u));
 	ft_lstadd_back(&path, ft_lstnew(edge->v));
 	i = ft_lstsize(edges);
-	if (route->flags.debug)
-		printf("\t\tbacktracking edge_list size:%d\n", i);
+
 	while (i--)
 	{
 		edge = (t_graph_edge*)ft_lstfind_node(edges, i)->content;
-		if (route->flags.debug)
-		{
-			printf("backtracking %svertex:%s_%s, edge->v:%s_%s%s\n", RED,
-				route->node_map[vertex->vertex], sVertexTypeStrings[vertex->type],
-				route->node_map[edge->v->vertex], sVertexTypeStrings[edge->v->type], FIN);
-		}
+	
 		if (edge->v->vertex == vertex->vertex && edge->v->type == vertex->type)
 		{
-			if (route->flags.debug)
-			{
-				printf("%svertex:%s_%s, edge->v:%s_%s%s\n", ORANGE,
-					route->node_map[vertex->vertex], sVertexTypeStrings[vertex->type],
-					route->node_map[edge->v->vertex], sVertexTypeStrings[edge->v->type], FIN);
-			}
 			if (multishot_update_edge(route, edge) < 0)
 				return path;
 			ft_lstadd_front(&path, ft_lstnew(edge->u));

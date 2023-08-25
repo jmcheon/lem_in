@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sucho <sucho@student.42.fr>                +#+  +:+       +#+         #
+#    By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/05 02:01:35 by sucho             #+#    #+#              #
-#    Updated: 2023/08/24 01:06:13 by sucho            ###   ########.fr        #
+#    Updated: 2023/08/25 22:32:23 by cjung-mo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,6 @@ SRCS					=	./includes/get_next_line/get_next_line_bonus.c \
 							./srcs/algo/oneshot/oneshot_bfs.c \
 							./srcs/algo/disjoint_path.c \
 							./srcs/algo/init_funcs.c \
-							./srcs/algo/print_funcs.c \
 							./srcs/algo/queue.c \
 							./srcs/algo/priority_queue.c \
 							./srcs/algo/graph_list.c \

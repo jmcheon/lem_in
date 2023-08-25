@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   graph_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:39:43 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/24 00:13:52 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/25 22:32:04 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,6 @@ static void init(t_graph *graph, int num_vertices)
 	}
 
 }
-// link in reverse way
-// void insert_edge(t_graph *g, int u, int v)
-// {
-// 	t_graph_node* node;
-//     if(u>=g->n||v>=g->n){
-//         fprintf(stderr,"vertex index error");
-//         return;
-//     }
-
-// 	node = (t_graph_node *)malloc(sizeof(t_graph_node));
-// 	node->vertex = v;
-// 	node->link = g->adj_list[u];
-// 	g->adj_list[u] = node;
-// }
 
 static int insert_edge(t_graph *g, int u, int v)
 {
@@ -82,26 +68,6 @@ static int insert_edge(t_graph *g, int u, int v)
 	return (1);
 }
 
-static void print_adjlist_list(t_graph *g)
-{
-	int i;
-	// int j;
-
-	i = 0;
-	while (i < g->n)
-	{
-		t_graph_node *p = g->adj_list[i];
-		printf("node [%d]", i);
-		while (p != NULL)
-		{
-			printf("->%d", p->vertex);
-			p = p->link;
-		}
-		printf("\n");
-		i++;
-	}
-}
-
 t_graph* parse_to_graph(t_parse *parse, t_route *route)
 {
 	t_graph *g;
@@ -111,7 +77,6 @@ t_graph* parse_to_graph(t_parse *parse, t_route *route)
 	int edge_one;
 	int edge_two;
 
-	// print_graph_mapping(route->num_vertices, route->node_map);
 	g = (t_graph*)malloc(sizeof(t_graph));
 	init(g, route->num_vertices);
 	edge_head = parse->edge_info_head;
@@ -141,7 +106,5 @@ t_graph* parse_to_graph(t_parse *parse, t_route *route)
 		}
 		edge_head = edge_head->next;
 	}
-	(void)print_adjlist_list;
-	//  print_adjlist_list(g);
 	return g;
 }

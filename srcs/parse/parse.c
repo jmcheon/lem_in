@@ -6,7 +6,7 @@
 /*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 16:23:39 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/25 15:57:29 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/25 22:26:30 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ bool	duplicates_check(t_parse *parse)
 	if (!check_duplicate_nodes(parse->nodes_head, compare_nodename))
 	{
 		perror("duplicates node found");
-		// ft_putchar_fd('\n', STDOUT_FILENO);
 		result = false;
 	}
 

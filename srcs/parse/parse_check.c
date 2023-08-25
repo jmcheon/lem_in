@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 14:25:42 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/14 22:08:28 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/25 22:25:58 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ bool	parse_node_xy_check(char *line)
 		return false;
 	}
 	i = 0;
-	// needs to use atoi
 	while (node_tmp[1][i] != 0)
 	{
 		if (!ft_isdigit(node_tmp[1][i]))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ants_dist_util.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 21:19:38 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/25 16:54:43 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/25 22:23:49 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ int		ants_find_dist_begin2(int *elements, int num_paths, int num_ants)
 		int tmp = 0;
 		for (int j = i + 1; j < num_paths; j++)
 			tmp += (elements[i] - elements[j]);
-		// printf("tmp:%d\n", tmp);
-		// printf("tmp2:%d \n", tmp + (route.paths->num_paths - i));
 		if (tmp + (num_paths - i) <= num_ants)
 		{
 			ret = i;

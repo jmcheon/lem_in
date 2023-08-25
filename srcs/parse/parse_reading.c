@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_reading.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 20:44:25 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/25 15:47:27 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/25 22:26:21 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int	parse_check_edgeline(t_list **line_head, t_parse **parse)
 		else if (!parse_status)
 		{
 			ft_putstr_fd("Error in line ", STDOUT_FILENO);
-			// ft_putnbr_fd(line_count, STDOUT_FILENO);
 			ft_putchar_fd('\n', STDOUT_FILENO);
 			return (0);
 		}
@@ -91,7 +90,6 @@ int	nodeline_to_struct(char *line, int parse_status, t_list **node)
 	(*node)->content = tmp;
 	free_2d(split_tmp);
 
-	// printf("name:[%s] x:[%s] y:[%s]\n", tmp->name, tmp->x, tmp->y);
 	return 1;
 }
 
@@ -99,7 +97,6 @@ int	check_nodeline_status(char *line, int parse_status, t_list **node)
 {
 	if(check_split_count(line, '-') == 2)
 		return PARSE_EDGE;
-	// needs to handle when already start and end were read
 	if (ft_strncmp(line, "##start", 7) == 0)
 		return PARSE_XY_START;
 	else if (ft_strncmp(line, "##end", 5) == 0)
@@ -119,7 +116,6 @@ int	check_nodeline_status(char *line, int parse_status, t_list **node)
 	return parse_status;
 }
 
-// line number keep? or no?
 int	parse_check_nodeline(t_list **line_head, t_parse **parse)
 {
 	t_list	*tmp;
@@ -157,7 +153,6 @@ int	parse_check_nodeline(t_list **line_head, t_parse **parse)
 			tmp = tmp->next;
 		}
 		(*line_head) = (*line_head)->next;
-		// line_count++;
 	}
 	return (1);
 }

@@ -37,7 +37,6 @@ void	enqueue_with_priority(t_priority_queue* queue, int content, int distance)
 		new_node->next = curr_queue_ptr->next;
 		curr_queue_ptr->next = new_node;
 	}
-	// printf("enqueued: %d\n", content);
 }
 
 int	dequeue_with_priority(t_priority_queue* queue)
@@ -53,7 +52,6 @@ int	dequeue_with_priority(t_priority_queue* queue)
 	queue->front = temp->next;
 
 	free(temp);
-	//printf("dequeued: %d\n", content);
 	return (content);
 }
 

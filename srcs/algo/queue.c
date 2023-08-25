@@ -29,7 +29,6 @@ void	enqueue(t_queue* queue, int	content)
 	else
 		queue->rear->next = new_node;
 	queue->rear = new_node;
-	// printf("enqueued: %d\n", content);
 }
 
 int	dequeue(t_queue* queue)
@@ -48,7 +47,6 @@ int	dequeue(t_queue* queue)
 		queue->rear = NULL;
 
 	free(temp);
-	//printf("dequeued: %d\n", content);
 	return (content);
 }
 
@@ -71,12 +69,7 @@ int	queue_test(void)
  	enqueue(&queue, inputs[1]);
  	enqueue(&queue, inputs[2]);
 
-	printf("dequeue:%d\n",dequeue(&queue));
-	printf("dequeue:%d\n",dequeue(&queue));
-	printf("dequeue:%d\n",dequeue(&queue));
  	enqueue(&queue, inputs[3]);
-
-	printf("dequeue:%d\n",dequeue(&queue));
 
     free_queue(&queue);
 

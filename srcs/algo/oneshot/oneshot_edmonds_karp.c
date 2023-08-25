@@ -9,7 +9,6 @@ void	fill_capacity(t_graph* graph, int **capacity)
 		{
 			int v = node->vertex;
 			capacity[u][v] = 1;
-			//capacity[v][u] = 1;
 			node = node->link;
 		}
 	}
@@ -60,7 +59,6 @@ void	oneshot_edmonds_karp(t_route* route, int *parent, int **capacity, int (*f)(
 		for (int v = route->end; v != route->start; v = parent[v])
 		{
 			int u = parent[v];
-			//printf("u, v = %d, %d\n", u, v);
 			if (v == route->end)
 				end_vertex_ptr = insert_vertex(route->oneshot_paths, v);
 			start_vertex_ptr = insert_vertex(route->oneshot_paths, u);

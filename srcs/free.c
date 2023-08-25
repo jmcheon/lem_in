@@ -6,23 +6,11 @@
 /*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 16:58:03 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/23 23:30:50 by cjung-mo         ###   ########.fr       */
+/*   Updated: 2023/08/25 22:27:01 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem-in.h"
-
-// void	free_list(t_list *head)
-// {
-// 	t_list* tmp;
-// 	while (head != NULL)
-// 	{
-// 		tmp = head;
-// 		head = head->next;
-// 		free(tmp->content);
-// 		free(tmp);
-// 	}
-// }
 
 void	free_list_ptr(t_list *head)
 {
@@ -71,14 +59,11 @@ void	free_vertices_edge_inout_lists(t_route *route)
 	for (int i = 0; i < route->num_vertices; i++)
 	{
 		v = multishot_find_vertex(route->graph, i, IN);
-		//printf("v->vertex:%d\n", v->vertex);
 		temp = v->in_list;
 		while (temp != NULL)
 		{
 			temp2 = temp;
 			temp = temp->next;
-			//free(temp2->content);
-			//temp2->content = NULL;
 			free(temp2);
 		}
 		temp = v->out_list;
@@ -86,8 +71,6 @@ void	free_vertices_edge_inout_lists(t_route *route)
 		{
 			temp2 = temp;
 			temp = temp->next;
-			//free(temp2->content);
-			//temp2->content = NULL;
 			free(temp2);
 		}
 

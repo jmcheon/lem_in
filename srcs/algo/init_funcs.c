@@ -46,7 +46,6 @@ void	init_2d_int_array(int ***arr, int length)
 		i++;
 	}
 	(*arr)[i] = NULL;
-	//reset_int_array(arr, length, value);
 }
 
 void	init_vertex_list(t_vertex_list *path, int v)
@@ -73,21 +72,13 @@ void	init_route(t_route* route, t_parse* parse)
 		route->req = -1;
 	route->num_ants = parse->num_ants;
 	route->num_vertices = ft_lstsize(parse->nodes_head);
-	//printf("num_vertices:%d\n", route->num_vertices);
 	route->node_map = node_map_to_array(parse->nodes_head);
-	// int	i = 0;
-	// while (i < route->num_vertices)
-	// {
-	// 	// printf("[%s]\n", route->node_map[i]);
-	// 	i++;
-	// }
 	route->graph = parse_to_graph(parse, route);
 	if (route->graph == NULL)
 	{
 		ft_lstclear(&parse->nodes_head, free_node_xy);
 		ft_lstclear(&parse->edge_info_head, free_edge);
 		free(route->node_map);
-		// free_graph(route->graph);
 		free(parse);
 		exit(1);
 	}

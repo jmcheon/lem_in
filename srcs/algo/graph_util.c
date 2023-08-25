@@ -74,16 +74,6 @@ int	node_find_index(char **node_array, char *node_name, int num_vertices)
 	return i;
 }
 
-void	print_graph_mapping(int list_size, char **node_map)
-{
-	int i = 0;
-	while (i < list_size)
-	{
-		printf("index: %d, str:[%s]\n", i, node_map[i]);
-		i++;
-	}
-}
-
 char **init_nodes_mapping(int list_size)
 {
 	char **nodes_map;
@@ -107,7 +97,6 @@ void	free_graph(t_graph *g)
 
 	i = 0;
 	t_graph_node *tmp;
-	// printf("n:%d\n", g->n);
 	while (i < g->n)
 	{
 		while(g->adj_list[i] != NULL)
@@ -126,34 +115,3 @@ void	free_paths_list(t_paths *paths)
 {
 	ft_lstclear(&paths->paths, free);
 }
-/*
-void	free_paths_list(t_paths *paths)
-{
-	int i;
-
-	i = 0;
-	t_vertex_list *tmp;
-	printf("n:%d\n", paths->num_paths);
-	while (i < paths->num_paths)
-	{
-		while(paths->paths[i] != NULL)
-		{
-			tmp = paths->paths[i];
-			paths->paths[i] = paths->paths[i]->next;
-			free(tmp);
-			tmp = NULL;
-		}
-		i++;
-	}
-	free(paths->paths);
-
-	i = 0;
-	while (i < paths->num_paths)
-	{
-		free(paths->paths[i]);
-		i++;
-	}
-	free(paths->paths[i]);
-	free(paths->paths);
-}
-*/

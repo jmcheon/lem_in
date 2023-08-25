@@ -29,7 +29,6 @@ void	multishot_add_vertices(t_route *route)
 
 	for (int i = 0; i < route->num_vertices; i++)
 	{
-		//printf("adding vertex:%d valid:%d\n", v->vertex, v->valid);
 		ft_lstadd_back(&route->graph->v_in_list, ft_lstnew(multishot_init_vertex(i, IN)));
 		ft_lstadd_back(&route->graph->v_out_list, ft_lstnew(multishot_init_vertex(i, OUT)));
 		multishot_add_edges(route->graph, i, i, OUT, IN);
@@ -39,9 +38,7 @@ void	multishot_add_vertices(t_route *route)
 		curr_ptr = route->graph->adj_list[i];
 		while (curr_ptr !=NULL)
 		{
-			//printf("i:%d, curr_ptr->vertex:%d\n", i, curr_ptr->vertex);
 			multishot_add_edges(route->graph, curr_ptr->vertex, i, IN, OUT);
-			//multishot_add_edges(route->graph, i, curr_ptr->vertex, 1, 0);
 			curr_ptr = curr_ptr->link;
 		}
 	}
