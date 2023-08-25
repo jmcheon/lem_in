@@ -34,8 +34,7 @@ set_generator() {
 }
 
 run_generator() {
-	flag="${1//--/}"
-	map="$flag$2$map_extension"
+	map="$2"
 	# Run generator and save the output
 	$generator $1 1> "$map" 2> /dev/null
 
@@ -54,7 +53,7 @@ run_generator() {
 	#echo -e "${ORANGE}required lines: $required_lines${FIN}"
 	
 	# Run the program with generated map
-	time $program < $map > $output_file
+	$program < $map > $output_file
 	num_lines=$(cat $output_file | grep L | wc -l)
 	#echo -e "${ORANGE}number of lines: $num_lines${FIN}"
 

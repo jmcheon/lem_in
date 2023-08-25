@@ -19,16 +19,17 @@ def parse_ant_movements(ant_movements, start_node):
     lines = ant_movements.strip().split('\n')
     
     for line in lines:
-        movements_in_line = line.split()
-        #print(movements_in_line)
+        if line.startswith("L") and "-" in line:
+            movements_in_line = line.split()
+            #print('test: ', movements_in_line)
 
-        for index, movement in enumerate(movements_in_line):
-            ant_number, node_info = movement.split('-')
-            ant_index = int(ant_number[1:])
+            for index, movement in enumerate(movements_in_line):
+                ant_number, node_info = movement.split('-')
+                ant_index = int(ant_number[1:])
 
-            if ant_index not in ant_paths:
-                ant_paths[ant_index] = [start_node]
-            ant_paths[ant_index].append(node_info)
+                if ant_index not in ant_paths:
+                    ant_paths[ant_index] = [start_node]
+                ant_paths[ant_index].append(node_info)
                 
     #print('ant_paths:', ant_paths)
     return ant_paths
@@ -46,25 +47,26 @@ def parse_input(input_string):
     end_node = 0
 
     for line in lines:
-        if '-' in line and '#' not in line:
-            edge = tuple(line.split('-'))
-            edges.append(edge)
-        elif line == '##start':
-            start_flag = 1
-        elif line == '##end':
-            end_flag = 1
-        elif ('##' and '#') not in line and line is not lines[0]:
-            #print('line:', line)
-            node_info = line.split()
-            node = node_info[0]
-            nodes.append(node)
-            if start_flag == 1:
-                start_node = node_info[0]
-                start_flag = 0
-            if end_flag == 1:
-                end_node = node_info[0]
-                end_flag = 0
-            pos[node] = (float(node_info[1]), float(node_info[2]))
+        if not (line.startswith("L") and "-" in line) and not line == '':
+            if '-' in line and '#' not in line:
+                edge = tuple(line.split('-'))
+                edges.append(edge)
+            elif line == '##start':
+                start_flag = 1
+            elif line == '##end':
+                end_flag = 1
+            elif ('##' and '#') not in line and line is not lines[0]:
+                #print('line:', line)
+                node_info = line.split()
+                node = node_info[0]
+                nodes.append(node)
+                if start_flag == 1:
+                    start_node = node_info[0]
+                    start_flag = 0
+                if end_flag == 1:
+                    end_node = node_info[0]
+                    end_flag = 0
+                pos[node] = (float(node_info[1]), float(node_info[2]))
 
     return nodes, edges, pos, start_node, end_node
 
@@ -84,10 +86,10 @@ def visualize_graph(input_string, font_color='black', font_weight='bold', node_s
         plt.legend(scatterpoints=1, frameon=False, labelspacing=1.5)
     plt.show()
 
-def visualize_ants(input_string, ant_movements_string, font_color='black', font_weight='bold', node_size=1500):
+def visualize_ants(input_string, font_color='black', font_weight='bold', node_size=1500):
 
     nodes, edges, pos, start_node, end_node = parse_input(input_string)
-    ant_paths = parse_ant_movements(ant_movements_string, start_node)
+    ant_paths = parse_ant_movements(input_string, start_node)
     #print('ant_paths:', ant_paths)
     node_colors = ['green' if node == start_node else 'red' if node == end_node else 'skyblue' for node in nodes]
 
@@ -112,7 +114,7 @@ def generate_random_color():
     color = "#{:02x}{:02x}{:02x}".format(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
     return color
 
-def animate_ants(input_string, ant_movements_string, print_flag=False, interval=1000):
+def animate_ants(input_string, print_flag=False, interval=1000):
     nodes, edges, pos, start_node, end_node = parse_input(input_string)
 
     G = nx.Graph()
@@ -129,7 +131,12 @@ def animate_ants(input_string, ant_movements_string, print_flag=False, interval=
     node_colors = ['green' if node == start_node else 'red' if node == end_node else 'skyblue' for node in nodes]
     nx.draw(G, pos, with_labels=True, node_color=node_colors, ax=ax)
 
-    ant_frames = ant_movements_string.strip().split('\n')
+    lines = input_string.strip().split('\n')
+    ant_frames = []#input_string.strip().split('\n')
+
+    for line in lines:
+        if line.startswith("L") and "-" in line:
+            ant_frames.append(line)
 
     ant_colors = {}
 
@@ -166,9 +173,6 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="This is a visuallizer for 42 project lem-in.")
 
-    parser.add_argument("-i", "--input", type=str, default=None, required=True,
-                        help="Input graph's info.")
-
     parser.add_argument("-g", "--graph", action="store_true", default=False,
                         help="Plot the graph")
 
@@ -180,19 +184,21 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    if args.input:
+    input_string = sys.stdin.read() 
 
-        input_string = read_input_file(args.input)
+    if input_string:
 
-        ant_movements_string = load_ant_movements_string(args.input)
-        print(ant_movements_string)
+        #input_string = read_input_file(args.input)
+
+        #ant_movements_string = load_ant_movements_string(input_string)
+        #print(ant_movements_string)
 
         if input_string and args.graph:
-            visualize_graph(input_string, legend=legend)
-        if ant_movements_string and args.paths:
-            visualize_ants(input_string, ant_movements_string)
-        if ant_movements_string and args.ants:
-            animate_ants(input_string, ant_movements_string)
+            visualize_graph(input_string)
+        if input_string and args.paths:
+            visualize_ants(input_string)
+        if input_string and args.ants:
+            animate_ants(input_string)
     else:
         print(f"Usage: python {sys.argv[0]} -h")
 

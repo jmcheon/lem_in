@@ -1,8 +1,0 @@
-L1-b1 L2-c1 L3-e1 
-L1-b2 L4-b1 L2-c2 L5-c1 L3-e2 L6-e1 
-L1-b3 L4-b2 L7-b1 L2-c3 L5-c2 L8-c1 L3-e3 L6-e2 L9-e1 
-L1-end L4-b3 L7-b2 L10-b1 L2-end L5-c3 L8-c2 L11-c1 L3-end L6-e3 L9-e2 L12-e1 
-L4-end L7-b3 L10-b2 L13-b1 L5-end L8-c3 L11-c2 L14-c1 L6-end L9-e3 L12-e2 L15-e1 
-L7-end L10-b3 L13-b2 L8-end L11-c3 L14-c2 L9-end L12-e3 L15-e2 
-L10-end L13-b3 L11-end L14-c3 L12-end L15-e3 
-L13-end L14-end L15-end 
