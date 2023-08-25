@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 16:23:39 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/25 15:36:48 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/25 15:57:29 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ t_parse	*init_parse_struct(void)
 {
 	t_parse *parse;
 	parse = (t_parse *)malloc(sizeof(t_parse));
+	parse->req = -1;
 	parse->nodes_head = ft_lstnew(NULL);
 	parse->edge_info_head = ft_lstnew(NULL);
 	return (parse);

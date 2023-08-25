@@ -62,9 +62,6 @@ int main(void)
 {
 	t_parse	*parse;
 	t_route	route;
-	t_list	*paths;
-
-
 
 	parse = parsing();
 	init_route(&route, parse);
@@ -82,66 +79,41 @@ int main(void)
 			i++;
 		}
 	}
-
-	multishot_add_vertices(&route);
-	//multishot_print_edge_forward_travel(&route);
-	//multishot_print_vertex_lists(&route);
-	(void)paths;
-	// paths = multishot_edmonds_karp(&route);
-	multishot_edmonds_karp(&route);
-	//printf("%d\n", ((t_vertex_list*)ft_lstlast(route.multishot_paths->paths)->content)->vertex);
-	//multishot_print_all_paths(&route, paths, 0);
-	//printf("\t\tmax flow path:%d\n", ft_lstsize(paths));
-	/*
-	printf("v_in_list size:%d, v_out_list size:%d\n", ft_lstsize(route.graph->v_in_list), ft_lstsize(route.graph->v_out_list));
-	printf("edge_list size:%d, rev_edge_list size:%d\n", ft_lstsize(route.graph->edge_list), ft_lstsize(route.graph->rev_edge_list));
-	*/
-
-	printf("oneshot\n\tnum_paths:%d\tdist_begin:%d\tloop_len:%d\n", route.oneshot_paths->num_paths, route.oneshot_paths->dist_begin, route.oneshot_paths->loop_len);
-	printf("multishot\n\tnum_paths:%d\tdist_begin:%d\tloop_len:%d\n", route.multishot_paths->num_paths, route.multishot_paths->dist_begin, route.multishot_paths->loop_len);
-
-	// t_path_len **elements = ants_distribute(route);
-	if (route.oneshot_paths->loop_len < route.multishot_paths->loop_len)
+	if (route.req != -1 && route.req < route.oneshot_paths->loop_len)
 	{
-		t_path_len **elements = ants_distribute(route, route.oneshot_paths);
-    	//ants_print_frames(route, route.oneshot_paths, elements);
-		printf("%soneshot win: %d(one) < %d(multi)%s\n", GREEN, route.oneshot_paths->loop_len, route.multishot_paths->loop_len, FIN);
-		for(int i = 0; i < route.oneshot_paths->num_paths; i++)
-			free(elements[i]);
-		free(elements);
-	}
-	else
-	{
+		multishot_add_vertices(&route);
+		//multishot_print_edge_forward_travel(&route);
+		//multishot_print_vertex_lists(&route);
+		multishot_edmonds_karp(&route);
+		//printf("%d\n", ((t_vertex_list*)ft_lstlast(route.multishot_paths->paths)->content)->vertex);
+		//multishot_print_all_paths(&route, paths, 0);
+		//printf("\t\tmax flow path:%d\n", ft_lstsize(paths));
+		/*
+		printf("v_in_list size:%d, v_out_list size:%d\n", ft_lstsize(route.graph->v_in_list), ft_lstsize(route.graph->v_out_list));
+		printf("edge_list size:%d, rev_edge_list size:%d\n", ft_lstsize(route.graph->edge_list), ft_lstsize(route.graph->rev_edge_list));
+		*/
+
+		printf("oneshot\n\tnum_paths:%d\tdist_begin:%d\tloop_len:%d\n", route.oneshot_paths->num_paths, route.oneshot_paths->dist_begin, route.oneshot_paths->loop_len);
+		printf("multishot\n\tnum_paths:%d\tdist_begin:%d\tloop_len:%d\n", route.multishot_paths->num_paths, route.multishot_paths->dist_begin, route.multishot_paths->loop_len);
+
 		t_path_len **elements = ants_distribute(route, route.multishot_paths);
-    	//ants_print_frames(route, route.multishot_paths, elements);
+    	ants_print_frames(route, route.multishot_paths, elements);
 		printf("%smultishot win: %d(multi) < %d(one)%s\n", GREEN, route.multishot_paths->loop_len, route.oneshot_paths->loop_len, FIN);
 		for(int i = 0; i < route.multishot_paths->num_paths; i++)
 			free(elements[i]);
 		free(elements);
+		free_edges_lists(&route);
+		free_vertices_edge_inout_lists(&route);
+		free_vertices_inout_lists(&route);
 	}
+	t_path_len **elements = ants_distribute(route, route.oneshot_paths);
+    ants_print_frames(route, route.oneshot_paths, elements);
+	printf("%soneshot win: %d(one) < %d(multi)%s\n", GREEN, route.oneshot_paths->loop_len, route.multishot_paths->loop_len, FIN);
+	for(int i = 0; i < route.oneshot_paths->num_paths; i++)
+		free(elements[i]);
+	free(elements);
 	// for(int i = 0; elements[i] != NULL; i++)
 	// 	printf("value:%d\tindex:%d\tnum_ants%d\n",elements[i]->value, elements[i]->index, elements[i]->num_ants);
-
-
-    // ants_print_frames(route, elements);
-
-	// int total_length = 0;
-	// for(int i = 0; i < route.oneshot_paths->num_paths; i++)
-	// {
-	//  	printf("elements - value: %d\t index:%d\tnum_ants:%d\n",
-	//  		elements[i]->value, elements[i]->index, elements[i]->num_ants);
-	// 	total_length += elements[i]->value;
-	// }
-	// printf("total_length:%d\n", total_length);
-
-
-	//ft_lstclear(&route.graph->v_in_list, free);
-	//free_vertices(&route);
-	free_edges_lists(&route);
-	free_vertices_edge_inout_lists(&route);
-	free_vertices_inout_lists(&route);
-
-
 
 	ft_lstclear(&parse->nodes_head, free_node_xy);
 	ft_lstclear(&parse->edge_info_head, free_edge);

@@ -13,7 +13,7 @@
 # define PARSE_XY_END 3
 # define PARSE_EDGE 4
 # define PARSE_COMMENT 5
-# define PARSE_REQ 5
+# define PARSE_REQ 6
 
 /*
 ** for parsing
