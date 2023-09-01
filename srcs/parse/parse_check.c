@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 14:25:42 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/13 23:12:32 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/25 22:25:58 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,13 @@ bool	parse_node_xy_check(char *line)
 		return false;
 	}
 	i = 0;
-	// needs to use atoi
 	while (node_tmp[1][i] != 0)
 	{
 		if (!ft_isdigit(node_tmp[1][i]))
 		{
-			printf("a - no digit:%c\n", node_tmp[1][i]);
+			ft_putstr_fd("a - no digit:", STDOUT_FILENO);
+			ft_putchar_fd(node_tmp[1][i], STDOUT_FILENO);
+			ft_putchar_fd('\n', STDOUT_FILENO);
 			ret = false;
 		}
 		i++;
@@ -104,7 +105,9 @@ bool	parse_node_xy_check(char *line)
 	{
 		if (!ft_isdigit(node_tmp[2][i]))
 		{
-			printf("b - no digit:[%c]\n", node_tmp[2][i]);
+			ft_putstr_fd("b - no digit:", STDOUT_FILENO);
+			ft_putchar_fd(node_tmp[2][i], STDOUT_FILENO);
+			ft_putchar_fd('\n', STDOUT_FILENO);
 			ret = false;
 		}
 		i++;
@@ -128,7 +131,7 @@ int		check_start_and_end(t_list *nodes)
 	}
 	if (check != (PARSE_XY_START + PARSE_XY_END))
 	{
-		printf("error with start and end of nodes\n");
+		ft_putstr_fd("error with start and end of nodes\n", STDOUT_FILENO);
 		return (0);
 	}
 	return (1);

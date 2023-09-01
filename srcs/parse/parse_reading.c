@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_reading.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sucho <sucho@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cjung-mo <cjung-mo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 20:44:25 by sucho             #+#    #+#             */
-/*   Updated: 2023/08/13 23:14:49 by sucho            ###   ########.fr       */
+/*   Updated: 2023/08/26 00:43:33 by cjung-mo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int	parse_check_edgeline(t_list **line_head, t_parse **parse)
 		else if (!parse_status)
 		{
 			ft_putstr_fd("Error in line ", STDOUT_FILENO);
-			// ft_putnbr_fd(line_count, STDOUT_FILENO);
 			ft_putchar_fd('\n', STDOUT_FILENO);
 			return (0);
 		}
@@ -91,7 +90,6 @@ int	nodeline_to_struct(char *line, int parse_status, t_list **node)
 	(*node)->content = tmp;
 	free_2d(split_tmp);
 
-	// printf("name:[%s] x:[%s] y:[%s]\n", tmp->name, tmp->x, tmp->y);
 	return 1;
 }
 
@@ -99,14 +97,14 @@ int	check_nodeline_status(char *line, int parse_status, t_list **node)
 {
 	if(check_split_count(line, '-') == 2)
 		return PARSE_EDGE;
-	// needs to handle when already start and end were read
 	if (ft_strncmp(line, "##start", 7) == 0)
 		return PARSE_XY_START;
 	else if (ft_strncmp(line, "##end", 5) == 0)
 		return PARSE_XY_END;
+	else if (ft_strncmp(line, "#Here", 5) == 0)
+		return PARSE_REQ;
 	else if (line[0] == '#' && line[1] != '#')
 		return PARSE_COMMENT;
-
 	else
 	{
 		if (check_split_count(line, ' ') != 3)
@@ -118,7 +116,6 @@ int	check_nodeline_status(char *line, int parse_status, t_list **node)
 	return parse_status;
 }
 
-// line number keep? or no?
 int	parse_check_nodeline(t_list **line_head, t_parse **parse)
 {
 	t_list	*tmp;
@@ -128,17 +125,26 @@ int	parse_check_nodeline(t_list **line_head, t_parse **parse)
 	parse_status = 1;
 	while ((*line_head) != NULL)
 	{
+		if ((*line_head)->next == NULL)
+		{
+			ft_putstr_fd("Error in node lines\n", STDOUT_FILENO);
+			return (0);
+		}
 		parse_status = check_nodeline_status((*line_head)->content, parse_status, &tmp);
 		if (parse_status == PARSE_EDGE)
 			break;
+		else if (parse_status == PARSE_REQ)
+		{
+			char **tmp = ft_split((*line_head)->content, ':');
+			(*parse)->req = ft_atoi(tmp[1]);
+			free_2d(tmp);
+			parse_status = PARSE_XY;
+		}
 		else if (parse_status == PARSE_COMMENT)
 			parse_status = PARSE_XY;
 		else if (!parse_status)
 		{
-			printf("%s",(char *)(*line_head)->content);
-			ft_putstr_fd("Error in line ?????????????", STDOUT_FILENO);
-			// ft_putnbr_fd(line_count, STDOUT_FILENO);
-			ft_putchar_fd('\n', STDOUT_FILENO);
+			ft_putstr_fd("Error in node lines\n", STDOUT_FILENO);
 			return (0);
 		}
 		else if (parse_status == PARSE_XY && tmp->content != NULL)
@@ -152,7 +158,6 @@ int	parse_check_nodeline(t_list **line_head, t_parse **parse)
 			tmp = tmp->next;
 		}
 		(*line_head) = (*line_head)->next;
-		// line_count++;
 	}
 	return (1);
 }

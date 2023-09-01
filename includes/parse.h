@@ -13,6 +13,7 @@
 # define PARSE_XY_END 3
 # define PARSE_EDGE 4
 # define PARSE_COMMENT 5
+# define PARSE_REQ 6
 
 /*
 ** for parsing
@@ -35,6 +36,7 @@ typedef struct s_edge
 typedef struct	s_parse
 {
 	int num_ants;
+	int	req;
 	t_list *nodes_head;
 	t_list *edge_info_head;
 }	t_parse;
